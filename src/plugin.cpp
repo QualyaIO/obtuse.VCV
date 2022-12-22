@@ -6,4 +6,5 @@ void init(Plugin *p) {
    pluginInstance = p;
 
    p->addModel(effects);
+   p->addModel(synthFM);
 }

@@ -11,10 +11,19 @@
    "manualUrl": "",
    "sourceUrl": "",
    "donateUrl": "",
-   "modules": [{
+  "modules": [
+    {
       "slug": "BotaniaEffects",
       "name": "BotaniaEffects",
-      "description": "I things",
+      "description": "I filter things",
       "tags": []
-   }]
+    },
+    {
+      "slug": "BotaniaSynthFM",
+      "name": "BotaniaSynthFM",
+      "description": "I do FM things",
+      "tags": []
+    }
+
+  ]
 }
