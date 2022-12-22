@@ -1,7 +1,7 @@
 #include "plugin.hpp"
 #include "engine_effects.h"
 
-struct Playground : Module {
+struct Effects : Module {
 
    enum ParamIds {
       KNOB1,
@@ -41,27 +41,27 @@ struct Playground : Module {
 
    Processor_effects_process_type processor;
 
-   Playground();
+   Effects();
    void process(const ProcessArgs &args) override;
 };
 
-Playground::Playground() {
+Effects::Effects() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-   configParam(Playground::KNOB1, 0.0, 1.0, 0.5, "Knob 1", " %", 0.0f, 100.f);
-   configParam(Playground::KNOB2, 0.0, 1.0, 0.5, "Knob 2", " %", 0.0f, 100.f);
-   configParam(Playground::KNOB3, 0.0, 1.0, 0.5, "Knob 3", " %", 0.0f, 100.f);
-   configParam(Playground::KNOB4, 0.0, 1.0, 0.5, "Knob 4", " %", 0.0f, 100.f);
+   configParam(Effects::KNOB1, 0.0, 1.0, 0.5, "Knob 1", " %", 0.0f, 100.f);
+   configParam(Effects::KNOB2, 0.0, 1.0, 0.5, "Knob 2", " %", 0.0f, 100.f);
+   configParam(Effects::KNOB3, 0.0, 1.0, 0.5, "Knob 3", " %", 0.0f, 100.f);
+   configParam(Effects::KNOB4, 0.0, 1.0, 0.5, "Knob 4", " %", 0.0f, 100.f);
 
-   configParam(Playground::MOD1, -1.0, 1.0, 0.0, "Mod 1", " %", 0.0f, 100.f);
-   configParam(Playground::MOD2, -1.0, 1.0, 0.0, "Mod 2", " %", 0.0f, 100.f);
-   configParam(Playground::MOD3, -1.0, 1.0, 0.0, "Mod 3", " %", 0.0f, 100.f);
-   configParam(Playground::MOD4, -1.0, 1.0, 0.0, "Mod 4", " %", 0.0f, 100.f);
+   configParam(Effects::MOD1, -1.0, 1.0, 0.0, "Mod 1", " %", 0.0f, 100.f);
+   configParam(Effects::MOD2, -1.0, 1.0, 0.0, "Mod 2", " %", 0.0f, 100.f);
+   configParam(Effects::MOD3, -1.0, 1.0, 0.0, "Mod 3", " %", 0.0f, 100.f);
+   configParam(Effects::MOD4, -1.0, 1.0, 0.0, "Mod 4", " %", 0.0f, 100.f);
 
    Processor_effects_process_init(processor);
 }
 
-void Playground::process(const ProcessArgs &args) {
+void Effects::process(const ProcessArgs &args) {
    // Reads all the input values and normalizes the values
    float in1 = inputs[IN1].getVoltage() / 10.0f;
    float in2 = inputs[IN2].getVoltage() / 10.0f;
@@ -98,33 +98,33 @@ void Playground::process(const ProcessArgs &args) {
    outputs[OUT4].setVoltage(Processor_effects_process_ret_3(processor) * 10.0f);
 }
 
-struct PlaygroundWidget : ModuleWidget {
-   PlaygroundWidget(Playground *module) {
+struct EffectsWidget : ModuleWidget {
+   EffectsWidget(Effects *module) {
       setModule(module);
 
-      setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Playground.svg")));
+      setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Effects.svg")));
 
       addChild(createWidget<ScrewBlack>(Vec(15, 3)));
       addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 3)));
       addChild(createWidget<ScrewBlack>(Vec(15, 367)));
       addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 367)));
 
-      addParam(createParam<Rogan3PWhite>(Vec(19, 59), module, Playground::KNOB1));
-      addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, Playground::KNOB2));
-      addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, Playground::KNOB3));
-      addParam(createParam<Rogan3PWhite>(Vec(89, 130), module, Playground::KNOB4));
+      addParam(createParam<Rogan3PWhite>(Vec(19, 59), module, Effects::KNOB1));
+      addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, Effects::KNOB2));
+      addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, Effects::KNOB3));
+      addParam(createParam<Rogan3PWhite>(Vec(89, 130), module, Effects::KNOB4));
 
       for (int i = 0; i < 4; i++) {
-         addParam(createParam<RoundSmallBlackKnob>(Vec(10 + 35 * i, 204), module, Playground::MOD1 + i));
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 238), module, Playground::MOD_IN1 + i));
+         addParam(createParam<RoundSmallBlackKnob>(Vec(10 + 35 * i, 204), module, Effects::MOD1 + i));
+         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 238), module, Effects::MOD_IN1 + i));
       }
 
       for (int i = 0; i < 4; i++)
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, Playground::IN1 + i));
+         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, Effects::IN1 + i));
 
       for (int i = 0; i < 4; i++)
-         addOutput(createOutput<PJ301MPort>(Vec(10 + 35 * i, 313), module, Playground::OUT1 + i));
+         addOutput(createOutput<PJ301MPort>(Vec(10 + 35 * i, 313), module, Effects::OUT1 + i));
    }
 };
 
-Model *playground = createModel<Playground, PlaygroundWidget>("BotaniaPlayground");
+Model *effects = createModel<Effects, EffectsWidget>("BotaniaEffects");

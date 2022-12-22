@@ -1,7 +1,5 @@
 
-
 Based on Vult Playground for VCV Rack -- testing Botania DSP within VCV.
-
 
 # How-to
 

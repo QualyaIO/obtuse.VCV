@@ -12,8 +12,8 @@
    "sourceUrl": "",
    "donateUrl": "",
    "modules": [{
-      "slug": "BotaniaPlayground",
-      "name": "BotaniaPlayground",
+      "slug": "BotaniaEffects",
+      "name": "BotaniaEffects",
       "description": "I things",
       "tags": []
    }]
