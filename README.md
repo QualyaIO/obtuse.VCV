@@ -1,29 +1,15 @@
 
-![VultPlayground](/images/VultPlayground.png?raw=true "Vult Playground")
+
+Based on Vult Playground for VCV Rack -- testing Botania DSP within VCV.
 
 
-Start-point to write your own plugins using the Vult language
+# How-to
 
-# How to use
+Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately). Then `make`.
 
-Before starting, check the following resources.
+To install, place or link the folder in VCV plugins folder, e.g. on Linux `~/.Rack2/plugins`.
 
-- [Vult Tutorials](http://modlfo.github.io/vult/tutorials/)
-- [VCV Rack Plugin Development Tutorial](https://vcvrack.com/manual/PluginDevelopmentTutorial.html)
-- [Programming Modules for VCV Rack (videos)](https://www.youtube.com/watch?v=7Z7LHAnIIac&list=PLL6GflKb0MpHeYE3RhDJWlYJ9NGWVnbXF)
-- [Modeling Basics (videos)](https://www.youtube.com/watch?v=xQYLBS9R_uA&list=PLL6GflKb0MpE9aI0Qruo7vqeDuErVChSx)
-
-## Installing the Vult compiler
-
-In order to modify the Vult code, you need to have the Vult compiler installed. You can download the binaries from the [releases page](https://github.com/modlfo/vult/releases) and place them in the project folder or add it to your path.
-
-Alternatively, you can install the Vult compiler using `npm` but this version of the compiler is slower.
-
-```
-$ npm install vult -g
-```
-
-## Modifying the code
+# Modifying the code
 
 All the code is contained in the file `processor.vult`. This file contains the function `process` that receives four inputs and returns four outputs. Here are a few code examples:
 

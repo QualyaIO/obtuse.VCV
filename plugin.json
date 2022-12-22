@@ -1,9 +1,9 @@
 {
-   "slug": "RackPlayground",
-   "name": "RackPlayground",
+   "slug": "BotaniaVCV",
+   "name": "BotaniaVCV",
    "version": "2.0.0",
    "license": "MIT",
-   "brand": "Unofficial",
+   "brand": "Ullo",
    "author": "",
    "authorEmail": "",
    "authorUrl": "",
@@ -12,9 +12,9 @@
    "sourceUrl": "",
    "donateUrl": "",
    "modules": [{
-      "slug": "Playground",
-      "name": "Playground",
-      "description": "I do nothing",
+      "slug": "BotaniaPlayground",
+      "name": "BotaniaPlayground",
+      "description": "I things",
       "tags": []
    }]
 }

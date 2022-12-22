@@ -127,4 +127,4 @@ struct PlaygroundWidget : ModuleWidget {
    }
 };
 
-Model *playground = createModel<Playground, PlaygroundWidget>("Playground");
+Model *playground = createModel<Playground, PlaygroundWidget>("BotaniaPlayground");
