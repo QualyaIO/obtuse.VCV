@@ -15575,6 +15575,7 @@ void Processor_synthFM__ctx_type_1_init(Processor_synthFM__ctx_type_1 &_output_)
    _ctx.param2 = 0x0 /* 0.000000 */;
    _ctx.param1 = 0x0 /* 0.000000 */;
    int_init_array(16,0,_ctx.last_pitches);
+   _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
    Processor_synthFM_default(_ctx);
@@ -15608,8 +15609,27 @@ void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate
    else
    {
       if(_ctx.last_gates[cable] && (gate < 0x1999 /* 0.100000 */)){
-         Voice_noteOff(_ctx.voice,_ctx.last_pitches[cable],0);
+         if(_ctx.last_pitches[cable] >= 0){
+            Voice_noteOff(_ctx.voice,_ctx.last_pitches[cable],0);
+         }
          _ctx.last_gates[cable] = false;
+         _ctx.last_pitches[cable] = (-1);
+      }
+   }
+}
+
+void Processor_synthFM_nbCables(Processor_synthFM__ctx_type_1 &_ctx, int nbcables){
+   if(nbcables != _ctx.last_nbcables){
+      _ctx.last_nbcables = nbcables;
+      int c;
+      c = nbcables;
+      while((c < 16) && (c < 16)){
+         if(_ctx.last_gates[c] && (_ctx.last_pitches[c] >= 0)){
+            Voice_noteOff(_ctx.voice,_ctx.last_pitches[c],0);
+         }
+         _ctx.last_gates[c] = false;
+         _ctx.last_pitches[c] = (-1);
+         c = (1 + c);
       }
    }
 }

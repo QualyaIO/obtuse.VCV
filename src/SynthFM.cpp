@@ -64,7 +64,8 @@ SynthFM::SynthFM() {
 void SynthFM::process(const ProcessArgs &args) {
    // retrieve current max number of channels for gate and v/oct -- min 1 channel
    // FIXME: reset notes upon count change
-   int channels = std::max(std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()), 1);
+   int channels = std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels());
+   Processor_synthFM_nbCables(processor, channels);
    // pass each note to the synth
    for (int c = 0; c < channels; c++) {
       // Reads all the input values and normalizes the values
@@ -74,6 +75,7 @@ void SynthFM::process(const ProcessArgs &args) {
 
    }
 
+   // others input and parameters unused
    float in3 = inputs[IN3].getVoltage() / 10.0f;
    float in4 = inputs[IN4].getVoltage() / 10.0f;
    float mod_in1 = inputs[MOD_IN1].getVoltage() / 10.0f;

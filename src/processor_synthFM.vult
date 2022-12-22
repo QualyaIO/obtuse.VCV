@@ -40,8 +40,27 @@ and setNote(gate:real, voct:real, cable:int) {
    }
    // note off
    else if(last_gates[cable] && gate < 0.1) {
-      _ = voice:Voice.noteOff(last_pitches[cable], 0);
+      if (last_pitches[cable] >= 0) {
+         _ = voice:Voice.noteOff(last_pitches[cable], 0);
+      }
       last_gates[cable] = false;
+      last_pitches[cable] = -1;
+   }
+}
+// pass information about max number of connected cables. Will reset all extra notes upon change to avoid stuck notes
+and nbCables(nbcables: int) {
+   mem last_nbcables;
+   if (nbcables <> last_nbcables) {
+      last_nbcables = nbcables;
+      val c = nbcables;
+      while (c < size(last_gates) && c < size(last_pitches)) {
+         if (last_gates[c] && last_pitches[c] >= 0) {
+            _ = voice:Voice.noteOff(last_pitches[c], 0);
+         }
+         last_gates[c] = false;
+         last_pitches[c] = -1;
+         c = c + 1;
+      }
    }
 }
 and setParam1(knob, mod, input) {

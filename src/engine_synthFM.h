@@ -1333,6 +1333,7 @@ typedef struct Processor_synthFM__ctx_type_1 {
    fix16_t param2;
    fix16_t param1;
    int last_pitches[16];
+   int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
 } Processor_synthFM__ctx_type_1;
@@ -1400,6 +1401,15 @@ static_inline void Processor_synthFM_setNote_init(Processor_synthFM__ctx_type_1 
 }
 
 void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, int cable);
+
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_nbCables_type;
+
+static_inline void Processor_synthFM_nbCables_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
+   return ;
+}
+
+void Processor_synthFM_nbCables(Processor_synthFM__ctx_type_1 &_ctx, int nbcables);
 
 typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setParam1_type;
 
