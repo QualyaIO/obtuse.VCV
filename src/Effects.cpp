@@ -90,12 +90,12 @@ void Effects::process(const ProcessArgs &args) {
       Processor_effects_setParam4(processor, knob4, mod4, mod_in4);
    }
 
-   Processor_effects_process(processor, in1, in2, in3, in4, args.sampleRate);
+   Processor_effects_process(processor, float_to_fix(in1), float_to_fix(in2), float_to_fix(in3), float_to_fix(in4), float_to_fix(args.sampleRate));
 
-   outputs[OUT1].setVoltage(Processor_effects_process_ret_0(processor) * 10.0f);
-   outputs[OUT2].setVoltage(Processor_effects_process_ret_1(processor) * 10.0f);
-   outputs[OUT3].setVoltage(Processor_effects_process_ret_2(processor) * 10.0f);
-   outputs[OUT4].setVoltage(Processor_effects_process_ret_3(processor) * 10.0f);
+   outputs[OUT1].setVoltage(fix_to_float(Processor_effects_process_ret_0(processor) * 10.0f));
+   outputs[OUT2].setVoltage(fix_to_float(Processor_effects_process_ret_1(processor) * 10.0f));
+   outputs[OUT3].setVoltage(fix_to_float(Processor_effects_process_ret_2(processor) * 10.0f));
+   outputs[OUT4].setVoltage(fix_to_float(Processor_effects_process_ret_3(processor) * 10.0f));
 }
 
 struct EffectsWidget : ModuleWidget {

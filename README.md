@@ -1,6 +1,8 @@
 
 Based on Vult Playground for VCV Rack -- testing Botania DSP within VCV.
 
+Note that we are using fixed float computations here to mimic as close as possible what happens on the RP2040.
+
 # How-to
 
 Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately). Then `make`.

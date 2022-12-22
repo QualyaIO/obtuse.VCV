@@ -25,7 +25,7 @@ VULT_EFFECTS_SRC = src/processor_effects.vult
 VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 
 $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
-	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -o src/engine_effects -force-write 
+	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -o src/engine_effects -real fixed
 
 vult: $(VULT_EFFECTS_ENGINE_OUT)
 
