@@ -9,31 +9,10 @@ Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately). Th
 
 To install, place or link the folder in VCV plugins folder, e.g. on Linux `~/.Rack2/plugins`.
 
-# Modifying the code
+# Dev
 
-All the code is contained in the file `processor.vult`. This file contains the function `process` that receives four inputs and returns four outputs. Here are a few code examples:
+Using git submodule to get source from botania dsp (itself using git LFS). Don't forget to clone recursive or init submodule afterwards.
 
-Four Channels Mixer
-```
-fun process(in1:real, in2:real, in3:real, in4:real) {
-   mem param1, param2, param3, param4;
-   val out1, out2, out3, out4 = 0.0, 0.0, 0.0, 0.0;
+Here we use more vult code to wrap botania for VCV, through `processor_*.vult`.
 
-   // all inputs mixed to out1
-   out1 = in1 * param1 + param2 * in2 + param3 * in3 + param4 * in3;
-
-   return out1, out2, out3, out4;
-}
-```
-
-Simple VCA
-```
-fun process(in1:real, in2:real, in3:real, in4:real) {
-   mem param1, param2, param3, param4;
-   val out1, out2, out3, out4 = 0.0, 0.0, 0.0, 0.0;
-
-   out1 = in1 * in2;
-
-   return out1, out2, out3, out4;
-}
-```
+Check original template for more details about programming https://github.com/vult-dsp/RackPlayground

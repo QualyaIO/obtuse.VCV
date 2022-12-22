@@ -1,0 +1,3 @@
+[submodule "botania"]
+	path = botania
+	url = git@gitlab.com:ullo/funky/botania/botania.dsp.git
