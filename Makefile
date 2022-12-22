@@ -27,6 +27,8 @@ VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
 	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -o src/engine_effects -force-write 
 
+vult: $(VULT_EFFECTS_ENGINE_OUT)
+
 # Include the Rack plugin Makefile framework
 include $(RACK_DIR)/plugin.mk
 

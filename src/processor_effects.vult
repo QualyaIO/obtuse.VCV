@@ -5,8 +5,8 @@ fun process(in1:real, in2:real, in3:real, in4:real, fs:real) {
 
    val out1, out2, out3, out4 = in1, in2, in3, in4;
 
-   // put your code here
-   out1 = in1 * param1 + (1.0 - param1) * in2;
+   // in1 -> reverb -> out1, 50% wet
+   out1 = 0.5 * in1 + 0.5 * reverb:Reverb.process(in1);
 
    return out1, out2, out3, out4;
 }
@@ -21,4 +21,22 @@ and setParam3(knob, mod, input) {
 }
 and setParam4(knob, mod, input) {
    param4 = clip(knob + mod * input, 0.0, 1.0);
+}
+// (re)apply parameters for used module, e.g. reverb has to recompute delay compared to sample rate
+and config() {
+   _ = reverb:Reverb.setReverbTime(10.0);
+   // FIXME: cannot go below 7.85 at 44100hz, some floating point exception to fix in botania (must be > 346/fs)
+   _ = reverb:Reverb.setDelayms(50.0);
+}
+and setSamplerate(newFs:real) {
+   mem fs;
+   if (newFs > 0.0) {
+      fs = newFs;
+      _ = reverb:Reverb.setSamplerate(fs);
+      _ = config();
+   }
+}
+and default() @[init] {
+   _ = reverb:Reverb.default();
+   _ = setSamplerate(44.1);
 }

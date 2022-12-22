@@ -14,7 +14,422 @@ typedef struct _tuple___real_real_real_real__ {
    float field_3;
 } _tuple___real_real_real_real__;
 
+static_inline float Util_noteToFrequency(int note){
+   return (0.00817579891564f * expf((0.0577622650467f * int_to_float(note))));
+};
+
+typedef struct Util__ctx_type_1 {
+   uint8_t pre;
+} Util__ctx_type_1;
+
+typedef Util__ctx_type_1 Util_edge_type;
+
+static_inline void Util__ctx_type_1_init(Util__ctx_type_1 &_output_){
+   Util__ctx_type_1 _ctx;
+   _ctx.pre = false;
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Util_edge_init(Util__ctx_type_1 &_output_){
+   Util__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline uint8_t Util_edge(Util__ctx_type_1 &_ctx, uint8_t x){
+   uint8_t ret;
+   ret = (x && bool_not(_ctx.pre));
+   _ctx.pre = x;
+   return ret;
+}
+
+static_inline float Util_cubic_clipper(float x){
+   if(x <= -0.666666666667f){
+      return -0.666666666667f;
+   }
+   else
+   {
+      if(x >= 0.666666666667f){
+         return 0.666666666667f;
+      }
+      else
+      {
+         return (x + (-0.333333333333f * x * x * x));
+      }
+   }
+};
+
+typedef struct Util__ctx_type_3 {
+   float pre_x;
+} Util__ctx_type_3;
+
+typedef Util__ctx_type_3 Util_change_type;
+
+static_inline void Util__ctx_type_3_init(Util__ctx_type_3 &_output_){
+   Util__ctx_type_3 _ctx;
+   _ctx.pre_x = 0.0f;
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Util_change_init(Util__ctx_type_3 &_output_){
+   Util__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline uint8_t Util_change(Util__ctx_type_3 &_ctx, float x){
+   uint8_t v;
+   v = (_ctx.pre_x != x);
+   _ctx.pre_x = x;
+   return v;
+}
+
+static_inline void Util_buffer(float (&_output_)[256]){
+   float buff[256];
+   float_copy_array(256,_output_,buff);
+   return ;
+}
+
+static_inline void Util_buffer_large(float (&_output_)[2048]){
+   float buff[2048];
+   float_copy_array(2048,_output_,buff);
+   return ;
+}
+
+typedef struct Util__ctx_type_6 {
+   float x;
+} Util__ctx_type_6;
+
+typedef Util__ctx_type_6 Util_smooth_type;
+
+static_inline void Util__ctx_type_6_init(Util__ctx_type_6 &_output_){
+   Util__ctx_type_6 _ctx;
+   _ctx.x = 0.0f;
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Util_smooth_init(Util__ctx_type_6 &_output_){
+   Util__ctx_type_6_init(_output_);
+   return ;
+}
+
+static_inline float Util_smooth(Util__ctx_type_6 &_ctx, float input, float coeff){
+   _ctx.x = (_ctx.x + (coeff * (input + (- _ctx.x))));
+   return _ctx.x;
+}
+
+static_inline float Util_velocityToLevel(int velocity){
+   velocity = int_clip(velocity,0,127);
+   return (0.00787401574803f * int_to_float(velocity));
+}
+
+typedef struct CombFB__ctx_type_0 {
+   float scale;
+   int pos;
+   float fs;
+   int delay;
+   float decay;
+   float buffer[2048];
+} CombFB__ctx_type_0;
+
+typedef CombFB__ctx_type_0 CombFB_process_type;
+
+void CombFB__ctx_type_0_init(CombFB__ctx_type_0 &_output_);
+
+static_inline void CombFB_process_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+float CombFB_process(CombFB__ctx_type_0 &_ctx, float sample);
+
+typedef CombFB__ctx_type_0 CombFB_process_bufferTo_type;
+
+static_inline void CombFB_process_bufferTo_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+void CombFB_process_bufferTo(CombFB__ctx_type_0 &_ctx, int nb, float (&input)[256], float (&oBuffer)[256]);
+
+typedef CombFB__ctx_type_0 CombFB_setDecay_type;
+
+static_inline void CombFB_setDecay_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void CombFB_setDecay(CombFB__ctx_type_0 &_ctx, float newDecay){
+   _ctx.decay = float_clip(newDecay,0.0f,1.f);
+   _ctx.scale = (1.f / (1.f + _ctx.decay));
+}
+
+typedef CombFB__ctx_type_0 CombFB_getMaxDelay_type;
+
+static_inline void CombFB_getMaxDelay_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int CombFB_getMaxDelay(CombFB__ctx_type_0 &_ctx){
+   return 2048;
+};
+
+typedef CombFB__ctx_type_0 CombFB_getMaxDelayms_type;
+
+static_inline void CombFB_getMaxDelayms_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline float CombFB_getMaxDelayms(CombFB__ctx_type_0 &_ctx){
+   if(_ctx.fs <= 0.0f){
+      return 0.0f;
+   }
+   return (2048.f / _ctx.fs);
+}
+
+typedef CombFB__ctx_type_0 CombFB_setDelay_type;
+
+static_inline void CombFB_setDelay_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void CombFB_setDelay(CombFB__ctx_type_0 &_ctx, int newDelay){
+   _ctx.delay = int_clip(newDelay,0,CombFB_getMaxDelay(_ctx));
+   _ctx.pos = 0;
+}
+
+typedef CombFB__ctx_type_0 CombFB_setDelayms_type;
+
+static_inline void CombFB_setDelayms_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void CombFB_setDelayms(CombFB__ctx_type_0 &_ctx, float delayms){
+   CombFB_setDelay(_ctx,float_to_int((_ctx.fs * delayms)));
+};
+
+typedef CombFB__ctx_type_0 CombFB_setSamplerate_type;
+
+static_inline void CombFB_setSamplerate_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void CombFB_setSamplerate(CombFB__ctx_type_0 &_ctx, float newFs){
+   if(newFs > 0.0f){
+      _ctx.fs = newFs;
+   }
+};
+
+typedef CombFB__ctx_type_0 CombFB_default_type;
+
+static_inline void CombFB_default_init(CombFB__ctx_type_0 &_output_){
+   CombFB__ctx_type_0_init(_output_);
+   return ;
+}
+
+void CombFB_default(CombFB__ctx_type_0 &_ctx);
+
+typedef struct Allpass__ctx_type_0 {
+   float scale;
+   int pos;
+   float fs;
+   int delay;
+   float decay;
+   float buffer_allpassed[2048];
+   float buffer[2048];
+} Allpass__ctx_type_0;
+
+typedef Allpass__ctx_type_0 Allpass_process_type;
+
+void Allpass__ctx_type_0_init(Allpass__ctx_type_0 &_output_);
+
+static_inline void Allpass_process_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+float Allpass_process(Allpass__ctx_type_0 &_ctx, float sample);
+
+typedef Allpass__ctx_type_0 Allpass_process_bufferTo_type;
+
+static_inline void Allpass_process_bufferTo_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Allpass_process_bufferTo(Allpass__ctx_type_0 &_ctx, int nb, float (&input)[256], float (&oBuffer)[256]);
+
+typedef Allpass__ctx_type_0 Allpass_setDecay_type;
+
+static_inline void Allpass_setDecay_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Allpass_setDecay(Allpass__ctx_type_0 &_ctx, float newDecay){
+   _ctx.decay = float_clip(newDecay,0.0f,1.f);
+   _ctx.scale = (1.f / (1.f + (2.f * _ctx.decay)));
+}
+
+typedef Allpass__ctx_type_0 Allpass_getMaxDelay_type;
+
+static_inline void Allpass_getMaxDelay_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Allpass_getMaxDelay(Allpass__ctx_type_0 &_ctx){
+   return 2048;
+};
+
+typedef Allpass__ctx_type_0 Allpass_getMaxDelayms_type;
+
+static_inline void Allpass_getMaxDelayms_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline float Allpass_getMaxDelayms(Allpass__ctx_type_0 &_ctx){
+   if(_ctx.fs <= 0.0f){
+      return 0.0f;
+   }
+   return (2048.f / _ctx.fs);
+}
+
+typedef Allpass__ctx_type_0 Allpass_setDelay_type;
+
+static_inline void Allpass_setDelay_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Allpass_setDelay(Allpass__ctx_type_0 &_ctx, int newDelay){
+   _ctx.delay = int_clip(newDelay,0,Allpass_getMaxDelay(_ctx));
+   _ctx.pos = 0;
+}
+
+typedef Allpass__ctx_type_0 Allpass_setDelayms_type;
+
+static_inline void Allpass_setDelayms_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Allpass_setDelayms(Allpass__ctx_type_0 &_ctx, float delayms){
+   Allpass_setDelay(_ctx,float_to_int((_ctx.fs * delayms)));
+};
+
+typedef Allpass__ctx_type_0 Allpass_setSamplerate_type;
+
+static_inline void Allpass_setSamplerate_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Allpass_setSamplerate(Allpass__ctx_type_0 &_ctx, float newFs){
+   if(newFs > 0.0f){
+      _ctx.fs = newFs;
+   }
+};
+
+typedef Allpass__ctx_type_0 Allpass_default_type;
+
+static_inline void Allpass_default_init(Allpass__ctx_type_0 &_output_){
+   Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Allpass_default(Allpass__ctx_type_0 &_ctx);
+
+typedef struct Reverb__ctx_type_0 {
+   float reverbtime;
+   float fs;
+   int comb3delay;
+   CombFB__ctx_type_0 comb3;
+   int comb2delay;
+   CombFB__ctx_type_0 comb2;
+   int comb1delay;
+   CombFB__ctx_type_0 comb1;
+   int comb0delay;
+   CombFB__ctx_type_0 comb0;
+   float buffer_c3[256];
+   float buffer_c2[256];
+   float buffer_c1[256];
+   float buffer_c0[256];
+   float buffer_a1[256];
+   float buffer_a0[256];
+   Allpass__ctx_type_0 allpass1;
+   Allpass__ctx_type_0 allpass0;
+} Reverb__ctx_type_0;
+
+typedef Reverb__ctx_type_0 Reverb_process_type;
+
+void Reverb__ctx_type_0_init(Reverb__ctx_type_0 &_output_);
+
+static_inline void Reverb_process_init(Reverb__ctx_type_0 &_output_){
+   Reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline float Reverb_process(Reverb__ctx_type_0 &_ctx, float sample){
+   float combs_filter;
+   combs_filter = (0.25f * (CombFB_process(_ctx.comb0,sample) + CombFB_process(_ctx.comb1,sample) + CombFB_process(_ctx.comb2,sample) + CombFB_process(_ctx.comb3,sample)));
+   return Allpass_process(_ctx.allpass1,Allpass_process(_ctx.allpass0,combs_filter));
+}
+
+typedef Reverb__ctx_type_0 Reverb_process_bufferTo_type;
+
+static_inline void Reverb_process_bufferTo_init(Reverb__ctx_type_0 &_output_){
+   Reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Reverb_process_bufferTo(Reverb__ctx_type_0 &_ctx, int nb, float (&input)[256], float (&oBuffer)[256]);
+
+typedef Reverb__ctx_type_0 Reverb_setSamplerate_type;
+
+static_inline void Reverb_setSamplerate_init(Reverb__ctx_type_0 &_output_){
+   Reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Reverb_setSamplerate(Reverb__ctx_type_0 &_ctx, float newFs);
+
+typedef Reverb__ctx_type_0 Reverb_setReverbTime_type;
+
+static_inline void Reverb_setReverbTime_init(Reverb__ctx_type_0 &_output_){
+   Reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Reverb_setReverbTime(Reverb__ctx_type_0 &_ctx, float newReverbtime);
+
+typedef Reverb__ctx_type_0 Reverb_setDelayms_type;
+
+static_inline void Reverb_setDelayms_init(Reverb__ctx_type_0 &_output_){
+   Reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Reverb_setDelayms(Reverb__ctx_type_0 &_ctx, float delayms);
+
+typedef Reverb__ctx_type_0 Reverb_default_type;
+
+static_inline void Reverb_default_init(Reverb__ctx_type_0 &_output_){
+   Reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Reverb_default(Reverb__ctx_type_0 &_ctx);
+
 typedef struct Processor_effects__ctx_type_0 {
+   Reverb__ctx_type_0 reverb;
    float process_ret_3;
    float process_ret_2;
    float process_ret_1;
@@ -23,6 +438,7 @@ typedef struct Processor_effects__ctx_type_0 {
    float param3;
    float param2;
    float param1;
+   float fs;
 } Processor_effects__ctx_type_0;
 
 typedef Processor_effects__ctx_type_0 Processor_effects_process_type;
@@ -123,6 +539,45 @@ static_inline void Processor_effects_setParam4_init(Processor_effects__ctx_type_
 static_inline void Processor_effects_setParam4(Processor_effects__ctx_type_0 &_ctx, float knob, float mod, float input){
    _ctx.param4 = float_clip((knob + (input * mod)),0.0f,1.f);
 };
+
+typedef Processor_effects__ctx_type_0 Processor_effects_config_type;
+
+static_inline void Processor_effects_config_init(Processor_effects__ctx_type_0 &_output_){
+   Processor_effects__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_effects_config(Processor_effects__ctx_type_0 &_ctx){
+   Reverb_setReverbTime(_ctx.reverb,10.f);
+   Reverb_setDelayms(_ctx.reverb,50.f);
+}
+
+typedef Processor_effects__ctx_type_0 Processor_effects_setSamplerate_type;
+
+static_inline void Processor_effects_setSamplerate_init(Processor_effects__ctx_type_0 &_output_){
+   Processor_effects__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_effects_setSamplerate(Processor_effects__ctx_type_0 &_ctx, float newFs){
+   if(newFs > 0.0f){
+      _ctx.fs = newFs;
+      Reverb_setSamplerate(_ctx.reverb,_ctx.fs);
+      Processor_effects_config(_ctx);
+   }
+};
+
+typedef Processor_effects__ctx_type_0 Processor_effects_default_type;
+
+static_inline void Processor_effects_default_init(Processor_effects__ctx_type_0 &_output_){
+   Processor_effects__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_effects_default(Processor_effects__ctx_type_0 &_ctx){
+   Reverb_default(_ctx.reverb);
+   Processor_effects_setSamplerate(_ctx,44.1f);
+}
 
 
 
