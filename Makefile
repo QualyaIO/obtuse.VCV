@@ -21,12 +21,11 @@ DISTRIBUTABLES += $(wildcard LICENSE*)
 include $(RACK_DIR)/arch.mk
 include vult.inc
 
-VULT_SRC = $(wildcard src/*.vult)
-VULT_ENGINE_OUT = $(wildcard src/engine.*)
+VULT_EFFECTS_SRC = src/processor_effects.vult 
+VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 
-$(VULT_ENGINE_OUT): $(VULT_SRC)
-	$(VULT_CMD) -ccode $(VULT_SRC) -o src/engine -force-write
-
+$(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
+	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -o src/engine_effects -force-write 
 
 # Include the Rack plugin Makefile framework
 include $(RACK_DIR)/plugin.mk
