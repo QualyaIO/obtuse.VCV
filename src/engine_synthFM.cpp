@@ -15549,8 +15549,22 @@ void Voice_default(Voice__ctx_type_0 &_ctx){
    Voice_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
 
-void Processor_synthFM__ctx_type_0_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0 _ctx;
+int Processor_synthFM_cvToPitch(fix16_t cv){
+   fix16_t pitch;
+   pitch = (0x3c0000 /* 60.000000 */ + fix_mul(0x780000 /* 120.000000 */,cv));
+   if((pitch % 0x10000 /* 1.000000 */) >= 0x8000 /* 0.500000 */){
+      pitch = fix_floor((0x10000 /* 1.000000 */ + pitch));
+   }
+   else
+   {
+      pitch = fix_floor(pitch);
+   }
+   pitch = fix_clip(pitch,0x0 /* 0.000000 */,0x7f0000 /* 127.000000 */);
+   return fix_to_int(pitch);
+}
+
+void Processor_synthFM__ctx_type_1_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1 _ctx;
    Voice__ctx_type_0_init(_ctx.voice);
    _ctx.process_ret_3 = 0x0 /* 0.000000 */;
    _ctx.process_ret_2 = 0x0 /* 0.000000 */;
@@ -15560,6 +15574,7 @@ void Processor_synthFM__ctx_type_0_init(Processor_synthFM__ctx_type_0 &_output_)
    _ctx.param3 = 0x0 /* 0.000000 */;
    _ctx.param2 = 0x0 /* 0.000000 */;
    _ctx.param1 = 0x0 /* 0.000000 */;
+   _ctx.last_pitch = 0;
    _ctx.fs = 0x0 /* 0.000000 */;
    Util__ctx_type_1_init(_ctx._inst451);
    Util__ctx_type_1_init(_ctx._inst151);
@@ -15568,14 +15583,17 @@ void Processor_synthFM__ctx_type_0_init(Processor_synthFM__ctx_type_0 &_output_)
    return ;
 }
 
-void Processor_synthFM_process(Processor_synthFM__ctx_type_0 &_ctx, fix16_t gate, fix16_t in2, fix16_t in3, fix16_t in4, fix16_t fs){
+void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t in3, fix16_t in4, fix16_t fs){
+   int pitch;
+   pitch = Processor_synthFM_cvToPitch(voct);
    if(Util_edge(_ctx._inst151,(gate >= 0x1999 /* 0.100000 */))){
-      Voice_noteOn(_ctx.voice,69,120,0);
+      Voice_noteOn(_ctx.voice,pitch,127,0);
+      _ctx.last_pitch = pitch;
    }
    else
    {
       if(Util_edge(_ctx._inst451,(gate < 0x1999 /* 0.100000 */))){
-         Voice_noteOff(_ctx.voice,69,0);
+         Voice_noteOff(_ctx.voice,_ctx.last_pitch,0);
       }
    }
    fix16_t out1;
@@ -15583,7 +15601,7 @@ void Processor_synthFM_process(Processor_synthFM__ctx_type_0 &_ctx, fix16_t gate
    fix16_t out3;
    fix16_t out4;
    out1 = gate;
-   out2 = in2;
+   out2 = voct;
    out3 = in3;
    out4 = in4;
    out1 = Voice_process(_ctx.voice);

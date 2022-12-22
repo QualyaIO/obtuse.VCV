@@ -1320,7 +1320,9 @@ static_inline void Voice_default_init(Voice__ctx_type_0 &_output_){
 
 void Voice_default(Voice__ctx_type_0 &_ctx);
 
-typedef struct Processor_synthFM__ctx_type_0 {
+int Processor_synthFM_cvToPitch(fix16_t cv);
+
+typedef struct Processor_synthFM__ctx_type_1 {
    Voice__ctx_type_0 voice;
    fix16_t process_ret_3;
    fix16_t process_ret_2;
@@ -1330,132 +1332,133 @@ typedef struct Processor_synthFM__ctx_type_0 {
    fix16_t param3;
    fix16_t param2;
    fix16_t param1;
+   int last_pitch;
    fix16_t fs;
    Util__ctx_type_1 _inst451;
    Util__ctx_type_1 _inst151;
-} Processor_synthFM__ctx_type_0;
+} Processor_synthFM__ctx_type_1;
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_process_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_type;
 
-void Processor_synthFM__ctx_type_0_init(Processor_synthFM__ctx_type_0 &_output_);
+void Processor_synthFM__ctx_type_1_init(Processor_synthFM__ctx_type_1 &_output_);
 
-static_inline void Processor_synthFM_process_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_process_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-void Processor_synthFM_process(Processor_synthFM__ctx_type_0 &_ctx, fix16_t gate, fix16_t in2, fix16_t in3, fix16_t in4, fix16_t fs);
+void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t in3, fix16_t in4, fix16_t fs);
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_process_ret_0_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_ret_0_type;
 
-static_inline void Processor_synthFM_process_ret_0_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_process_ret_0_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline fix16_t Processor_synthFM_process_ret_0(Processor_synthFM__ctx_type_0 &_ctx){
+static_inline fix16_t Processor_synthFM_process_ret_0(Processor_synthFM__ctx_type_1 &_ctx){
    return _ctx.process_ret_0;
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_process_ret_1_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_ret_1_type;
 
-static_inline void Processor_synthFM_process_ret_1_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_process_ret_1_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline fix16_t Processor_synthFM_process_ret_1(Processor_synthFM__ctx_type_0 &_ctx){
+static_inline fix16_t Processor_synthFM_process_ret_1(Processor_synthFM__ctx_type_1 &_ctx){
    return _ctx.process_ret_1;
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_process_ret_2_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_ret_2_type;
 
-static_inline void Processor_synthFM_process_ret_2_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_process_ret_2_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline fix16_t Processor_synthFM_process_ret_2(Processor_synthFM__ctx_type_0 &_ctx){
+static_inline fix16_t Processor_synthFM_process_ret_2(Processor_synthFM__ctx_type_1 &_ctx){
    return _ctx.process_ret_2;
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_process_ret_3_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_ret_3_type;
 
-static_inline void Processor_synthFM_process_ret_3_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_process_ret_3_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline fix16_t Processor_synthFM_process_ret_3(Processor_synthFM__ctx_type_0 &_ctx){
+static_inline fix16_t Processor_synthFM_process_ret_3(Processor_synthFM__ctx_type_1 &_ctx){
    return _ctx.process_ret_3;
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_setParam1_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setParam1_type;
 
-static_inline void Processor_synthFM_setParam1_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_setParam1_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Processor_synthFM_setParam1(Processor_synthFM__ctx_type_0 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
+static_inline void Processor_synthFM_setParam1(Processor_synthFM__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
    _ctx.param1 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_setParam2_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setParam2_type;
 
-static_inline void Processor_synthFM_setParam2_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_setParam2_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Processor_synthFM_setParam2(Processor_synthFM__ctx_type_0 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
+static_inline void Processor_synthFM_setParam2(Processor_synthFM__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
    _ctx.param2 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_setParam3_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setParam3_type;
 
-static_inline void Processor_synthFM_setParam3_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_setParam3_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Processor_synthFM_setParam3(Processor_synthFM__ctx_type_0 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
+static_inline void Processor_synthFM_setParam3(Processor_synthFM__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
    _ctx.param3 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_setParam4_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setParam4_type;
 
-static_inline void Processor_synthFM_setParam4_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_setParam4_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Processor_synthFM_setParam4(Processor_synthFM__ctx_type_0 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
+static_inline void Processor_synthFM_setParam4(Processor_synthFM__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
    _ctx.param4 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_setSamplerate_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setSamplerate_type;
 
-static_inline void Processor_synthFM_setSamplerate_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_setSamplerate_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Processor_synthFM_setSamplerate(Processor_synthFM__ctx_type_0 &_ctx, fix16_t newFs){
+static_inline void Processor_synthFM_setSamplerate(Processor_synthFM__ctx_type_1 &_ctx, fix16_t newFs){
    if(newFs > 0x0 /* 0.000000 */){
       _ctx.fs = newFs;
       Voice_setSamplerate(_ctx.voice,_ctx.fs);
    }
 };
 
-typedef Processor_synthFM__ctx_type_0 Processor_synthFM_default_type;
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_default_type;
 
-static_inline void Processor_synthFM_default_init(Processor_synthFM__ctx_type_0 &_output_){
-   Processor_synthFM__ctx_type_0_init(_output_);
+static_inline void Processor_synthFM_default_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Processor_synthFM_default(Processor_synthFM__ctx_type_0 &_ctx){
+static_inline void Processor_synthFM_default(Processor_synthFM__ctx_type_1 &_ctx){
    Voice_default(_ctx.voice);
    Processor_synthFM_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }

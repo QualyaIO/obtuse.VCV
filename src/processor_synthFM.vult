@@ -1,19 +1,36 @@
 
-// input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
-fun process(gate:real, in2:real, in3:real, in4:real, fs:real) {
-   mem param1, param2, param3, param4;
+// from vult utils, convert input voltage normalized from -10..10v to -1..1 to pitch
+// output will be limited to 0..127, corresponding to -5v .. +5.583v
+fun cvToPitch(cv) : int {
+   val pitch = cv * 120.0 + 60.0;
+   // round
+   if (pitch % 1.0 >= 0.5) {
+      pitch = floor(pitch + 1.0);
+   } else {
+      pitch = floor(pitch);
+   }
+   pitch = clip(pitch, 0.0, 127.0);
+   return int(pitch);
+}
 
+// input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
+// input 2: v/oct (should normalized -1..1 for -10..10v)
+fun process(gate:real, voct:real, in3:real, in4:real, fs:real) {
+   mem param1, param2, param3, param4;
+   mem last_pitch;
+   val pitch = cvToPitch(voct);
    // received new trigger gate
    if(Util.edge(gate >= 0.1)) {
       // create fixed A4
-      _ = voice:Voice.noteOn(69, 120, 0);
+      _ = voice:Voice.noteOn(pitch, 127, 0);
+      last_pitch = pitch;
    }
    // newly off
    else if(Util.edge(gate < 0.1)) {
-      _ = voice:Voice.noteOff(69, 0);
+      _ = voice:Voice.noteOff(last_pitch, 0);
    }
 
-   val out1, out2, out3, out4 = gate, in2, in3, in4;
+   val out1, out2, out3, out4 = gate, voct, in3, in4;
 
    // synthFM -> out1
    out1 = voice:Voice.process();
