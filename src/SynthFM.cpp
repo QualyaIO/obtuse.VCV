@@ -22,8 +22,8 @@ struct SynthFM : Module {
       MOD_IN3,
       MOD_IN4,
 
-      IN1,
-      IN2,
+      GATE,
+      VOCT,
       IN3,
       IN4,
 
@@ -62,9 +62,18 @@ SynthFM::SynthFM() {
 }
 
 void SynthFM::process(const ProcessArgs &args) {
-   // Reads all the input values and normalizes the values
-   float in1 = inputs[IN1].getVoltage() / 10.0f;
-   float in2 = inputs[IN2].getVoltage() / 10.0f;
+   // retrieve current max number of channels for gate and v/oct -- min 1 channel
+   // FIXME: reset notes upon count change
+   int channels = std::max(std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()), 1);
+   // pass each note to the synth
+   for (int c = 0; c < channels; c++) {
+      // Reads all the input values and normalizes the values
+      float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
+      float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
+      Processor_synthFM_setNote(processor, float_to_fix(gate), float_to_fix(voct), c);
+
+   }
+
    float in3 = inputs[IN3].getVoltage() / 10.0f;
    float in4 = inputs[IN4].getVoltage() / 10.0f;
    float mod_in1 = inputs[MOD_IN1].getVoltage() / 10.0f;
@@ -90,7 +99,7 @@ void SynthFM::process(const ProcessArgs &args) {
       Processor_synthFM_setParam4(processor, knob4, mod4, mod_in4);
    }
 
-   Processor_synthFM_process(processor, float_to_fix(in1), float_to_fix(in2), float_to_fix(in3), float_to_fix(in4), float_to_fix(args.sampleRate));
+   Processor_synthFM_process(processor, float_to_fix(in3), float_to_fix(in4), float_to_fix(args.sampleRate));
 
    outputs[OUT1].setVoltage(fix_to_float(Processor_synthFM_process_ret_0(processor) * 10.0f));
    outputs[OUT2].setVoltage(fix_to_float(Processor_synthFM_process_ret_1(processor) * 10.0f));
@@ -120,7 +129,7 @@ struct SynthFMWidget : ModuleWidget {
       }
 
       for (int i = 0; i < 4; i++)
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, SynthFM::IN1 + i));
+         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, SynthFM::GATE + i));
 
       for (int i = 0; i < 4; i++)
          addOutput(createOutput<PJ301MPort>(Vec(10 + 35 * i, 313), module, SynthFM::OUT1 + i));

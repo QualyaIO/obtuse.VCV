@@ -1332,10 +1332,9 @@ typedef struct Processor_synthFM__ctx_type_1 {
    fix16_t param3;
    fix16_t param2;
    fix16_t param1;
-   int last_pitch;
+   int last_pitches[16];
+   uint8_t last_gates[16];
    fix16_t fs;
-   Util__ctx_type_1 _inst451;
-   Util__ctx_type_1 _inst151;
 } Processor_synthFM__ctx_type_1;
 
 typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_type;
@@ -1347,7 +1346,7 @@ static_inline void Processor_synthFM_process_init(Processor_synthFM__ctx_type_1 
    return ;
 }
 
-void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t in3, fix16_t in4, fix16_t fs);
+void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in3, fix16_t in4, fix16_t fs);
 
 typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_ret_0_type;
 
@@ -1392,6 +1391,15 @@ static_inline void Processor_synthFM_process_ret_3_init(Processor_synthFM__ctx_t
 static_inline fix16_t Processor_synthFM_process_ret_3(Processor_synthFM__ctx_type_1 &_ctx){
    return _ctx.process_ret_3;
 };
+
+typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setNote_type;
+
+static_inline void Processor_synthFM_setNote_init(Processor_synthFM__ctx_type_1 &_output_){
+   Processor_synthFM__ctx_type_1_init(_output_);
+   return ;
+}
+
+void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, int cable);
 
 typedef Processor_synthFM__ctx_type_1 Processor_synthFM_setParam1_type;
 

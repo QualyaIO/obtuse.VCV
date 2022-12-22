@@ -13,29 +13,36 @@ fun cvToPitch(cv) : int {
    return int(pitch);
 }
 
-// input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
-// input 2: v/oct (should normalized -1..1 for -10..10v)
-fun process(gate:real, voct:real, in3:real, in4:real, fs:real) {
+fun process(in3:real, in4:real, fs:real) {
    mem param1, param2, param3, param4;
-   mem last_pitch;
-   val pitch = cvToPitch(voct);
-   // received new trigger gate
-   if(Util.edge(gate >= 0.1)) {
-      // create fixed A4
-      _ = voice:Voice.noteOn(pitch, 127, 0);
-      last_pitch = pitch;
-   }
-   // newly off
-   else if(Util.edge(gate < 0.1)) {
-      _ = voice:Voice.noteOff(last_pitch, 0);
-   }
 
-   val out1, out2, out3, out4 = gate, voct, in3, in4;
+   val out1, out2, out3, out4 = 0.0, 0.0, in3, in4;
 
    // synthFM -> out1
    out1 = voice:Voice.process();
 
    return out1, out2, out3, out4;
+}
+// gate and pitch from CV
+// input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
+// input 2: v/oct (should normalized -1..1 for -10..10v)
+// cable which polyphonic cable is used
+// Note: only take into account voct upon new gate
+and setNote(gate:real, voct:real, cable:int) {
+   // keep track of note and gate per channel (max 16 as per VCV)
+   mem last_pitches: array(int, 16);
+   mem last_gates: array(bool, 16);
+   // note on
+   if (not(last_gates[cable]) && gate >= 0.1) {
+      last_gates[cable] = true;
+      last_pitches[cable] = cvToPitch(voct);
+      _ = voice:Voice.noteOn(last_pitches[cable], 127, 0);
+   }
+   // note off
+   else if(last_gates[cable] && gate < 0.1) {
+      _ = voice:Voice.noteOff(last_pitches[cable], 0);
+      last_gates[cable] = false;
+   }
 }
 and setParam1(knob, mod, input) {
    param1 = clip(knob + mod * input, 0.0, 1.0);

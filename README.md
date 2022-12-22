@@ -16,3 +16,10 @@ Using git submodule to get source from botania dsp (itself using git LFS). Don't
 Here we use more vult code to wrap botania for VCV, through `processor_*.vult`.
 
 Check original template for more details about programming https://github.com/vult-dsp/RackPlayground
+
+# TODO
+
+- all notes off upon change in polyphony
+- unused v in ADSR
+- take into account change in sampling rate
+- switch back to monophonic when polyphony cable is 1

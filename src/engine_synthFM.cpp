@@ -15574,34 +15574,21 @@ void Processor_synthFM__ctx_type_1_init(Processor_synthFM__ctx_type_1 &_output_)
    _ctx.param3 = 0x0 /* 0.000000 */;
    _ctx.param2 = 0x0 /* 0.000000 */;
    _ctx.param1 = 0x0 /* 0.000000 */;
-   _ctx.last_pitch = 0;
+   int_init_array(16,0,_ctx.last_pitches);
+   bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
-   Util__ctx_type_1_init(_ctx._inst451);
-   Util__ctx_type_1_init(_ctx._inst151);
    Processor_synthFM_default(_ctx);
    _output_ = _ctx;
    return ;
 }
 
-void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t in3, fix16_t in4, fix16_t fs){
-   int pitch;
-   pitch = Processor_synthFM_cvToPitch(voct);
-   if(Util_edge(_ctx._inst151,(gate >= 0x1999 /* 0.100000 */))){
-      Voice_noteOn(_ctx.voice,pitch,127,0);
-      _ctx.last_pitch = pitch;
-   }
-   else
-   {
-      if(Util_edge(_ctx._inst451,(gate < 0x1999 /* 0.100000 */))){
-         Voice_noteOff(_ctx.voice,_ctx.last_pitch,0);
-      }
-   }
+void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in3, fix16_t in4, fix16_t fs){
    fix16_t out1;
    fix16_t out2;
    fix16_t out3;
    fix16_t out4;
-   out1 = gate;
-   out2 = voct;
+   out1 = 0x0 /* 0.000000 */;
+   out2 = 0x0 /* 0.000000 */;
    out3 = in3;
    out4 = in4;
    out1 = Voice_process(_ctx.voice);
@@ -15610,6 +15597,21 @@ void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate
    _ctx.process_ret_2 = out3;
    _ctx.process_ret_3 = out4;
    return ;
+}
+
+void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, int cable){
+   if(bool_not(_ctx.last_gates[cable]) && (gate >= 0x1999 /* 0.100000 */)){
+      _ctx.last_gates[cable] = true;
+      _ctx.last_pitches[cable] = Processor_synthFM_cvToPitch(voct);
+      Voice_noteOn(_ctx.voice,_ctx.last_pitches[cable],127,0);
+   }
+   else
+   {
+      if(_ctx.last_gates[cable] && (gate < 0x1999 /* 0.100000 */)){
+         Voice_noteOff(_ctx.voice,_ctx.last_pitches[cable],0);
+         _ctx.last_gates[cable] = false;
+      }
+   }
 }
 
 
