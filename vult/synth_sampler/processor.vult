@@ -94,5 +94,5 @@ and default() @[init] {
    // parameters for ocarina
    _ = voice:Voice.synthSetLoop(true);
    _ = voice:Voice.synthSetLoopStart(5073);
-   _ = voice:Voice.synthSetLoopStart(5992);
+   _ = voice:Voice.synthSetLoopEnd(5992);
 }

@@ -2224,7 +2224,7 @@ void synthSampler_Processor_default(synthSampler_Processor__ctx_type_1 &_ctx){
    synthSampler_Processor_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
    synthSampler_Voice_synthSetLoop(_ctx.voice,true);
    synthSampler_Voice_synthSetLoopStart(_ctx.voice,5073);
-   synthSampler_Voice_synthSetLoopStart(_ctx.voice,5992);
+   synthSampler_Voice_synthSetLoopEnd(_ctx.voice,5992);
 }
 
 
