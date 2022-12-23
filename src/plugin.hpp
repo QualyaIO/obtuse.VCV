@@ -9,4 +9,5 @@ extern Plugin *pluginInstance;
 // Declare each Model, defined in each module source file
 extern Model *effects;
 extern Model *synthFM;
+extern Model *synthSampler;
 extern Model *synthDrummer;
