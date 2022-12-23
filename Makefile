@@ -31,7 +31,13 @@ VULT_SYNTH_FM_ENGINE_OUT = $(wildcard src/engine_synthFM.*)
 $(VULT_SYNTH_FM_ENGINE_OUT): $(VULT_SYNTH_FM_SRC)
 	$(VULT_CMD) -ccode $(VULT_SYNTH_FM_SRC) -i botania/vult -i botania/vult/synth_FM -o src/engine_synthFM -real fixed
 
-vult: $(VULT_EFFECTS_ENGINE_OUT) $(VULT_SYNTH_FM_ENGINE_OUT)
+VULT_SYNTH_DRUMMER_SRC = src/synth_drummer/processor.vult 
+VULT_SYNTH_DRUMMER_ENGINE_OUT = $(wildcard src/engine_synthDrummer.*)
+$(VULT_SYNTH_DRUMMER_ENGINE_OUT): $(VULT_SYNTH_DRUMMER_SRC)
+	$(VULT_CMD) -ccode $(VULT_SYNTH_DRUMMER_SRC) -i botania/vult -i botania/vult/synth_drummer -o src/engine_synthDrummer -output-prefix synthDrummer_ -real fixed 
+
+
+vult: $(VULT_EFFECTS_ENGINE_OUT) $(VULT_SYNTH_FM_ENGINE_OUT) $(VULT_SYNTH_DRUMMER_ENGINE_OUT)
 
 # Include the Rack plugin Makefile framework
 include $(RACK_DIR)/plugin.mk

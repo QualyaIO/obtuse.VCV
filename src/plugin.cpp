@@ -7,4 +7,5 @@ void init(Plugin *p) {
 
    p->addModel(effects);
    p->addModel(synthFM);
+   p->addModel(synthDrummer);
 }

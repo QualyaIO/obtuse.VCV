@@ -23,7 +23,12 @@
       "name": "BotaniaSynthFM",
       "description": "I do FM things",
       "tags": []
+    },
+    {
+      "slug": "BotaniaSynthDrummer",
+      "name": "BotaniaSynthDrummer",
+      "description": "I doum doum things",
+      "tags": []
     }
-
   ]
 }
