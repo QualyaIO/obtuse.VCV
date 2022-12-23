@@ -19,6 +19,5 @@ Check original template for more details about programming https://github.com/vu
 
 # TODO
 
-- unused v in ADSR
 - take into account change in sampling rate
 - switch back to monophonic synth when polyphony cable is 1? (would need some change in botania DSP)
