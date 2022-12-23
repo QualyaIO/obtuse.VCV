@@ -24,7 +24,7 @@ struct SynthFM : Module {
 
       GATE,
       VOCT,
-      IN3,
+      VEL,
       IN4,
 
       NUM_INPUTS
@@ -62,21 +62,23 @@ SynthFM::SynthFM() {
 }
 
 void SynthFM::process(const ProcessArgs &args) {
-   // retrieve current max number of channels for gate and v/oct -- min 1 channel
+   // retrieve current max number of channels for gate and v/oct
    // FIXME: reset notes upon count change
-   int channels = std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels());
+   int channels =
+      std::max(
+               std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()),
+               inputs[VEL].getChannels());
    Processor_synthFM_nbCables(processor, channels);
    // pass each note to the synth
    for (int c = 0; c < channels; c++) {
       // Reads all the input values and normalizes the values
       float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
-      Processor_synthFM_setNote(processor, float_to_fix(gate), float_to_fix(voct), c);
-
+      float vel = inputs[VEL].getPolyVoltage(c) / 10.0f;
+      Processor_synthFM_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
    }
 
    // others input and parameters unused
-   float in3 = inputs[IN3].getVoltage() / 10.0f;
    float in4 = inputs[IN4].getVoltage() / 10.0f;
    float mod_in1 = inputs[MOD_IN1].getVoltage() / 10.0f;
    float mod_in2 = inputs[MOD_IN2].getVoltage() / 10.0f;
@@ -101,7 +103,7 @@ void SynthFM::process(const ProcessArgs &args) {
       Processor_synthFM_setParam4(processor, knob4, mod4, mod_in4);
    }
 
-   Processor_synthFM_process(processor, float_to_fix(in3), float_to_fix(in4), float_to_fix(args.sampleRate));
+   Processor_synthFM_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
 
    outputs[OUT1].setVoltage(fix_to_float(Processor_synthFM_process_ret_0(processor) * 10.0f));
    outputs[OUT2].setVoltage(fix_to_float(Processor_synthFM_process_ret_1(processor) * 10.0f));

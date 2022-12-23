@@ -13,10 +13,10 @@ fun cvToPitch(cv) : int {
    return int(pitch);
 }
 
-fun process(in3:real, in4:real, fs:real) {
+fun process(in4:real, fs:real) {
    mem param1, param2, param3, param4;
 
-   val out1, out2, out3, out4 = 0.0, 0.0, in3, in4;
+   val out1, out2, out3, out4 = 0.0, 0.0, 0.0, in4;
 
    // synthFM -> out1
    out1 = voice:Voice.process();
@@ -26,17 +26,23 @@ fun process(in3:real, in4:real, fs:real) {
 // gate and pitch from CV
 // input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
 // input 2: v/oct (should normalized -1..1 for -10..10v)
+// input 3: velocity (linear, should normalized -1..1 for -10..10v). If 0 velocity (<= 0v) will be set to 127.
 // cable which polyphonic cable is used
 // Note: only take into account voct upon new gate
-and setNote(gate:real, voct:real, cable:int) {
+and setNote(gate:real, voct:real, vel: real, cable:int) {
    // keep track of note and gate per channel (max 16 as per VCV)
    mem last_pitches: array(int, 16);
    mem last_gates: array(bool, 16);
+   // 0 velocity (e.g. cable not connected) will be set to max
+   val velocity = clip(vel, 0.0, 1.0) * 127.0;
+   if (velocity == 0.0) {
+      velocity = 127.0;
+   } 
    // note on
    if (not(last_gates[cable]) && gate >= 0.1) {
       last_gates[cable] = true;
       last_pitches[cable] = cvToPitch(voct);
-      _ = voice:Voice.noteOn(last_pitches[cable], 127, 0);
+      _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
    }
    // note off
    else if(last_gates[cable] && gate < 0.1) {

@@ -1347,7 +1347,7 @@ static_inline void Processor_synthFM_process_init(Processor_synthFM__ctx_type_1 
    return ;
 }
 
-void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in3, fix16_t in4, fix16_t fs);
+void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in4, fix16_t fs);
 
 typedef Processor_synthFM__ctx_type_1 Processor_synthFM_process_ret_0_type;
 
@@ -1400,7 +1400,7 @@ static_inline void Processor_synthFM_setNote_init(Processor_synthFM__ctx_type_1 
    return ;
 }
 
-void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, int cable);
+void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
 
 typedef Processor_synthFM__ctx_type_1 Processor_synthFM_nbCables_type;
 

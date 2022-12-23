@@ -15583,14 +15583,14 @@ void Processor_synthFM__ctx_type_1_init(Processor_synthFM__ctx_type_1 &_output_)
    return ;
 }
 
-void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in3, fix16_t in4, fix16_t fs){
+void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in4, fix16_t fs){
    fix16_t out1;
    fix16_t out2;
    fix16_t out3;
    fix16_t out4;
    out1 = 0x0 /* 0.000000 */;
    out2 = 0x0 /* 0.000000 */;
-   out3 = in3;
+   out3 = 0x0 /* 0.000000 */;
    out4 = in4;
    out1 = Voice_process(_ctx.voice);
    _ctx.process_ret_0 = out1;
@@ -15600,11 +15600,16 @@ void Processor_synthFM_process(Processor_synthFM__ctx_type_1 &_ctx, fix16_t in3,
    return ;
 }
 
-void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, int cable){
+void Processor_synthFM_setNote(Processor_synthFM__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
+   fix16_t velocity;
+   velocity = fix_mul(0x7f0000 /* 127.000000 */,fix_clip(vel,0x0 /* 0.000000 */,0x10000 /* 1.000000 */));
+   if(velocity == 0x0 /* 0.000000 */){
+      velocity = 0x7f0000 /* 127.000000 */;
+   }
    if(bool_not(_ctx.last_gates[cable]) && (gate >= 0x1999 /* 0.100000 */)){
       _ctx.last_gates[cable] = true;
       _ctx.last_pitches[cable] = Processor_synthFM_cvToPitch(voct);
-      Voice_noteOn(_ctx.voice,_ctx.last_pitches[cable],127,0);
+      Voice_noteOn(_ctx.voice,_ctx.last_pitches[cable],fix_to_int(velocity),0);
    }
    else
    {
