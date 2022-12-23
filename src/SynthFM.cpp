@@ -39,7 +39,7 @@ struct SynthFM : Module {
    };
    enum LightIds { NUM_LIGHTS };
 
-   Processor_synthFM_process_type processor;
+   synthFM_Processor_process_type processor;
 
    SynthFM();
    void process(const ProcessArgs &args) override;
@@ -58,7 +58,7 @@ SynthFM::SynthFM() {
    configParam(SynthFM::MOD3, -1.0, 1.0, 0.0, "Mod 3", " %", 0.0f, 100.f);
    configParam(SynthFM::MOD4, -1.0, 1.0, 0.0, "Mod 4", " %", 0.0f, 100.f);
 
-   Processor_synthFM_process_init(processor);
+   synthFM_Processor_process_init(processor);
 }
 
 void SynthFM::process(const ProcessArgs &args) {
@@ -68,14 +68,14 @@ void SynthFM::process(const ProcessArgs &args) {
       std::max(
                std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()),
                inputs[VEL].getChannels());
-   Processor_synthFM_nbCables(processor, channels);
+   synthFM_Processor_nbCables(processor, channels);
    // pass each note to the synth
    for (int c = 0; c < channels; c++) {
       // Reads all the input values and normalizes the values
       float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
       float vel = inputs[VEL].getPolyVoltage(c) / 10.0f;
-      Processor_synthFM_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthFM_Processor_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
    }
 
    // others input and parameters unused
@@ -97,18 +97,18 @@ void SynthFM::process(const ProcessArgs &args) {
       float mod3 = params[MOD3].getValue();
       float mod4 = params[MOD4].getValue();
 
-      Processor_synthFM_setParam1(processor, knob1, mod1, mod_in1);
-      Processor_synthFM_setParam2(processor, knob2, mod2, mod_in2);
-      Processor_synthFM_setParam3(processor, knob3, mod3, mod_in3);
-      Processor_synthFM_setParam4(processor, knob4, mod4, mod_in4);
+      synthFM_Processor_setParam1(processor, knob1, mod1, mod_in1);
+      synthFM_Processor_setParam2(processor, knob2, mod2, mod_in2);
+      synthFM_Processor_setParam3(processor, knob3, mod3, mod_in3);
+      synthFM_Processor_setParam4(processor, knob4, mod4, mod_in4);
    }
 
-   Processor_synthFM_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
+   synthFM_Processor_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
 
-   outputs[OUT1].setVoltage(fix_to_float(Processor_synthFM_process_ret_0(processor) * 10.0f));
-   outputs[OUT2].setVoltage(fix_to_float(Processor_synthFM_process_ret_1(processor) * 10.0f));
-   outputs[OUT3].setVoltage(fix_to_float(Processor_synthFM_process_ret_2(processor) * 10.0f));
-   outputs[OUT4].setVoltage(fix_to_float(Processor_synthFM_process_ret_3(processor) * 10.0f));
+   outputs[OUT1].setVoltage(fix_to_float(synthFM_Processor_process_ret_0(processor) * 10.0f));
+   outputs[OUT2].setVoltage(fix_to_float(synthFM_Processor_process_ret_1(processor) * 10.0f));
+   outputs[OUT3].setVoltage(fix_to_float(synthFM_Processor_process_ret_2(processor) * 10.0f));
+   outputs[OUT4].setVoltage(fix_to_float(synthFM_Processor_process_ret_3(processor) * 10.0f));
 }
 
 struct SynthFMWidget : ModuleWidget {
