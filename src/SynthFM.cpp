@@ -111,21 +111,35 @@ void SynthFM::process(const ProcessArgs &args) {
    outputs[OUT4].setVoltage(fix_to_float(synthFM_Processor_process_ret_3(processor) * 10.0f));
 }
 
+static const NVGcolor SCHEME_TOTO = nvgRGB(255, 10, 33);
+
+template <typename TBase = GrayModuleLightWidget>
+struct TTotoLight : TBase {
+    TTotoLight() {
+        this->addBaseColor(SCHEME_TOTO);
+    }
+};
+using TotoLight = TTotoLight<>;
+
+struct LEDSliderToto : VCVLightSlider<TotoLight> {};
+
 struct SynthFMWidget : ModuleWidget {
    SynthFMWidget(SynthFM *module) {
       setModule(module);
 
       setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/SynthFM.svg")));
 
+      addChild(createWidget<ScrewBlack>(mm2px(Vec(10, 10))));
       addChild(createWidget<ScrewBlack>(Vec(15, 3)));
       addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 3)));
       addChild(createWidget<ScrewBlack>(Vec(15, 367)));
       addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 367)));
 
-      addParam(createParam<Rogan3PWhite>(Vec(19, 59), module, SynthFM::KNOB1));
+      //addParam(createParam<Rogan3PWhite>(Vec(19, 59), module, SynthFM::KNOB1));
+      addParam(createParam<LEDSliderToto>(Vec(19, 59), module, SynthFM::KNOB1));
       addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, SynthFM::KNOB2));
       addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, SynthFM::KNOB3));
-      addParam(createParam<Rogan3PWhite>(Vec(89, 130), module, SynthFM::KNOB4));
+      addParam(createParam<Rogan3PRed>(Vec(89, 130), module, SynthFM::KNOB4));
 
       for (int i = 0; i < 4; i++) {
          addParam(createParam<RoundSmallBlackKnob>(Vec(10 + 35 * i, 204), module, SynthFM::MOD1 + i));
