@@ -122,18 +122,18 @@ void SynthFM::process(const ProcessArgs &args) {
    // from processor -1..1 to max voltage range
    outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 10.0f));
 }
-
-static const NVGcolor SCHEME_TOTO = nvgRGB(255, 10, 33);
+// ullo pink
+static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);
 
 template <typename TBase = GrayModuleLightWidget>
-struct TTotoLight : TBase {
-    TTotoLight() {
-        this->addBaseColor(SCHEME_TOTO);
+struct TPinkLight : TBase {
+    TPinkLight() {
+        this->addBaseColor(SCHEME_PINK);
     }
 };
-using TotoLight = TTotoLight<>;
+using PinkLight = TPinkLight<>;
 
-struct LEDSliderToto : VCVLightSlider<TotoLight> {};
+struct LEDSliderPink : VCVLightSlider<PinkLight> {};
 
 struct SynthFMWidget : ModuleWidget {
    SynthFMWidget(SynthFM *module) {
@@ -144,10 +144,10 @@ struct SynthFMWidget : ModuleWidget {
       // modulator ADSR sliders
       // here and after: use heihgt of canvas since my inskscape has Y origin flow lower left
       float mod_adsr_y = 128.5-99.2;
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(19.972, mod_adsr_y)), module, SynthFM::MOD_D));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(29.009, mod_adsr_y)), module, SynthFM::MOD_S));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(38.046, mod_adsr_y)), module, SynthFM::MOD_R));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, mod_adsr_y)), module, SynthFM::MOD_D));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, mod_adsr_y)), module, SynthFM::MOD_S));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, mod_adsr_y)), module, SynthFM::MOD_R));
       // modulator ratio and morph knobs, plus level
       float ratio_morph_x = 52.062;
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-112.286)), module, SynthFM::MOD_RATIO));
@@ -156,10 +156,10 @@ struct SynthFMWidget : ModuleWidget {
 
       // carrier ADSR sliders
       float car_adsr_y = 128.5-43.637;
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(19.972, car_adsr_y)), module, SynthFM::CAR_D));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(29.009, car_adsr_y)), module, SynthFM::CAR_S));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(38.046, car_adsr_y)), module, SynthFM::CAR_R));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, car_adsr_y)), module, SynthFM::CAR_D));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, car_adsr_y)), module, SynthFM::CAR_S));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, car_adsr_y)), module, SynthFM::CAR_R));
       // carrier ratio and morph knobs
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-56.723)), module, SynthFM::CAR_RATIO));
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-37.330)), module, SynthFM::CAR_MORPH));
