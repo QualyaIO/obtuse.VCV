@@ -4,36 +4,32 @@
 struct SynthFM : Module {
 
    enum ParamIds {
-      KNOB1,
-      KNOB2,
-      KNOB3,
-      KNOB4,
+      MOD_A,
+      MOD_D,
+      MOD_S,
+      MOD_R,
+      MOD_RATIO,
+      MOD_MORPH,
+      MOD_LEVEL,
 
-      MOD1,
-      MOD2,
-      MOD3,
-      MOD4,
+      CAR_A,
+      CAR_D,
+      CAR_S,
+      CAR_R,
+      CAR_RATIO,
+      CAR_MORPH,
 
       NUM_PARAMS
    };
    enum InputIds {
-      MOD_IN1,
-      MOD_IN2,
-      MOD_IN3,
-      MOD_IN4,
-
-      GATE,
       VOCT,
+      GATE,
       VEL,
-      IN4,
 
       NUM_INPUTS
    };
    enum OutputIds {
-      OUT1,
-      OUT2,
-      OUT3,
-      OUT4,
+      OUT,
 
       NUM_OUTPUTS
    };
@@ -43,27 +39,80 @@ struct SynthFM : Module {
 
    SynthFM();
    void process(const ProcessArgs &args) override;
+   // pass all parameters to FM. force: engine will pass params even if not changed, use upon init
+   void sendParams(bool force=false);
 };
 
 SynthFM::SynthFM() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-   configParam(SynthFM::KNOB1, 0.0, 1.0, 0.5, "Knob 1", " %", 0.0f, 100.f);
-   configParam(SynthFM::KNOB2, 0.0, 1.0, 0.5, "Knob 2", " %", 0.0f, 100.f);
-   configParam(SynthFM::KNOB3, 0.0, 1.0, 0.5, "Knob 3", " %", 0.0f, 100.f);
-   configParam(SynthFM::KNOB4, 0.0, 1.0, 0.5, "Knob 4", " %", 0.0f, 100.f);
+   // will config all parameters, setting as default the same as with botania DSP default (at least at the time of writing)
+   // TODO: ensure safety check in DSP
+   
+   // retrieve upper level for ADSR
+   // note: 3-steps to get multiple returns from vult (need type, call function, get values)
+   synthFM_ADSR_getMaxValues_type adsr;
+   synthFM_ADSR_getMaxValues(adsr);
+   float maxA = fix_to_float(synthFM_ADSR_getMaxValues_ret_0(adsr)); 
+   float maxD = fix_to_float(synthFM_ADSR_getMaxValues_ret_1(adsr)); 
+   float maxS = fix_to_float(synthFM_ADSR_getMaxValues_ret_2(adsr)); 
+   float maxR = fix_to_float(synthFM_ADSR_getMaxValues_ret_3(adsr)); 
+   // also max number of wavetable to know up to what we can morph
+   float maxMorph = synthFM_Wavetable_getNbWavetables();
+   // quite arbitrary, actually. Nyquist will limit in practice (?)
+   float maxRatio = 30.0;
 
-   configParam(SynthFM::MOD1, -1.0, 1.0, 0.0, "Mod 1", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD2, -1.0, 1.0, 0.0, "Mod 2", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD3, -1.0, 1.0, 0.0, "Mod 3", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD4, -1.0, 1.0, 0.0, "Mod 4", " %", 0.0f, 100.f);
+   // modulator adsr
+   configParam(SynthFM::MOD_A, 0.0, maxA, 0.0, "Modulator attack", " seconds");
+   configParam(SynthFM::MOD_D, 0.0, maxD, 0.0, "Modulator decay", " seconds");
+   configParam(SynthFM::MOD_S, 0.0, maxS, 0.5, "Modulator sustain", "");
+   configParam(SynthFM::MOD_R, 0.0, maxR, 0.0, "Modulator release", " seconds");
+   // modulator ratio and morph, plus level
+   configParam(SynthFM::MOD_RATIO, 0.0, maxRatio, 2.0, "Modulator ratio", "");
+   configParam(SynthFM::MOD_MORPH, 0.0, maxMorph, 0.0, "Modulator morph", "");
+   configParam(SynthFM::MOD_LEVEL, 0.0, 1.0, 0.1, "Modulator level", " %", 0.0f, 100.0f);
+   // carrier adsr
+   configParam(SynthFM::CAR_A, 0.0, maxA, 0.0, "Carrier attack", " seconds");
+   configParam(SynthFM::CAR_D, 0.0, maxD, 0.0, "Carrier decay", " seconds");
+   configParam(SynthFM::CAR_S, 0.0, maxS, 0.5, "Carrier sustain", "");
+   configParam(SynthFM::CAR_R, 0.0, maxR, 0.0, "Carrier release", " seconds");
+   // carrier ratio and morph
+   configParam(SynthFM::CAR_RATIO, 0.0, maxRatio, 1.0, "Carrier ratio", "");
+   configParam(SynthFM::CAR_MORPH, 0.0, maxMorph, 0.0, "Carrier morph", "");
 
+   // init engine and apply default parameter
    synthFM_Processor_process_init(processor);
+   sendParams(true);
+}
+
+void SynthFM::sendParams(bool force) {
+   synthFM_Processor_setModulatorADSR(processor,
+                                      float_to_fix(params[MOD_A].getValue()),
+                                      float_to_fix(params[MOD_D].getValue()),
+                                      float_to_fix(params[MOD_S].getValue()),
+                                      float_to_fix(params[MOD_R].getValue()),
+                                      force
+                                      );
+   synthFM_Processor_setModulatorRatio(processor, float_to_fix(params[MOD_RATIO].getValue()), force);
+   synthFM_Processor_setModulatorWavetable(processor, float_to_fix(params[MOD_MORPH].getValue()), force);
+   synthFM_Processor_setModulatorLevel(processor, float_to_fix(params[MOD_LEVEL].getValue()), force);
+   synthFM_Processor_setCarrierADSR(processor,
+                                      float_to_fix(params[CAR_A].getValue()),
+                                      float_to_fix(params[CAR_D].getValue()),
+                                      float_to_fix(params[CAR_S].getValue()),
+                                      float_to_fix(params[CAR_R].getValue()),
+                                      force
+                                      );
+   synthFM_Processor_setCarrierRatio(processor, float_to_fix(params[CAR_RATIO].getValue()), force);
+   synthFM_Processor_setCarrierWavetable(processor, float_to_fix(params[CAR_MORPH].getValue()), force);
 }
 
 void SynthFM::process(const ProcessArgs &args) {
+   // update parameters
+   synthFM_Processor_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
+   sendParams();
+
    // retrieve current max number of channels for gate and v/oct
-   // FIXME: reset notes upon count change
    int channels =
       std::max(
                std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()),
@@ -72,22 +121,15 @@ void SynthFM::process(const ProcessArgs &args) {
    // pass each note to the synth
    for (int c = 0; c < channels; c++) {
       // Reads all the input values and normalizes the values
-      float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
+      float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float vel = inputs[VEL].getPolyVoltage(c) / 10.0f;
       synthFM_Processor_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
    }
 
-   // others input and parameters unused
-   float in4 = inputs[IN4].getVoltage() / 10.0f;
-   float mod_in1 = inputs[MOD_IN1].getVoltage() / 10.0f;
-   float mod_in2 = inputs[MOD_IN2].getVoltage() / 10.0f;
-   float mod_in3 = inputs[MOD_IN3].getVoltage() / 10.0f;
-   float mod_in4 = inputs[MOD_IN4].getVoltage() / 10.0f;
-
    // Reads all the parameters and sets them.
    // The parameters could be set at a lower rate if needed
-   {
+   /* {
       float knob1 = params[KNOB1].getValue();
       float knob2 = params[KNOB2].getValue();
       float knob3 = params[KNOB3].getValue();
@@ -102,14 +144,23 @@ void SynthFM::process(const ProcessArgs &args) {
       synthFM_Processor_setParam3(processor, knob3, mod3, mod_in3);
       synthFM_Processor_setParam4(processor, knob4, mod4, mod_in4);
    }
+   */
 
-   synthFM_Processor_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
-
-   outputs[OUT1].setVoltage(fix_to_float(synthFM_Processor_process_ret_0(processor) * 10.0f));
-   outputs[OUT2].setVoltage(fix_to_float(synthFM_Processor_process_ret_1(processor) * 10.0f));
-   outputs[OUT3].setVoltage(fix_to_float(synthFM_Processor_process_ret_2(processor) * 10.0f));
-   outputs[OUT4].setVoltage(fix_to_float(synthFM_Processor_process_ret_3(processor) * 10.0f));
+   // from processor -1..1 to max voltage range
+   outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 10.0f));
 }
+// ullo pink
+static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);
+
+template <typename TBase = GrayModuleLightWidget>
+struct TPinkLight : TBase {
+    TPinkLight() {
+        this->addBaseColor(SCHEME_PINK);
+    }
+};
+using PinkLight = TPinkLight<>;
+
+struct LEDSliderPink : VCVLightSlider<PinkLight> {};
 
 struct SynthFMWidget : ModuleWidget {
    SynthFMWidget(SynthFM *module) {
@@ -117,26 +168,36 @@ struct SynthFMWidget : ModuleWidget {
 
       setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/SynthFM.svg")));
 
-      addChild(createWidget<ScrewBlack>(Vec(15, 3)));
-      addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 3)));
-      addChild(createWidget<ScrewBlack>(Vec(15, 367)));
-      addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 367)));
+      // modulator ADSR sliders
+      // here and after: use heihgt of canvas since my inskscape has Y origin flow lower left
+      float mod_adsr_y = 128.5-99.2;
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, mod_adsr_y)), module, SynthFM::MOD_D));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, mod_adsr_y)), module, SynthFM::MOD_S));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, mod_adsr_y)), module, SynthFM::MOD_R));
+      // modulator ratio and morph knobs, plus level
+      float ratio_morph_x = 52.062;
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-112.286)), module, SynthFM::MOD_RATIO));
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-92.893)), module, SynthFM::MOD_MORPH));
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(30.480, 128.5-75.790)), module, SynthFM::MOD_LEVEL));
 
-      addParam(createParam<Rogan3PWhite>(Vec(19, 59), module, SynthFM::KNOB1));
-      addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, SynthFM::KNOB2));
-      addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, SynthFM::KNOB3));
-      addParam(createParam<Rogan3PWhite>(Vec(89, 130), module, SynthFM::KNOB4));
+      // carrier ADSR sliders
+      float car_adsr_y = 128.5-43.637;
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, car_adsr_y)), module, SynthFM::CAR_D));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, car_adsr_y)), module, SynthFM::CAR_S));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, car_adsr_y)), module, SynthFM::CAR_R));
+      // carrier ratio and morph knobs
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-56.723)), module, SynthFM::CAR_RATIO));
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-37.330)), module, SynthFM::CAR_MORPH));
 
-      for (int i = 0; i < 4; i++) {
-         addParam(createParam<RoundSmallBlackKnob>(Vec(10 + 35 * i, 204), module, SynthFM::MOD1 + i));
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 238), module, SynthFM::MOD_IN1 + i));
-      }
+      // input: v/oct, gate, velocity
+      float port_y = 128.5 - 14.625;
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(9.147, port_y)), module, SynthFM::VOCT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.369, port_y)), module, SynthFM::GATE));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(37.638, port_y)), module, SynthFM::VEL));
 
-      for (int i = 0; i < 4; i++)
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, SynthFM::GATE + i));
-
-      for (int i = 0; i < 4; i++)
-         addOutput(createOutput<PJ301MPort>(Vec(10 + 35 * i, 313), module, SynthFM::OUT1 + i));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(51.86, port_y)), module, SynthFM::OUT));
    }
 };
 

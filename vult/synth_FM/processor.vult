@@ -1,4 +1,15 @@
 
+// Util.change for 4 values at once, to make sure we update inner states with ADSR setter
+fun change4(a:real, b:real, c:real, d:real):bool {
+    mem pre_a, pre_b, pre_c, pre_d;
+    val v:bool = pre_a <> a || pre_b <> b || pre_c <> c || pre_d <> d;
+    pre_a = a;
+    pre_b = b;
+    pre_c = c;
+    pre_d = d;
+    return v;
+}
+
 // from vult utils, convert input voltage normalized from -10..10v to -1..1 to pitch
 // output will be limited to 0..127, corresponding to -5v .. +5.583v
 fun cvToPitch(cv) : int {
@@ -13,15 +24,8 @@ fun cvToPitch(cv) : int {
    return int(pitch);
 }
 
-fun process(in4:real, fs:real) {
-   mem param1, param2, param3, param4;
-
-   val out1, out2, out3, out4 = 0.0, 0.0, 0.0, in4;
-
-   // synthFM -> out1
-   out1 = voice:Voice.process();
-
-   return out1, out2, out3, out4;
+fun process() {
+   return voice:Voice.process();
 }
 // gate and pitch from CV
 // input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
@@ -69,25 +73,53 @@ and nbCables(nbcables: int) {
       }
    }
 }
-and setParam1(knob, mod, input) {
-   param1 = clip(knob + mod * input, 0.0, 1.0);
-}
-and setParam2(knob, mod, input) {
-   param2 = clip(knob + mod * input, 0.0, 1.0);
-}
-and setParam3(knob, mod, input) {
-   param3 = clip(knob + mod * input, 0.0, 1.0);
-}
-and setParam4(knob, mod, input) {
-   param4 = clip(knob + mod * input, 0.0, 1.0);
-}
 and setSamplerate(newFs:real) {
    mem fs;
-   if (newFs > 0.0) {
+   if (newFs > 0.0 && newFs <> fs) {
       fs = newFs;
       _ = voice:Voice.setSamplerate(fs);
    }
 }
+
+// specific to FM
+// "force" flags: if true, pass down parameter even if not changed -- useful for init, so we don't deal with default state here
+and setModulatorWavetable(wavetableIdx: real, force: bool) {
+   // counting on lazy evaluation to update Util.change state no matter what
+  if (Util.change(wavetableIdx) || force) {
+     _ = voice:Voice.synthSetModulatorWavetable(wavetableIdx);
+  }
+}
+and setCarrierWavetable(wavetableIdx: real, force: bool) {
+  if (Util.change(wavetableIdx) || force) {
+    _ = voice:Voice.synthSetCarrierWavetable(wavetableIdx);
+  }
+}
+and setModulatorRatio(ratio: real, force: bool) {
+  if (Util.change(ratio) || force) {
+    _ = voice:Voice.synthSetModulatorRatio(ratio);
+  }
+}
+and setCarrierRatio(ratio: real, force: bool) {
+  if (Util.change(ratio) || force) {
+    _ = voice:Voice.synthSetCarrierRatio(ratio);
+  }
+}
+and setModulatorLevel(level: real, force: bool) {
+  if (Util.change(level) || force) {
+    _ = voice:Voice.synthSetModulatorLevel(level);
+  }
+}
+and setModulatorADSR(a:real , d: real, s: real, r: real, force: bool) {
+  if (change4(a,d,s,r) || force) {
+     _ = voice:Voice.synthSetModulatorADSR(a,d,s,r);
+  }
+}
+and setCarrierADSR(a:real , d: real, s: real, r: real, force: bool) {
+  if (change4(a,d,s,r) || force) {
+     _ = voice:Voice.synthSetCarrierADSR(a,d,s,r);
+  }
+}
+
 and default() @[init] {
    _ = voice:Voice.default();
    _ = setSamplerate(44.1);
