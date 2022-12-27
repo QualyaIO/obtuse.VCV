@@ -22,23 +22,14 @@ struct SynthFM : Module {
       NUM_PARAMS
    };
    enum InputIds {
-      MOD_IN1,
-      MOD_IN2,
-      MOD_IN3,
-      MOD_IN4,
-
-      GATE,
       VOCT,
+      GATE,
       VEL,
-      IN4,
 
       NUM_INPUTS
    };
    enum OutputIds {
-      OUT1,
-      OUT2,
-      OUT3,
-      OUT4,
+      OUT,
 
       NUM_OUTPUTS
    };
@@ -76,7 +67,6 @@ SynthFM::SynthFM() {
 
 void SynthFM::process(const ProcessArgs &args) {
    // retrieve current max number of channels for gate and v/oct
-   // FIXME: reset notes upon count change
    int channels =
       std::max(
                std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()),
@@ -85,18 +75,11 @@ void SynthFM::process(const ProcessArgs &args) {
    // pass each note to the synth
    for (int c = 0; c < channels; c++) {
       // Reads all the input values and normalizes the values
-      float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
+      float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float vel = inputs[VEL].getPolyVoltage(c) / 10.0f;
       synthFM_Processor_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
    }
-
-   // others input and parameters unused
-   float in4 = inputs[IN4].getVoltage() / 10.0f;
-   float mod_in1 = inputs[MOD_IN1].getVoltage() / 10.0f;
-   float mod_in2 = inputs[MOD_IN2].getVoltage() / 10.0f;
-   float mod_in3 = inputs[MOD_IN3].getVoltage() / 10.0f;
-   float mod_in4 = inputs[MOD_IN4].getVoltage() / 10.0f;
 
    // Reads all the parameters and sets them.
    // The parameters could be set at a lower rate if needed
@@ -117,12 +100,9 @@ void SynthFM::process(const ProcessArgs &args) {
    }
    */
 
-   synthFM_Processor_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
+   synthFM_Processor_process(processor, float_to_fix(0.0), float_to_fix(args.sampleRate));
 
-   outputs[OUT1].setVoltage(fix_to_float(synthFM_Processor_process_ret_0(processor) * 10.0f));
-   outputs[OUT2].setVoltage(fix_to_float(synthFM_Processor_process_ret_1(processor) * 10.0f));
-   outputs[OUT3].setVoltage(fix_to_float(synthFM_Processor_process_ret_2(processor) * 10.0f));
-   outputs[OUT4].setVoltage(fix_to_float(synthFM_Processor_process_ret_3(processor) * 10.0f));
+   outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process_ret_0(processor) * 10.0f));
 }
 
 static const NVGcolor SCHEME_TOTO = nvgRGB(255, 10, 33);
@@ -166,15 +146,13 @@ struct SynthFMWidget : ModuleWidget {
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-56.723)), module, SynthFM::CAR_RATIO));
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-37.330)), module, SynthFM::CAR_MORPH));
 
-      //addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, SynthFM::KNOB2));
-      //addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, SynthFM::KNOB3));
-      //addParam(createParam<Rogan3PRed>(Vec(89, 130), module, SynthFM::KNOB4));
+      // input: v/oct, gate, velocity
+      float port_y = 128.5 - 14.625;
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(9.147, port_y)), module, SynthFM::VOCT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.369, port_y)), module, SynthFM::GATE));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(37.638, port_y)), module, SynthFM::VEL));
 
-      for (int i = 0; i < 4; i++)
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, SynthFM::GATE + i));
-
-      for (int i = 0; i < 4; i++)
-         addOutput(createOutput<PJ301MPort>(Vec(10 + 35 * i, 313), module, SynthFM::OUT1 + i));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(51.86, port_y)), module, SynthFM::OUT));
    }
 };
 
