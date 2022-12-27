@@ -39,6 +39,8 @@ struct SynthFM : Module {
 
    SynthFM();
    void process(const ProcessArgs &args) override;
+   // pass all parameters to FM. force: engine will pass params even if not changed, use upon init
+   void sendParams(bool force=false);
 };
 
 SynthFM::SynthFM() {
@@ -78,12 +80,37 @@ SynthFM::SynthFM() {
    configParam(SynthFM::CAR_RATIO, 0.0, maxRatio, 1.0, "Carrier ratio", "");
    configParam(SynthFM::CAR_MORPH, 0.0, maxMorph, 0.0, "Carrier morph", "");
 
+   // init engine and apply default parameter
    synthFM_Processor_process_init(processor);
+   sendParams(true);
+}
+
+void SynthFM::sendParams(bool force) {
+   synthFM_Processor_setModulatorADSR(processor,
+                                      float_to_fix(params[MOD_A].getValue()),
+                                      float_to_fix(params[MOD_D].getValue()),
+                                      float_to_fix(params[MOD_S].getValue()),
+                                      float_to_fix(params[MOD_R].getValue()),
+                                      force
+                                      );
+   synthFM_Processor_setModulatorRatio(processor, float_to_fix(params[MOD_RATIO].getValue()), force);
+   synthFM_Processor_setModulatorWavetable(processor, float_to_fix(params[MOD_MORPH].getValue()), force);
+   synthFM_Processor_setModulatorLevel(processor, float_to_fix(params[MOD_LEVEL].getValue()), force);
+   synthFM_Processor_setCarrierADSR(processor,
+                                      float_to_fix(params[CAR_A].getValue()),
+                                      float_to_fix(params[CAR_D].getValue()),
+                                      float_to_fix(params[CAR_S].getValue()),
+                                      float_to_fix(params[CAR_R].getValue()),
+                                      force
+                                      );
+   synthFM_Processor_setCarrierRatio(processor, float_to_fix(params[CAR_RATIO].getValue()), force);
+   synthFM_Processor_setCarrierWavetable(processor, float_to_fix(params[CAR_MORPH].getValue()), force);
 }
 
 void SynthFM::process(const ProcessArgs &args) {
    // update parameters
    synthFM_Processor_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
+   sendParams();
 
    // retrieve current max number of channels for gate and v/oct
    int channels =
