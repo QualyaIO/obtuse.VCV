@@ -44,23 +44,39 @@ struct SynthFM : Module {
 SynthFM::SynthFM() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
+   // will config all parameters, setting as default the same as with botania DSP default (at least at the time of writing)
+   // TODO: ensure safety check in DSP
+   
+   // retrieve upper level for ADSR
+   // note: 3-steps to get multiple returns from vult (need type, call function, get values)
+   synthFM_ADSR_getMaxValues_type adsr;
+   synthFM_ADSR_getMaxValues(adsr);
+   float maxA = fix_to_float(synthFM_ADSR_getMaxValues_ret_0(adsr)); 
+   float maxD = fix_to_float(synthFM_ADSR_getMaxValues_ret_1(adsr)); 
+   float maxS = fix_to_float(synthFM_ADSR_getMaxValues_ret_2(adsr)); 
+   float maxR = fix_to_float(synthFM_ADSR_getMaxValues_ret_3(adsr)); 
+   // also max number of wavetable to know up to what we can morph
+   float maxMorph = synthFM_Wavetable_getNbWavetables();
+   // quite arbitrary, actually. Nyquist will limit in practice (?)
+   float maxRatio = 30.0;
+
    // modulator adsr
-   configParam(SynthFM::MOD_A, 0.0, 1.0, 0.5, "Modulator attack", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD_D, 0.0, 1.0, 0.5, "Modulator decay", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD_S, 0.0, 1.0, 0.5, "Modulator sustain", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD_R, 0.0, 1.0, 0.5, "Modulator release", " %", 0.0f, 100.f);
+   configParam(SynthFM::MOD_A, 0.0, maxA, 0.0, "Modulator attack", " seconds");
+   configParam(SynthFM::MOD_D, 0.0, maxD, 0.0, "Modulator decay", " seconds");
+   configParam(SynthFM::MOD_S, 0.0, maxS, 0.5, "Modulator sustain", "");
+   configParam(SynthFM::MOD_R, 0.0, maxR, 0.0, "Modulator release", " seconds");
    // modulator ratio and morph, plus level
-   configParam(SynthFM::MOD_RATIO, 0.0, 1.0, 0.5, "Modulator ratio", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD_MORPH, 0.0, 1.0, 0.5, "Modulator morph", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD_LEVEL, 0.0, 1.0, 0.5, "Modulator level", " %", 0.0f, 100.f);
+   configParam(SynthFM::MOD_RATIO, 0.0, maxRatio, 2.0, "Modulator ratio", "");
+   configParam(SynthFM::MOD_MORPH, 0.0, maxMorph, 0.0, "Modulator morph", "");
+   configParam(SynthFM::MOD_LEVEL, 0.0, 1.0, 0.1, "Modulator level", " %", 0.0f, 100.0f);
    // carrier adsr
-   configParam(SynthFM::CAR_A, 0.0, 1.0, 0.5, "Carrier attack", " %", 0.0f, 100.f);
-   configParam(SynthFM::CAR_D, 0.0, 1.0, 0.5, "Carrier decay", " %", 0.0f, 100.f);
-   configParam(SynthFM::CAR_S, 0.0, 1.0, 0.5, "Carrier sustain", " %", 0.0f, 100.f);
-   configParam(SynthFM::CAR_R, 0.0, 1.0, 0.5, "Carrier release", " %", 0.0f, 100.f);
+   configParam(SynthFM::CAR_A, 0.0, maxA, 0.0, "Carrier attack", " seconds");
+   configParam(SynthFM::CAR_D, 0.0, maxD, 0.0, "Carrier decay", " seconds");
+   configParam(SynthFM::CAR_S, 0.0, maxS, 0.5, "Carrier sustain", "");
+   configParam(SynthFM::CAR_R, 0.0, maxR, 0.0, "Carrier release", " seconds");
    // carrier ratio and morph
-   configParam(SynthFM::CAR_RATIO, 0.0, 1.0, 0.5, "Modulator ratio", " %", 0.0f, 100.f);
-   configParam(SynthFM::CAR_MORPH, 0.0, 1.0, 0.5, "Modulator morph", " %", 0.0f, 100.f);
+   configParam(SynthFM::CAR_RATIO, 0.0, maxRatio, 1.0, "Carrier ratio", "");
+   configParam(SynthFM::CAR_MORPH, 0.0, maxMorph, 0.0, "Carrier morph", "");
 
    synthFM_Processor_process_init(processor);
 }
