@@ -129,17 +129,15 @@ struct SynthFMWidget : ModuleWidget {
 
       setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/SynthFM.svg")));
 
-      addChild(createWidget<ScrewBlack>(mm2px(Vec(10, 10))));
-      addChild(createWidget<ScrewBlack>(Vec(15, 3)));
-      addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 3)));
-      addChild(createWidget<ScrewBlack>(Vec(15, 367)));
-      addChild(createWidget<ScrewBlack>(Vec(box.size.x - 30, 367)));
-
-      //addParam(createParam<Rogan3PWhite>(Vec(19, 59), module, SynthFM::KNOB1));
-      addParam(createParam<LEDSliderToto>(Vec(19, 59), module, SynthFM::KNOB1));
-      addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, SynthFM::KNOB2));
-      addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, SynthFM::KNOB3));
-      addParam(createParam<Rogan3PRed>(Vec(89, 130), module, SynthFM::KNOB4));
+      // modulator ADSR sliders
+      // here and after: use heihgt of canvas since my inskscape has Y origin flow lower left
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(10.934, 128.5-99.2)), module, SynthFM::KNOB1));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(19.972, 128.5-99.2)), module, SynthFM::KNOB2));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(29.009, 128.5-99.2)), module, SynthFM::KNOB3));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(38.046, 128.5-99.2)), module, SynthFM::KNOB4));
+      //addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, SynthFM::KNOB2));
+      //addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, SynthFM::KNOB3));
+      //addParam(createParam<Rogan3PRed>(Vec(89, 130), module, SynthFM::KNOB4));
 
       for (int i = 0; i < 4; i++) {
          addParam(createParam<RoundSmallBlackKnob>(Vec(10 + 35 * i, 204), module, SynthFM::MOD1 + i));
