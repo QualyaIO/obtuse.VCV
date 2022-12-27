@@ -66,6 +66,9 @@ SynthFM::SynthFM() {
 }
 
 void SynthFM::process(const ProcessArgs &args) {
+   // update parameters
+   synthFM_Processor_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
+
    // retrieve current max number of channels for gate and v/oct
    int channels =
       std::max(
@@ -100,9 +103,8 @@ void SynthFM::process(const ProcessArgs &args) {
    }
    */
 
-   synthFM_Processor_process(processor, float_to_fix(0.0), float_to_fix(args.sampleRate));
-
-   outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process_ret_0(processor) * 10.0f));
+   // from processor -1..1 to max voltage range
+   outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 10.0f));
 }
 
 static const NVGcolor SCHEME_TOTO = nvgRGB(255, 10, 33);
