@@ -4,15 +4,15 @@
 struct SynthFM : Module {
 
    enum ParamIds {
-      KNOB1,
-      KNOB2,
-      KNOB3,
-      KNOB4,
+      MOD_A,
+      MOD_D,
+      MOD_S,
+      MOD_R,
 
-      MOD1,
-      MOD2,
-      MOD3,
-      MOD4,
+      CAR_A,
+      CAR_D,
+      CAR_S,
+      CAR_R,
 
       NUM_PARAMS
    };
@@ -48,15 +48,16 @@ struct SynthFM : Module {
 SynthFM::SynthFM() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-   configParam(SynthFM::KNOB1, 0.0, 1.0, 0.5, "Knob 1", " %", 0.0f, 100.f);
-   configParam(SynthFM::KNOB2, 0.0, 1.0, 0.5, "Knob 2", " %", 0.0f, 100.f);
-   configParam(SynthFM::KNOB3, 0.0, 1.0, 0.5, "Knob 3", " %", 0.0f, 100.f);
-   configParam(SynthFM::KNOB4, 0.0, 1.0, 0.5, "Knob 4", " %", 0.0f, 100.f);
-
-   configParam(SynthFM::MOD1, -1.0, 1.0, 0.0, "Mod 1", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD2, -1.0, 1.0, 0.0, "Mod 2", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD3, -1.0, 1.0, 0.0, "Mod 3", " %", 0.0f, 100.f);
-   configParam(SynthFM::MOD4, -1.0, 1.0, 0.0, "Mod 4", " %", 0.0f, 100.f);
+   // modulator adsr
+   configParam(SynthFM::MOD_A, 0.0, 1.0, 0.5, "Modulator attack", " %", 0.0f, 100.f);
+   configParam(SynthFM::MOD_D, 0.0, 1.0, 0.5, "Modulator decay", " %", 0.0f, 100.f);
+   configParam(SynthFM::MOD_S, 0.0, 1.0, 0.5, "Modulator sustain", " %", 0.0f, 100.f);
+   configParam(SynthFM::MOD_R, 0.0, 1.0, 0.5, "Modulator release", " %", 0.0f, 100.f);
+   // carrier adsr
+   configParam(SynthFM::CAR_A, 0.0, 1.0, 0.5, "Carrier attack", " %", 0.0f, 100.f);
+   configParam(SynthFM::CAR_D, 0.0, 1.0, 0.5, "Carrier decay", " %", 0.0f, 100.f);
+   configParam(SynthFM::CAR_S, 0.0, 1.0, 0.5, "Carrier sustain", " %", 0.0f, 100.f);
+   configParam(SynthFM::CAR_R, 0.0, 1.0, 0.5, "Carrier release", " %", 0.0f, 100.f);
 
    synthFM_Processor_process_init(processor);
 }
@@ -87,7 +88,7 @@ void SynthFM::process(const ProcessArgs &args) {
 
    // Reads all the parameters and sets them.
    // The parameters could be set at a lower rate if needed
-   {
+   /* {
       float knob1 = params[KNOB1].getValue();
       float knob2 = params[KNOB2].getValue();
       float knob3 = params[KNOB3].getValue();
@@ -102,6 +103,7 @@ void SynthFM::process(const ProcessArgs &args) {
       synthFM_Processor_setParam3(processor, knob3, mod3, mod_in3);
       synthFM_Processor_setParam4(processor, knob4, mod4, mod_in4);
    }
+   */
 
    synthFM_Processor_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
 
@@ -131,18 +133,22 @@ struct SynthFMWidget : ModuleWidget {
 
       // modulator ADSR sliders
       // here and after: use heihgt of canvas since my inskscape has Y origin flow lower left
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(10.934, 128.5-99.2)), module, SynthFM::KNOB1));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(19.972, 128.5-99.2)), module, SynthFM::KNOB2));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(29.009, 128.5-99.2)), module, SynthFM::KNOB3));
-      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(38.046, 128.5-99.2)), module, SynthFM::KNOB4));
+      float mod_adsr_y = 128.5-99.2;
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(19.972, mod_adsr_y)), module, SynthFM::MOD_D));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(29.009, mod_adsr_y)), module, SynthFM::MOD_S));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(38.046, mod_adsr_y)), module, SynthFM::MOD_R));
+
+      // carrier ADSR sliders
+      float car_adsr_y = 128.5-43.637;
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(19.972, car_adsr_y)), module, SynthFM::CAR_D));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(29.009, car_adsr_y)), module, SynthFM::CAR_S));
+      addParam(createParamCentered<LEDSliderToto>(mm2px(Vec(38.046, car_adsr_y)), module, SynthFM::CAR_R));
+
       //addParam(createParam<Rogan3PWhite>(Vec(89, 59), module, SynthFM::KNOB2));
       //addParam(createParam<Rogan3PWhite>(Vec(19, 130), module, SynthFM::KNOB3));
       //addParam(createParam<Rogan3PRed>(Vec(89, 130), module, SynthFM::KNOB4));
-
-      for (int i = 0; i < 4; i++) {
-         addParam(createParam<RoundSmallBlackKnob>(Vec(10 + 35 * i, 204), module, SynthFM::MOD1 + i));
-         addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 238), module, SynthFM::MOD_IN1 + i));
-      }
 
       for (int i = 0; i < 4; i++)
          addInput(createInput<PJ301MPort>(Vec(10 + 35 * i, 273), module, SynthFM::GATE + i));
