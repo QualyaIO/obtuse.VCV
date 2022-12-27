@@ -69,6 +69,30 @@ and setSamplerate(newFs:real) {
       _ = voice:Voice.setSamplerate(fs);
    }
 }
+
+// specific to FM
+and setModulatorWavetable(wavetableIdx: real) {
+  _ = voice:Voice.synthSetModulatorWavetable(wavetableIdx);
+}
+and setCarrierWavetable(wavetableIdx: real) {
+  _ = voice:Voice.synthSetCarrierWavetable(wavetableIdx);
+}
+and setModulatorRatio(ratio: real) {
+  _ = voice:Voice.synthSetModulatorRatio(ratio);
+}
+and setCarrierRatio(ratio: real) {
+  _ = voice:Voice.synthSetCarrierRatio(ratio);
+}
+and setModulatorLevel(level: real) {
+  _ = voice:Voice.synthSetModulatorLevel(level);
+}
+and setModulatorADSR(a:real , d: real, s: real, r: real) {
+   _ = voice:Voice.synthSetModulatorADSR(a,d,s,r);
+}
+and setCarrierADSR(a:real , d: real, s: real, r: real) {
+   _ = voice:Voice.synthSetCarrierADSR(a,d,s,r);
+}
+
 and default() @[init] {
    _ = voice:Voice.default();
    _ = setSamplerate(44.1);
