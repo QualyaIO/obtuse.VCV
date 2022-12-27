@@ -15547,6 +15547,26 @@ void synthFM_Voice_default(synthFM_Voice__ctx_type_0 &_ctx){
    synthFM_Voice_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
 
+void synthFM_Processor__ctx_type_0_init(synthFM_Processor__ctx_type_0 &_output_){
+   synthFM_Processor__ctx_type_0 _ctx;
+   _ctx.pre_d = 0x0 /* 0.000000 */;
+   _ctx.pre_c = 0x0 /* 0.000000 */;
+   _ctx.pre_b = 0x0 /* 0.000000 */;
+   _ctx.pre_a = 0x0 /* 0.000000 */;
+   _output_ = _ctx;
+   return ;
+}
+
+uint8_t synthFM_Processor_change4(synthFM_Processor__ctx_type_0 &_ctx, fix16_t a, fix16_t b, fix16_t c, fix16_t d){
+   uint8_t v;
+   v = ((_ctx.pre_a != a) || (_ctx.pre_b != b) || (_ctx.pre_c != c) || (_ctx.pre_d != d));
+   _ctx.pre_a = a;
+   _ctx.pre_b = b;
+   _ctx.pre_c = c;
+   _ctx.pre_d = d;
+   return v;
+}
+
 int synthFM_Processor_cvToPitch(fix16_t cv){
    fix16_t pitch;
    pitch = (0x3c0000 /* 60.000000 */ + fix_mul(0x780000 /* 120.000000 */,cv));
@@ -15561,19 +15581,26 @@ int synthFM_Processor_cvToPitch(fix16_t cv){
    return fix_to_int(pitch);
 }
 
-void synthFM_Processor__ctx_type_1_init(synthFM_Processor__ctx_type_1 &_output_){
-   synthFM_Processor__ctx_type_1 _ctx;
+void synthFM_Processor__ctx_type_2_init(synthFM_Processor__ctx_type_2 &_output_){
+   synthFM_Processor__ctx_type_2 _ctx;
    synthFM_Voice__ctx_type_0_init(_ctx.voice);
    int_init_array(16,0,_ctx.last_pitches);
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
+   synthFM_Processor__ctx_type_0_init(_ctx._inst3136);
+   synthFM_Processor__ctx_type_0_init(_ctx._inst2836);
+   synthFM_Util__ctx_type_3_init(_ctx._inst253b);
+   synthFM_Util__ctx_type_3_init(_ctx._inst223b);
+   synthFM_Util__ctx_type_3_init(_ctx._inst193b);
+   synthFM_Util__ctx_type_3_init(_ctx._inst163b);
+   synthFM_Util__ctx_type_3_init(_ctx._inst133b);
    synthFM_Processor_default(_ctx);
    _output_ = _ctx;
    return ;
 }
 
-void synthFM_Processor_setNote(synthFM_Processor__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
+void synthFM_Processor_setNote(synthFM_Processor__ctx_type_2 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
    fix16_t velocity;
    velocity = fix_mul(0x7f0000 /* 127.000000 */,fix_clip(vel,0x0 /* 0.000000 */,0x10000 /* 1.000000 */));
    if(velocity == 0x0 /* 0.000000 */){
@@ -15596,7 +15623,7 @@ void synthFM_Processor_setNote(synthFM_Processor__ctx_type_1 &_ctx, fix16_t gate
    }
 }
 
-void synthFM_Processor_nbCables(synthFM_Processor__ctx_type_1 &_ctx, int nbcables){
+void synthFM_Processor_nbCables(synthFM_Processor__ctx_type_2 &_ctx, int nbcables){
    if(nbcables != _ctx.last_nbcables){
       _ctx.last_nbcables = nbcables;
       int c;

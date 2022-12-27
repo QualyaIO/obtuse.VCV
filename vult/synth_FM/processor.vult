@@ -1,4 +1,15 @@
 
+// Util.change for 4 values at once, to make sure we update inner states with ADSR setter
+fun change4(a:real, b:real, c:real, d:real):bool {
+    mem pre_a, pre_b, pre_c, pre_d;
+    val v:bool = pre_a <> a || pre_b <> b || pre_c <> c || pre_d <> d;
+    pre_a = a;
+    pre_b = b;
+    pre_c = c;
+    pre_d = d;
+    return v;
+}
+
 // from vult utils, convert input voltage normalized from -10..10v to -1..1 to pitch
 // output will be limited to 0..127, corresponding to -5v .. +5.583v
 fun cvToPitch(cv) : int {
@@ -71,26 +82,42 @@ and setSamplerate(newFs:real) {
 }
 
 // specific to FM
-and setModulatorWavetable(wavetableIdx: real) {
-  _ = voice:Voice.synthSetModulatorWavetable(wavetableIdx);
+// "force" flags: if true, pass down parameter even if not changed -- useful for init, so we don't deal with default state here
+and setModulatorWavetable(wavetableIdx: real, force: bool) {
+   // counting on lazy evaluation to update Util.change state no matter what
+  if (Util.change(wavetableIdx) || force) {
+     _ = voice:Voice.synthSetModulatorWavetable(wavetableIdx);
+  }
 }
-and setCarrierWavetable(wavetableIdx: real) {
-  _ = voice:Voice.synthSetCarrierWavetable(wavetableIdx);
+and setCarrierWavetable(wavetableIdx: real, force: bool) {
+  if (Util.change(wavetableIdx) || force) {
+    _ = voice:Voice.synthSetCarrierWavetable(wavetableIdx);
+  }
 }
-and setModulatorRatio(ratio: real) {
-  _ = voice:Voice.synthSetModulatorRatio(ratio);
+and setModulatorRatio(ratio: real, force: bool) {
+  if (Util.change(ratio) || force) {
+    _ = voice:Voice.synthSetModulatorRatio(ratio);
+  }
 }
-and setCarrierRatio(ratio: real) {
-  _ = voice:Voice.synthSetCarrierRatio(ratio);
+and setCarrierRatio(ratio: real, force: bool) {
+  if (Util.change(ratio) || force) {
+    _ = voice:Voice.synthSetCarrierRatio(ratio);
+  }
 }
-and setModulatorLevel(level: real) {
-  _ = voice:Voice.synthSetModulatorLevel(level);
+and setModulatorLevel(level: real, force: bool) {
+  if (Util.change(level) || force) {
+    _ = voice:Voice.synthSetModulatorLevel(level);
+  }
 }
-and setModulatorADSR(a:real , d: real, s: real, r: real) {
-   _ = voice:Voice.synthSetModulatorADSR(a,d,s,r);
+and setModulatorADSR(a:real , d: real, s: real, r: real, force: bool) {
+  if (change4(a,d,s,r) || force) {
+     _ = voice:Voice.synthSetModulatorADSR(a,d,s,r);
+  }
 }
-and setCarrierADSR(a:real , d: real, s: real, r: real) {
-   _ = voice:Voice.synthSetCarrierADSR(a,d,s,r);
+and setCarrierADSR(a:real , d: real, s: real, r: real, force: bool) {
+  if (change4(a,d,s,r) || force) {
+     _ = voice:Voice.synthSetCarrierADSR(a,d,s,r);
+  }
 }
 
 and default() @[init] {
