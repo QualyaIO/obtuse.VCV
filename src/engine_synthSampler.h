@@ -415,6 +415,7 @@ typedef struct synthSampler_Poly__ctx_type_0 {
    synthSampler_Sampler__ctx_type_2 voice2;
    synthSampler_Sampler__ctx_type_2 voice1;
    synthSampler_Sampler__ctx_type_2 voice0;
+   uint8_t should_leftovers;
 } synthSampler_Poly__ctx_type_0;
 
 typedef synthSampler_Poly__ctx_type_0 synthSampler_Poly_getSample_type;
@@ -651,6 +652,17 @@ static_inline void synthSampler_Poly_synthSetCarrierADSR_init(synthSampler_Poly_
 static_inline void synthSampler_Poly_synthSetCarrierADSR(synthSampler_Poly__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
 }
 
+typedef synthSampler_Poly__ctx_type_0 synthSampler_Poly_shouldLeftOvers_type;
+
+static_inline void synthSampler_Poly_shouldLeftOvers_init(synthSampler_Poly__ctx_type_0 &_output_){
+   synthSampler_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSampler_Poly_shouldLeftOvers(synthSampler_Poly__ctx_type_0 &_ctx){
+   return _ctx.should_leftovers;
+};
+
 typedef synthSampler_Poly__ctx_type_0 synthSampler_Poly_default_type;
 
 static_inline void synthSampler_Poly_default_init(synthSampler_Poly__ctx_type_0 &_output_){
@@ -671,6 +683,7 @@ typedef struct synthSampler_Voice__ctx_type_0 {
    uint8_t normalize;
    fix16_t leftovers_decay;
    fix16_t leftovers;
+   int last_velocities[4];
    fix16_t last_values[4];
    fix16_t fs;
    fix16_t buffer_v3[256];

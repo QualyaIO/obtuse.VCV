@@ -277,6 +277,7 @@ typedef struct synthDrummer_Poly__ctx_type_0 {
    synthDrummer_Drummer__ctx_type_2 voice2;
    synthDrummer_Drummer__ctx_type_2 voice1;
    synthDrummer_Drummer__ctx_type_2 voice0;
+   uint8_t should_leftovers;
 } synthDrummer_Poly__ctx_type_0;
 
 typedef synthDrummer_Poly__ctx_type_0 synthDrummer_Poly_getSample_type;
@@ -501,6 +502,17 @@ static_inline void synthDrummer_Poly_synthSetCarrierADSR_init(synthDrummer_Poly_
 static_inline void synthDrummer_Poly_synthSetCarrierADSR(synthDrummer_Poly__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
 }
 
+typedef synthDrummer_Poly__ctx_type_0 synthDrummer_Poly_shouldLeftOvers_type;
+
+static_inline void synthDrummer_Poly_shouldLeftOvers_init(synthDrummer_Poly__ctx_type_0 &_output_){
+   synthDrummer_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthDrummer_Poly_shouldLeftOvers(synthDrummer_Poly__ctx_type_0 &_ctx){
+   return _ctx.should_leftovers;
+};
+
 typedef synthDrummer_Poly__ctx_type_0 synthDrummer_Poly_default_type;
 
 static_inline void synthDrummer_Poly_default_init(synthDrummer_Poly__ctx_type_0 &_output_){
@@ -508,12 +520,7 @@ static_inline void synthDrummer_Poly_default_init(synthDrummer_Poly__ctx_type_0 
    return ;
 }
 
-static_inline void synthDrummer_Poly_default(synthDrummer_Poly__ctx_type_0 &_ctx){
-   synthDrummer_Drummer_default(_ctx.voice0);
-   synthDrummer_Drummer_default(_ctx.voice1);
-   synthDrummer_Drummer_default(_ctx.voice2);
-   synthDrummer_Drummer_default(_ctx.voice3);
-}
+void synthDrummer_Poly_default(synthDrummer_Poly__ctx_type_0 &_ctx);
 
 typedef struct synthDrummer_Notes__ctx_type_0 {
    uint8_t poly;
@@ -604,6 +611,7 @@ typedef struct synthDrummer_Voice__ctx_type_0 {
    uint8_t normalize;
    fix16_t leftovers_decay;
    fix16_t leftovers;
+   int last_velocities[4];
    fix16_t last_values[4];
    fix16_t fs;
    fix16_t buffer_v3[256];
