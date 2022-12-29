@@ -68,7 +68,7 @@ SynthFM::SynthFM() {
    configParam(SynthFM::MOD_S, 0.0, maxS, 0.5, "Modulator sustain", "");
    configParam(SynthFM::MOD_R, 0.0, maxR, 0.0, "Modulator release", " seconds");
    // modulator ratio and morph, plus level
-   configParam(SynthFM::MOD_RATIO, 0.0, maxRatio, 2.0, "Modulator ratio", "");
+   configParam(SynthFM::MOD_RATIO, -maxRatio, maxRatio, 2.0, "Modulator ratio", "");
    configParam(SynthFM::MOD_MORPH, 0.0, maxMorph, 0.0, "Modulator morph", "");
    configParam(SynthFM::MOD_LEVEL, 0.0, 1.0, 0.1, "Modulator level", " %", 0.0f, 100.0f);
    // carrier adsr
@@ -77,7 +77,7 @@ SynthFM::SynthFM() {
    configParam(SynthFM::CAR_S, 0.0, maxS, 0.5, "Carrier sustain", "");
    configParam(SynthFM::CAR_R, 0.0, maxR, 0.0, "Carrier release", " seconds");
    // carrier ratio and morph
-   configParam(SynthFM::CAR_RATIO, 0.0, maxRatio, 1.0, "Carrier ratio", "");
+   configParam(SynthFM::CAR_RATIO, -maxRatio, maxRatio, 1.0, "Carrier ratio", "");
    configParam(SynthFM::CAR_MORPH, 0.0, maxMorph, 0.0, "Carrier morph", "");
 
    // init engine and apply default parameter
