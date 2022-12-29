@@ -127,27 +127,8 @@ void SynthFM::process(const ProcessArgs &args) {
       synthFM_Processor_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
    }
 
-   // Reads all the parameters and sets them.
-   // The parameters could be set at a lower rate if needed
-   /* {
-      float knob1 = params[KNOB1].getValue();
-      float knob2 = params[KNOB2].getValue();
-      float knob3 = params[KNOB3].getValue();
-      float knob4 = params[KNOB4].getValue();
-      float mod1 = params[MOD1].getValue();
-      float mod2 = params[MOD2].getValue();
-      float mod3 = params[MOD3].getValue();
-      float mod4 = params[MOD4].getValue();
-
-      synthFM_Processor_setParam1(processor, knob1, mod1, mod_in1);
-      synthFM_Processor_setParam2(processor, knob2, mod2, mod_in2);
-      synthFM_Processor_setParam3(processor, knob3, mod3, mod_in3);
-      synthFM_Processor_setParam4(processor, knob4, mod4, mod_in4);
-   }
-   */
-
-   // from processor -1..1 to max voltage range
-   outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 10.0f));
+   // from processor -1..1 to max audio voltage range
+   outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 5.0f));
 }
 // ullo pink
 static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);

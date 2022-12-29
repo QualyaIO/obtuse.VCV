@@ -105,7 +105,9 @@ void SynthSampler::process(const ProcessArgs &args) {
 
    synthSampler_Processor_process(processor, float_to_fix(in4), float_to_fix(args.sampleRate));
 
-   outputs[OUT1].setVoltage(fix_to_float(synthSampler_Processor_process_ret_0(processor) * 10.0f));
+   // out1 is audio, set to audio range (-5..5)
+   outputs[OUT1].setVoltage(fix_to_float(synthSampler_Processor_process_ret_0(processor) * 5.0f));
+   // unused CV
    outputs[OUT2].setVoltage(fix_to_float(synthSampler_Processor_process_ret_1(processor) * 10.0f));
    outputs[OUT3].setVoltage(fix_to_float(synthSampler_Processor_process_ret_2(processor) * 10.0f));
    outputs[OUT4].setVoltage(fix_to_float(synthSampler_Processor_process_ret_3(processor) * 10.0f));
