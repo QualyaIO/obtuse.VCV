@@ -15599,8 +15599,9 @@ void synthFM_Processor__ctx_type_2_init(synthFM_Processor__ctx_type_2 &_output_)
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
+   synthFM_Processor__ctx_type_0_init(_ctx._inst3436);
    synthFM_Processor__ctx_type_0_init(_ctx._inst3136);
-   synthFM_Processor__ctx_type_0_init(_ctx._inst2836);
+   synthFM_Util__ctx_type_3_init(_ctx._inst283b);
    synthFM_Util__ctx_type_3_init(_ctx._inst253b);
    synthFM_Util__ctx_type_3_init(_ctx._inst223b);
    synthFM_Util__ctx_type_3_init(_ctx._inst193b);

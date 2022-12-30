@@ -1380,8 +1380,9 @@ typedef struct synthFM_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
+   synthFM_Processor__ctx_type_0 _inst3436;
    synthFM_Processor__ctx_type_0 _inst3136;
-   synthFM_Processor__ctx_type_0 _inst2836;
+   synthFM_Util__ctx_type_3 _inst283b;
    synthFM_Util__ctx_type_3 _inst253b;
    synthFM_Util__ctx_type_3 _inst223b;
    synthFM_Util__ctx_type_3 _inst193b;
@@ -1499,6 +1500,18 @@ static_inline void synthFM_Processor_setModulatorLevel(synthFM_Processor__ctx_ty
    }
 };
 
+typedef synthFM_Processor__ctx_type_2 synthFM_Processor_setModulatorMode_type;
+
+static_inline void synthFM_Processor_setModulatorMode_init(synthFM_Processor__ctx_type_2 &_output_){
+   synthFM_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthFM_Processor_setModulatorMode(synthFM_Processor__ctx_type_2 &_ctx, fix16_t level, uint8_t force){
+   if(synthFM_Util_change(_ctx._inst283b,level) || force){
+   }
+};
+
 typedef synthFM_Processor__ctx_type_2 synthFM_Processor_setModulatorADSR_type;
 
 static_inline void synthFM_Processor_setModulatorADSR_init(synthFM_Processor__ctx_type_2 &_output_){
@@ -1507,7 +1520,7 @@ static_inline void synthFM_Processor_setModulatorADSR_init(synthFM_Processor__ct
 }
 
 static_inline void synthFM_Processor_setModulatorADSR(synthFM_Processor__ctx_type_2 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r, uint8_t force){
-   if(synthFM_Processor_change4(_ctx._inst2836,a,d,s,r) || force){
+   if(synthFM_Processor_change4(_ctx._inst3136,a,d,s,r) || force){
       synthFM_Voice_synthSetModulatorADSR(_ctx.voice,a,d,s,r);
    }
 };
@@ -1520,7 +1533,7 @@ static_inline void synthFM_Processor_setCarrierADSR_init(synthFM_Processor__ctx_
 }
 
 static_inline void synthFM_Processor_setCarrierADSR(synthFM_Processor__ctx_type_2 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r, uint8_t force){
-   if(synthFM_Processor_change4(_ctx._inst3136,a,d,s,r) || force){
+   if(synthFM_Processor_change4(_ctx._inst3436,a,d,s,r) || force){
       synthFM_Voice_synthSetCarrierADSR(_ctx.voice,a,d,s,r);
    }
 };

@@ -11,6 +11,7 @@ struct SynthFM : Module {
       MOD_RATIO,
       MOD_MORPH,
       MOD_LEVEL,
+      MOD_MODE,
 
       CAR_A,
       CAR_D,
@@ -71,6 +72,8 @@ SynthFM::SynthFM() {
    configParam(SynthFM::MOD_RATIO, -maxRatio, maxRatio, 2.0, "Modulator ratio", "");
    configParam(SynthFM::MOD_MORPH, 0.0, maxMorph, 0.0, "Modulator morph", "");
    configParam(SynthFM::MOD_LEVEL, 0.0, 1.0, 0.1, "Modulator level", " %", 0.0f, 100.0f);
+   configSwitch(SynthFM::MOD_MODE, 0.0, 1.0, 1.0, "Modulator target", {"level", "phase"});
+
    // carrier adsr
    configParam(SynthFM::CAR_A, 0.0, maxA, 0.0, "Carrier attack", " seconds");
    configParam(SynthFM::CAR_D, 0.0, maxD, 0.0, "Carrier decay", " seconds");
@@ -96,6 +99,8 @@ void SynthFM::sendParams(bool force) {
    synthFM_Processor_setModulatorRatio(processor, float_to_fix(params[MOD_RATIO].getValue()), force);
    synthFM_Processor_setModulatorWavetable(processor, float_to_fix(params[MOD_MORPH].getValue()), force);
    synthFM_Processor_setModulatorLevel(processor, float_to_fix(params[MOD_LEVEL].getValue()), force);
+   synthFM_Processor_setModulatorLevel(processor, float_to_fix(std::round(params[MOD_MODE].getValue())), force);
+
    synthFM_Processor_setCarrierADSR(processor,
                                       float_to_fix(params[CAR_A].getValue()),
                                       float_to_fix(params[CAR_D].getValue()),
@@ -156,11 +161,12 @@ struct SynthFMWidget : ModuleWidget {
       addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, mod_adsr_y)), module, SynthFM::MOD_D));
       addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, mod_adsr_y)), module, SynthFM::MOD_S));
       addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, mod_adsr_y)), module, SynthFM::MOD_R));
-      // modulator ratio and morph knobs, plus level
+      // modulator ratio and morph knobs, plus level and mode
       float ratio_morph_x = 52.062;
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-112.286)), module, SynthFM::MOD_RATIO));
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-92.893)), module, SynthFM::MOD_MORPH));
-      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(30.480, 128.5-75.790)), module, SynthFM::MOD_LEVEL));
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(25.188, 128.5-76.130)), module, SynthFM::MOD_LEVEL));
+      addParam(createParamCentered<CKSS>(mm2px(Vec(39.851, 128.5-75.729)), module, SynthFM::MOD_MODE));
 
       // carrier ADSR sliders
       float car_adsr_y = 128.5-43.637;
