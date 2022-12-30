@@ -110,9 +110,13 @@ and setModulatorLevel(level: real, force: bool) {
   }
 }
 // 1.0 is phase, 0.0 is level
-and setModulatorMode(level: real, force: bool) {
-  if (Util.change(level) || force) {
-    // _ = voice:Voice.synthSetModulatorLevel(level);
+and setModulatorMode(mode: real, force: bool) {
+  if (Util.change(mode) || force) {
+    if (mode > 0.0) {
+      _ = voice:Voice.synthSetModulatorTargetLevel(false);
+    } else {
+      _ = voice:Voice.synthSetModulatorTargetLevel(true);
+    }
   }
 }
 and setModulatorADSR(a:real , d: real, s: real, r: real, force: bool) {
