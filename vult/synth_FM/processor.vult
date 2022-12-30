@@ -89,9 +89,19 @@ and setModulatorWavetable(wavetableIdx: real, force: bool) {
      _ = voice:Voice.synthSetModulatorWavetable(wavetableIdx);
   }
 }
+and setModulatorWavetablePhase(phaseIdx: real, force: bool) {
+  if (Util.change(phaseIdx) || force) {
+    _ = voice:Voice.synthSetModulatorWavetablePhase(phaseIdx);
+  }
+}
 and setCarrierWavetable(wavetableIdx: real, force: bool) {
   if (Util.change(wavetableIdx) || force) {
     _ = voice:Voice.synthSetCarrierWavetable(wavetableIdx);
+  }
+}
+and setCarrierWavetablePhase(phaseIdx: real, force: bool) {
+  if (Util.change(phaseIdx) || force) {
+    _ = voice:Voice.synthSetCarrierWavetablePhase(phaseIdx);
   }
 }
 and setModulatorRatio(ratio: real, force: bool) {
