@@ -10,8 +10,10 @@ struct SynthFM : Module {
       MOD_R,
       MOD_RATIO,
       MOD_MORPH,
+      MOD_MORPH_PHASE,
       MOD_LEVEL,
       MOD_MODE,
+      MOD_SHIFT,
 
       CAR_A,
       CAR_D,
@@ -19,6 +21,7 @@ struct SynthFM : Module {
       CAR_R,
       CAR_RATIO,
       CAR_MORPH,
+      CAR_MORPH_PHASE,
 
       NUM_PARAMS
    };
@@ -71,9 +74,11 @@ SynthFM::SynthFM() {
    // modulator ratio and morph, plus level
    configParam(SynthFM::MOD_RATIO, -maxRatio, maxRatio, 2.0, "Modulator ratio", "");
    configParam(SynthFM::MOD_MORPH, 0.0, maxMorph, 0.0, "Modulator morph", "");
+   configParam(SynthFM::MOD_MORPH_PHASE, 0.0, 1.0, 0.0, "Modulator morph phase", " %", 0.0f, 100.0f);
    configParam(SynthFM::MOD_LEVEL, 0.0, 1.0, 0.1, "Modulator level", " %", 0.0f, 100.0f);
    // due to the position of the switch and label, here 1.0 phase -> "false" in DSP
    configSwitch(SynthFM::MOD_MODE, 0.0, 1.0, 1.0, "Modulator target", {"level", "phase"});
+   configParam(SynthFM::MOD_SHIFT, 0.0, 1.0, 0.0, "Modulator phase shift", " %", 0.0f, 100.0f);
 
    // carrier adsr
    configParam(SynthFM::CAR_A, 0.0, maxA, 0.0, "Carrier attack", " seconds");
@@ -83,6 +88,7 @@ SynthFM::SynthFM() {
    // carrier ratio and morph
    configParam(SynthFM::CAR_RATIO, -maxRatio, maxRatio, 1.0, "Carrier ratio", "");
    configParam(SynthFM::CAR_MORPH, 0.0, maxMorph, 0.0, "Carrier morph", "");
+   configParam(SynthFM::CAR_MORPH_PHASE, 0.0, 1.0, 0.0, "Carrier morph phase", " %", 0.0f, 100.0f);
 
    // init engine and apply default parameter
    synthFM_Processor_process_init(processor);
@@ -99,8 +105,10 @@ void SynthFM::sendParams(bool force) {
                                       );
    synthFM_Processor_setModulatorRatio(processor, float_to_fix(params[MOD_RATIO].getValue()), force);
    synthFM_Processor_setModulatorWavetable(processor, float_to_fix(params[MOD_MORPH].getValue()), force);
+   synthFM_Processor_setModulatorWavetablePhase(processor, float_to_fix(params[MOD_MORPH_PHASE].getValue()), force);
    synthFM_Processor_setModulatorLevel(processor, float_to_fix(params[MOD_LEVEL].getValue()), force);
    synthFM_Processor_setModulatorMode(processor, float_to_fix(std::round(params[MOD_MODE].getValue())), force);
+   synthFM_Processor_setModulatorPhaseShift(processor, float_to_fix(params[MOD_SHIFT].getValue()), force);
 
    synthFM_Processor_setCarrierADSR(processor,
                                       float_to_fix(params[CAR_A].getValue()),
@@ -111,6 +119,7 @@ void SynthFM::sendParams(bool force) {
                                       );
    synthFM_Processor_setCarrierRatio(processor, float_to_fix(params[CAR_RATIO].getValue()), force);
    synthFM_Processor_setCarrierWavetable(processor, float_to_fix(params[CAR_MORPH].getValue()), force);
+   synthFM_Processor_setCarrierWavetablePhase(processor, float_to_fix(params[CAR_MORPH_PHASE].getValue()), force);
 }
 
 void SynthFM::process(const ProcessArgs &args) {
