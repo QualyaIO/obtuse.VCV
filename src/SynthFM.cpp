@@ -168,25 +168,33 @@ struct SynthFMWidget : ModuleWidget {
       // here and after: use heihgt of canvas since my inskscape has Y origin flow lower left
       float mod_adsr_y = 128.5-99.2;
       addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, mod_adsr_y)), module, SynthFM::MOD_D));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, mod_adsr_y)), module, SynthFM::MOD_S));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, mod_adsr_y)), module, SynthFM::MOD_R));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.411, mod_adsr_y)), module, SynthFM::MOD_D));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(27.739, mod_adsr_y)), module, SynthFM::MOD_S));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(35.930, mod_adsr_y)), module, SynthFM::MOD_R));
       // modulator ratio and morph knobs, plus level and mode
-      float ratio_morph_x = 52.062;
-      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-112.286)), module, SynthFM::MOD_RATIO));
-      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-92.893)), module, SynthFM::MOD_MORPH));
-      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(25.188, 128.5-76.130)), module, SynthFM::MOD_LEVEL));
-      addParam(createParamCentered<CKSS>(mm2px(Vec(39.851, 128.5-75.729)), module, SynthFM::MOD_MODE));
+      float ratio_x = 49.564;
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_x, 128.5-109.853)), module, SynthFM::MOD_RATIO));
+      float morph_x = 44.965;
+      float mod_morph_y = 128.5-93.187;
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(morph_x, mod_morph_y)), module, SynthFM::MOD_MORPH));
+      float morph_phase_x = 55.183;
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(morph_phase_x, mod_morph_y)), module, SynthFM::MOD_MORPH_PHASE));
+      
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(19.080, 128.5-75.601)), module, SynthFM::MOD_LEVEL));
+      addParam(createParamCentered<CKSS>(mm2px(Vec(33.538, 128.5-73.695)), module, SynthFM::MOD_MODE));
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(47.996, 128.5-75.601)), module, SynthFM::MOD_SHIFT));
 
       // carrier ADSR sliders
       float car_adsr_y = 128.5-43.637;
       addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.972, car_adsr_y)), module, SynthFM::CAR_D));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(29.009, car_adsr_y)), module, SynthFM::CAR_S));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(38.046, car_adsr_y)), module, SynthFM::CAR_R));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.411, car_adsr_y)), module, SynthFM::CAR_D));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(27.739, car_adsr_y)), module, SynthFM::CAR_S));
+      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(35.930, car_adsr_y)), module, SynthFM::CAR_R));
       // carrier ratio and morph knobs
-      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-56.723)), module, SynthFM::CAR_RATIO));
-      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_morph_x, 128.5-37.330)), module, SynthFM::CAR_MORPH));
+      addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_x, 128.5-54.126)), module, SynthFM::CAR_RATIO));
+      float car_morph_y = 128.5-37.330;
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(morph_x, car_morph_y)), module, SynthFM::CAR_MORPH));
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(morph_phase_x, car_morph_y)), module, SynthFM::CAR_MORPH_PHASE));
 
       // input: v/oct, gate, velocity
       float port_y = 128.5 - 14.625;
