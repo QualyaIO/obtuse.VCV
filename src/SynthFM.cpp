@@ -23,6 +23,8 @@ struct SynthFM : Module {
       CAR_MORPH,
       CAR_MORPH_PHASE,
 
+      MOD_FDB,
+
       NUM_PARAMS
    };
    enum InputIds {
@@ -79,6 +81,7 @@ SynthFM::SynthFM() {
    // due to the position of the switch and label, here 1.0 phase -> "false" in DSP
    configSwitch(SynthFM::MOD_MODE, 0.0, 1.0, 1.0, "Modulator target", {"level", "phase"});
    configParam(SynthFM::MOD_SHIFT, 0.0, 1.0, 0.0, "Modulator phase shift", " %", 0.0f, 100.0f);
+   configParam(SynthFM::MOD_FDB, 0.0, 1.0, 0.0, "Modulator feedback", " %", 0.0f, 100.0f);
 
    // carrier adsr
    configParam(SynthFM::CAR_A, 0.0, maxA, 0.0, "Carrier attack", " seconds");
@@ -109,6 +112,7 @@ void SynthFM::sendParams(bool force) {
    synthFM_Processor_setModulatorLevel(processor, float_to_fix(params[MOD_LEVEL].getValue()), force);
    synthFM_Processor_setModulatorMode(processor, float_to_fix(std::round(params[MOD_MODE].getValue())), force);
    synthFM_Processor_setModulatorPhaseShift(processor, float_to_fix(params[MOD_SHIFT].getValue()), force);
+   synthFM_Processor_setModulatorFeedback(processor, float_to_fix(params[MOD_FDB].getValue()), force);
 
    synthFM_Processor_setCarrierADSR(processor,
                                       float_to_fix(params[CAR_A].getValue()),
@@ -180,6 +184,7 @@ struct SynthFMWidget : ModuleWidget {
       float morph_phase_x = 55.183;
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(morph_phase_x, mod_morph_y)), module, SynthFM::MOD_MORPH_PHASE));
       
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(6.426, 128.5-75.768)), module, SynthFM::MOD_FDB));
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(19.080, 128.5-75.601)), module, SynthFM::MOD_LEVEL));
       addParam(createParamCentered<CKSS>(mm2px(Vec(33.538, 128.5-73.695)), module, SynthFM::MOD_MODE));
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(47.996, 128.5-75.601)), module, SynthFM::MOD_SHIFT));
