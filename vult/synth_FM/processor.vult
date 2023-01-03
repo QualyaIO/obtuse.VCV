@@ -138,7 +138,7 @@ and setModulatorFeedback(ratio: real, force: bool) {
   if (Util.change(ratio) || force) {
     _ = voice:Voice.synthSetModulatorFeedback(ratio);
   }
-} 
+}
 and setModulatorADSR(a:real , d: real, s: real, r: real, force: bool) {
   if (change4(a,d,s,r) || force) {
      _ = voice:Voice.synthSetModulatorADSR(a,d,s,r);
