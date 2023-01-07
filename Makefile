@@ -21,7 +21,7 @@ DISTRIBUTABLES += $(wildcard LICENSE*)
 include $(RACK_DIR)/arch.mk
 include vult.inc
 
-VULT_EFFECTS_SRC = vult/processor_effects.vult vult/processor_reverb.vult vult/processor_svf.vult 
+VULT_EFFECTS_SRC = vult/processor_reverb.vult vult/processor_svf.vult 
 VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
 	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -o src/engine_effects -real fixed

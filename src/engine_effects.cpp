@@ -8069,40 +8069,6 @@ void Reverb_default(Reverb__ctx_type_0 &_ctx){
    Allpass_setDelay(_ctx.allpass1,42);
 }
 
-void Processor_effects__ctx_type_0_init(Processor_effects__ctx_type_0 &_output_){
-   Processor_effects__ctx_type_0 _ctx;
-   Reverb__ctx_type_0_init(_ctx.reverb);
-   _ctx.process_ret_3 = 0x0 /* 0.000000 */;
-   _ctx.process_ret_2 = 0x0 /* 0.000000 */;
-   _ctx.process_ret_1 = 0x0 /* 0.000000 */;
-   _ctx.process_ret_0 = 0x0 /* 0.000000 */;
-   _ctx.param4 = 0x0 /* 0.000000 */;
-   _ctx.param3 = 0x0 /* 0.000000 */;
-   _ctx.param2 = 0x0 /* 0.000000 */;
-   _ctx.param1 = 0x0 /* 0.000000 */;
-   _ctx.fs = 0x0 /* 0.000000 */;
-   Processor_effects_default(_ctx);
-   _output_ = _ctx;
-   return ;
-}
-
-void Processor_effects_process(Processor_effects__ctx_type_0 &_ctx, fix16_t in1, fix16_t in2, fix16_t in3, fix16_t in4, fix16_t fs){
-   fix16_t out1;
-   fix16_t out2;
-   fix16_t out3;
-   fix16_t out4;
-   out1 = in1;
-   out2 = in2;
-   out3 = in3;
-   out4 = in4;
-   out1 = ((in1 >> 1) + (Reverb_process(_ctx.reverb,in1) >> 1));
-   _ctx.process_ret_0 = out1;
-   _ctx.process_ret_1 = out2;
-   _ctx.process_ret_2 = out3;
-   _ctx.process_ret_3 = out4;
-   return ;
-}
-
 void Processor_reverb__ctx_type_0_init(Processor_reverb__ctx_type_0 &_output_){
    Processor_reverb__ctx_type_0 _ctx;
    _ctx.reverbTime = 0x0 /* 0.000000 */;
