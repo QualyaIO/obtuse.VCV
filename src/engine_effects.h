@@ -549,7 +549,7 @@ static_inline void Processor_effects_config_init(Processor_effects__ctx_type_0 &
 
 static_inline void Processor_effects_config(Processor_effects__ctx_type_0 &_ctx){
    Reverb_setReverbTime(_ctx.reverb,0xa0000 /* 10.000000 */);
-   Reverb_setDelayms(_ctx.reverb,0x320000 /* 50.000000 */);
+   Reverb_setDelayms(_ctx.reverb,0x0 /* 0.000000 */);
 }
 
 typedef Processor_effects__ctx_type_0 Processor_effects_setSamplerate_type;
