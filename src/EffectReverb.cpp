@@ -42,32 +42,35 @@ EffectReverb::EffectReverb() {
    configParam(EffectReverb::DRY_WET, 0.0, 1.0, 0.5, "Dry/Wet", " %", 0.0f, 100.f);
    configParam(EffectReverb::REVERB, 0.001, 60.0, 10.0, "Reverberation time (T60)", " seconds");
    // x2 to let people boost input signal, e.g. from 0..5v to 0..10v
-   configParam(EffectReverb::REVERB_AV, -2.0, 2.0, 0.0, "Reverberation attenuverter", "");
+   configParam(EffectReverb::REVERB_AV, 0.0, 1.0, 0.0, "Reverberation CV strength", " %", 0.0f, 100.f);
    // actually max delay will depend on buffer size, with 2048 buffer and 44100 fs it's only 46ms
    configParam(EffectReverb::DELAY, 1.0, 100.0, 50.0, "Delay", " ms");
-   configParam(EffectReverb::DELAY_AV, -2.0, 2.0, 0.0, "Delay attenuverter", "");
+   configParam(EffectReverb::DELAY_AV, 0.0, 1.0, 0.0, "Delay CV strength", " %", 0.0f, 100.f);
 
    // init engine and apply default parameter
    Processor_reverb_process_init(processor);
    sendParams(true);
 }
 
-// Reads the CV input values, if any, normalize and apply attenuverters
+// Reads the CV input values, if any, normalize and apply modulator (was attenuverter before)
+// the higher the modulator, the greater the modulation
 float EffectReverb::readParamCV(int PARAM, int CV_IN, int CV_AV) {
    float val = params[PARAM].getValue();
    float in_val = 1.0;
    if (inputs[CV_IN].getChannels() > 0) {
       // input range should be 0..10v
-      in_val = inputs[CV_IN].getVoltage() / 10.0f * params[CV_AV].getValue();
+      in_val = inputs[CV_IN].getVoltage() / 10.0f;
       // values on 0..1
       in_val = clamp(in_val, 0.0, 1.0);
-      val = (val - paramQuantities[PARAM]->getMinValue()) * in_val +  paramQuantities[PARAM]->getMinValue();
+      // by how much we can modulate
+      float mod_range = (val - paramQuantities[PARAM]->getMinValue()) *  params[CV_AV].getValue();
+      val = val - mod_range * (1 - in_val);
    }
    return val;
 }
 
 void EffectReverb::sendParams(bool force) {
-   Processor_reverb_setDelay(processor, float_to_fix(readParamCV(REVERB, REVERB_IN, REVERB_AV)), force);
+   Processor_reverb_setReverb(processor, float_to_fix(readParamCV(REVERB, REVERB_IN, REVERB_AV)), force);
    Processor_reverb_setDelay(processor, float_to_fix(readParamCV(DELAY, DELAY_IN, DELAY_AV)), force);
 }
 

@@ -1,10 +1,7 @@
 
 
 fun process(in:real) {
-   // in -> reverb -> out, 50% wet
-   val out = 0.5 * in + 0.5 * reverb:Reverb.process(in);
-
-   return out;
+   return reverb:Reverb.process(in);
 }
 
 // send current delay and modifier

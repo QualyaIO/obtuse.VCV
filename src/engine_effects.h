@@ -598,10 +598,8 @@ static_inline void Processor_reverb_process_init(Processor_reverb__ctx_type_0 &_
 }
 
 static_inline fix16_t Processor_reverb_process(Processor_reverb__ctx_type_0 &_ctx, fix16_t in){
-   fix16_t out;
-   out = ((in >> 1) + (Reverb_process(_ctx.reverb,in) >> 1));
-   return out;
-}
+   return Reverb_process(_ctx.reverb,in);
+};
 
 typedef Processor_reverb__ctx_type_0 Processor_reverb_applyDelay_type;
 
