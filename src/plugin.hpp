@@ -8,6 +8,7 @@ extern Plugin *pluginInstance;
 
 // Declare each Model, defined in each module source file
 extern Model *effectReverb;
+extern Model *effectSVF;
 extern Model *synthFM;
 extern Model *synthSampler;
 extern Model *synthDrummer;

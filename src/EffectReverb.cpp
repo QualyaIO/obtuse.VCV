@@ -41,7 +41,6 @@ EffectReverb::EffectReverb() {
 
    configParam(EffectReverb::DRY_WET, 0.0, 1.0, 0.5, "Dry/Wet", " %", 0.0f, 100.f);
    configParam(EffectReverb::REVERB, 0.001, 60.0, 10.0, "Reverberation time (T60)", " seconds");
-   // x2 to let people boost input signal, e.g. from 0..5v to 0..10v
    configParam(EffectReverb::REVERB_AV, 0.0, 1.0, 0.0, "Reverberation CV strength", " %", 0.0f, 100.f);
    // actually max delay will depend on buffer size, with 2048 buffer and 44100 fs it's only 46ms
    configParam(EffectReverb::DELAY, 1.0, 100.0, 50.0, "Delay", " ms");
@@ -80,7 +79,8 @@ void EffectReverb::process(const ProcessArgs &args) {
    sendParams();
    
    // input should be audio level, -5 .. 5
-   float in = inputs[IN].getVoltage() / 5.0f;
+   // VoltageSum to somehow handle polyphony
+   float in = inputs[IN].getVoltageSum() / 5.0f;
 
    // retrieve reverb
    float effect = fix_to_float(Processor_reverb_process(processor, float_to_fix(in)));
