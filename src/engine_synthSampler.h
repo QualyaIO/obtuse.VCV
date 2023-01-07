@@ -7,13 +7,6 @@
 #include "vultin.h"
 #include "engine_synthSampler.tables.h"
 
-typedef struct synthSampler__tuple___real_real_real_real__ {
-   fix16_t field_0;
-   fix16_t field_1;
-   fix16_t field_2;
-   fix16_t field_3;
-} synthSampler__tuple___real_real_real_real__;
-
 static_inline fix16_t synthSampler_Util_noteToFrequency(int note){
    return fix_mul(0x217 /* 0.008176 */,fix_exp(fix_mul(0xec9 /* 0.057762 */,int_to_fix(note))));
 };
@@ -1018,14 +1011,6 @@ int synthSampler_Processor_cvToPitch(fix16_t cv);
 
 typedef struct synthSampler_Processor__ctx_type_1 {
    synthSampler_Voice__ctx_type_0 voice;
-   fix16_t process_ret_3;
-   fix16_t process_ret_2;
-   fix16_t process_ret_1;
-   fix16_t process_ret_0;
-   fix16_t param4;
-   fix16_t param3;
-   fix16_t param2;
-   fix16_t param1;
    int last_pitches[16];
    int last_nbcables;
    uint8_t last_gates[16];
@@ -1041,50 +1026,8 @@ static_inline void synthSampler_Processor_process_init(synthSampler_Processor__c
    return ;
 }
 
-void synthSampler_Processor_process(synthSampler_Processor__ctx_type_1 &_ctx, fix16_t in4, fix16_t fs);
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_process_ret_0_type;
-
-static_inline void synthSampler_Processor_process_ret_0_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline fix16_t synthSampler_Processor_process_ret_0(synthSampler_Processor__ctx_type_1 &_ctx){
-   return _ctx.process_ret_0;
-};
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_process_ret_1_type;
-
-static_inline void synthSampler_Processor_process_ret_1_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline fix16_t synthSampler_Processor_process_ret_1(synthSampler_Processor__ctx_type_1 &_ctx){
-   return _ctx.process_ret_1;
-};
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_process_ret_2_type;
-
-static_inline void synthSampler_Processor_process_ret_2_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline fix16_t synthSampler_Processor_process_ret_2(synthSampler_Processor__ctx_type_1 &_ctx){
-   return _ctx.process_ret_2;
-};
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_process_ret_3_type;
-
-static_inline void synthSampler_Processor_process_ret_3_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline fix16_t synthSampler_Processor_process_ret_3(synthSampler_Processor__ctx_type_1 &_ctx){
-   return _ctx.process_ret_3;
+static_inline fix16_t synthSampler_Processor_process(synthSampler_Processor__ctx_type_1 &_ctx){
+   return synthSampler_Voice_process(_ctx.voice);
 };
 
 typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_setNote_type;
@@ -1105,50 +1048,6 @@ static_inline void synthSampler_Processor_nbCables_init(synthSampler_Processor__
 
 void synthSampler_Processor_nbCables(synthSampler_Processor__ctx_type_1 &_ctx, int nbcables);
 
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_setParam1_type;
-
-static_inline void synthSampler_Processor_setParam1_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline void synthSampler_Processor_setParam1(synthSampler_Processor__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
-   _ctx.param1 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
-};
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_setParam2_type;
-
-static_inline void synthSampler_Processor_setParam2_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline void synthSampler_Processor_setParam2(synthSampler_Processor__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
-   _ctx.param2 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
-};
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_setParam3_type;
-
-static_inline void synthSampler_Processor_setParam3_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline void synthSampler_Processor_setParam3(synthSampler_Processor__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
-   _ctx.param3 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
-};
-
-typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_setParam4_type;
-
-static_inline void synthSampler_Processor_setParam4_init(synthSampler_Processor__ctx_type_1 &_output_){
-   synthSampler_Processor__ctx_type_1_init(_output_);
-   return ;
-}
-
-static_inline void synthSampler_Processor_setParam4(synthSampler_Processor__ctx_type_1 &_ctx, fix16_t knob, fix16_t mod, fix16_t input){
-   _ctx.param4 = fix_clip((knob + fix_mul(input,mod)),0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
-};
-
 typedef synthSampler_Processor__ctx_type_1 synthSampler_Processor_setSamplerate_type;
 
 static_inline void synthSampler_Processor_setSamplerate_init(synthSampler_Processor__ctx_type_1 &_output_){
@@ -1157,7 +1056,7 @@ static_inline void synthSampler_Processor_setSamplerate_init(synthSampler_Proces
 }
 
 static_inline void synthSampler_Processor_setSamplerate(synthSampler_Processor__ctx_type_1 &_ctx, fix16_t newFs){
-   if(newFs > 0x0 /* 0.000000 */){
+   if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
       _ctx.fs = newFs;
       synthSampler_Voice_setSamplerate(_ctx.voice,_ctx.fs);
    }

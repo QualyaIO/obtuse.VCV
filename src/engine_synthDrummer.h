@@ -984,7 +984,7 @@ static_inline void synthDrummer_Processor_setSamplerate_init(synthDrummer_Proces
 }
 
 static_inline void synthDrummer_Processor_setSamplerate(synthDrummer_Processor__ctx_type_1 &_ctx, fix16_t newFs){
-   if(newFs > 0x0 /* 0.000000 */){
+   if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
       _ctx.fs = newFs;
       synthDrummer_Voice_setSamplerate(_ctx.voice,_ctx.fs);
    }

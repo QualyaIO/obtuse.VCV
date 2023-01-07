@@ -65,7 +65,7 @@ and nbCables(nbcables: int) {
 }
 and setSamplerate(newFs:real) {
    mem fs;
-   if (newFs > 0.0) {
+   if (newFs > 0.0 && newFs <> fs) {
       fs = newFs;
       _ = voice:Voice.setSamplerate(fs);
    }
