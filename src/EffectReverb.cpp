@@ -32,6 +32,8 @@ struct EffectReverb : Module {
    void process(const ProcessArgs &args) override;
    // pass all parameters to engine. force: engine will pass params even if not changed, use upon init
    void sendParams(bool force=false);
+   // ease reading parameters with modulation
+   float readParamCV(int PARAM, int CV_IN, int CV_AV);
 };
 
 EffectReverb::EffectReverb() {
@@ -39,38 +41,50 @@ EffectReverb::EffectReverb() {
 
    configParam(EffectReverb::DRY_WET, 0.0, 1.0, 0.5, "Dry/Wet", " %", 0.0f, 100.f);
    configParam(EffectReverb::REVERB, 0.001, 60.0, 10.0, "Reverberation time (T60)", " seconds");
-   configParam(EffectReverb::REVERB_AV, -1.0, 1.0, 0.0, "Reverberation attenuverter", "");
+   // x2 to let people boost input signal, e.g. from 0..5v to 0..10v
+   configParam(EffectReverb::REVERB_AV, -2.0, 2.0, 0.0, "Reverberation attenuverter", "");
    // actually max delay will depend on buffer size, with 2048 buffer and 44100 fs it's only 46ms
    configParam(EffectReverb::DELAY, 1.0, 100.0, 50.0, "Delay", " ms");
-   configParam(EffectReverb::DELAY_AV, -1.0, 1.0, 0.0, "Delay attenuverter", "");
+   configParam(EffectReverb::DELAY_AV, -2.0, 2.0, 0.0, "Delay attenuverter", "");
 
    // init engine and apply default parameter
    Processor_reverb_process_init(processor);
    sendParams(true);
 }
 
+// Reads the CV input values, if any, normalize and apply attenuverters
+float EffectReverb::readParamCV(int PARAM, int CV_IN, int CV_AV) {
+   float val = params[PARAM].getValue();
+   float in_val = 1.0;
+   if (inputs[CV_IN].getChannels() > 0) {
+      // input range should be 0..10v
+      in_val = inputs[CV_IN].getVoltage() / 10.0f * params[CV_AV].getValue();
+      // values on 0..1
+      in_val = clamp(in_val, 0.0, 1.0);
+      val = (val - paramQuantities[PARAM]->getMinValue()) * in_val +  paramQuantities[PARAM]->getMinValue();
+   }
+   return val;
+}
+
 void EffectReverb::sendParams(bool force) {
-   //Processor_reverb_process_setWetDry(processor, float_to_fix(params[WET_DRY].getValue()), force);
-   //Processor_reverb_process_setDelay(processor, float_to_fix(params[DELAY].getValue()), force);
-   //Processor_reverb_process_setReverb(processor, float_to_fix(params[REVERB].getValue()), force);
+   Processor_reverb_setDelay(processor, float_to_fix(readParamCV(REVERB, REVERB_IN, REVERB_AV)), force);
+   Processor_reverb_setDelay(processor, float_to_fix(readParamCV(DELAY, DELAY_IN, DELAY_AV)), force);
 }
 
 void EffectReverb::process(const ProcessArgs &args) {
    // update parameters
    Processor_reverb_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
    sendParams();
-
-   // Reads all the input values, normalizes the values, apply attenuverters
-   float in_reverb = inputs[REVERB_IN].getVoltage() / 10.0f * params[REVERB_AV].getValue();
-   float in_delay = inputs[DELAY_IN].getVoltage() / 10.0f * params[DELAY_AV].getValue();
-   // TODO: apply CV
    
    // input should be audio level, -5 .. 5
    float in = inputs[IN].getVoltage() / 5.0f;
 
-   // from processor -1..1 to max audio voltage range
-   outputs[OUT].setVoltage(fix_to_float(Processor_reverb_process(processor, float_to_fix(in)) * 5.0f));
-   
+   // retrieve reverb
+   float effect = fix_to_float(Processor_reverb_process(processor, float_to_fix(in)));
+   // apply mix and output to max audio voltage range
+   float dry_wet = params[DRY_WET].getValue();
+   // from processor -1..1 
+   outputs[OUT].setVoltage((in * (1 - dry_wet) + effect * dry_wet) * 5.0f);
 }
 
 struct EffectReverbWidget : ModuleWidget {

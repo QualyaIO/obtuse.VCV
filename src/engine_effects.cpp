@@ -7935,8 +7935,12 @@ void Processor_effects_process(Processor_effects__ctx_type_0 &_ctx, fix16_t in1,
 
 void Processor_reverb__ctx_type_0_init(Processor_reverb__ctx_type_0 &_output_){
    Processor_reverb__ctx_type_0 _ctx;
+   _ctx.reverbTime = 0x0 /* 0.000000 */;
    Reverb__ctx_type_0_init(_ctx.reverb);
    _ctx.fs = 0x0 /* 0.000000 */;
+   _ctx.delayms = 0x0 /* 0.000000 */;
+   Util__ctx_type_3_init(_ctx._inst63b);
+   Util__ctx_type_3_init(_ctx._inst23b);
    Processor_reverb_default(_ctx);
    _output_ = _ctx;
    return ;

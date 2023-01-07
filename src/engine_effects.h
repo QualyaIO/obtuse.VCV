@@ -580,8 +580,12 @@ static_inline void Processor_effects_default(Processor_effects__ctx_type_0 &_ctx
 }
 
 typedef struct Processor_reverb__ctx_type_0 {
+   fix16_t reverbTime;
    Reverb__ctx_type_0 reverb;
    fix16_t fs;
+   fix16_t delayms;
+   Util__ctx_type_3 _inst63b;
+   Util__ctx_type_3 _inst23b;
 } Processor_reverb__ctx_type_0;
 
 typedef Processor_reverb__ctx_type_0 Processor_reverb_process_type;
@@ -599,16 +603,66 @@ static_inline fix16_t Processor_reverb_process(Processor_reverb__ctx_type_0 &_ct
    return out;
 }
 
-typedef Processor_reverb__ctx_type_0 Processor_reverb_config_type;
+typedef Processor_reverb__ctx_type_0 Processor_reverb_applyDelay_type;
 
-static_inline void Processor_reverb_config_init(Processor_reverb__ctx_type_0 &_output_){
+static_inline void Processor_reverb_applyDelay_init(Processor_reverb__ctx_type_0 &_output_){
    Processor_reverb__ctx_type_0_init(_output_);
    return ;
 }
 
-static_inline void Processor_reverb_config(Processor_reverb__ctx_type_0 &_ctx){
-   Reverb_setReverbTime(_ctx.reverb,0xa0000 /* 10.000000 */);
-   Reverb_setDelayms(_ctx.reverb,0x320000 /* 50.000000 */);
+static_inline void Processor_reverb_applyDelay(Processor_reverb__ctx_type_0 &_ctx){
+   Reverb_setDelayms(_ctx.reverb,_ctx.delayms);
+};
+
+typedef Processor_reverb__ctx_type_0 Processor_reverb_setDelay_type;
+
+static_inline void Processor_reverb_setDelay_init(Processor_reverb__ctx_type_0 &_output_){
+   Processor_reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_reverb_setDelay(Processor_reverb__ctx_type_0 &_ctx, fix16_t newDelay, uint8_t force){
+   if(Util_change(_ctx._inst23b,newDelay) || force){
+      _ctx.delayms = newDelay;
+      Processor_reverb_applyDelay(_ctx);
+   }
+};
+
+typedef Processor_reverb__ctx_type_0 Processor_reverb_applyReverb_type;
+
+static_inline void Processor_reverb_applyReverb_init(Processor_reverb__ctx_type_0 &_output_){
+   Processor_reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_reverb_applyReverb(Processor_reverb__ctx_type_0 &_ctx){
+   Reverb_setReverbTime(_ctx.reverb,_ctx.reverbTime);
+};
+
+typedef Processor_reverb__ctx_type_0 Processor_reverb_setReverb_type;
+
+static_inline void Processor_reverb_setReverb_init(Processor_reverb__ctx_type_0 &_output_){
+   Processor_reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_reverb_setReverb(Processor_reverb__ctx_type_0 &_ctx, fix16_t newReverb, uint8_t force){
+   if(Util_change(_ctx._inst63b,newReverb) || force){
+      _ctx.reverbTime = newReverb;
+      Processor_reverb_applyReverb(_ctx);
+   }
+};
+
+typedef Processor_reverb__ctx_type_0 Processor_reverb_updateConfig_type;
+
+static_inline void Processor_reverb_updateConfig_init(Processor_reverb__ctx_type_0 &_output_){
+   Processor_reverb__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_reverb_updateConfig(Processor_reverb__ctx_type_0 &_ctx){
+   Processor_reverb_applyDelay(_ctx);
+   Processor_reverb_applyReverb(_ctx);
 }
 
 typedef Processor_reverb__ctx_type_0 Processor_reverb_setSamplerate_type;
@@ -622,7 +676,7 @@ static_inline void Processor_reverb_setSamplerate(Processor_reverb__ctx_type_0 &
    if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
       _ctx.fs = newFs;
       Reverb_setSamplerate(_ctx.reverb,_ctx.fs);
-      Processor_reverb_config(_ctx);
+      Processor_reverb_updateConfig(_ctx);
    }
 };
 
@@ -635,6 +689,8 @@ static_inline void Processor_reverb_default_init(Processor_reverb__ctx_type_0 &_
 
 static_inline void Processor_reverb_default(Processor_reverb__ctx_type_0 &_ctx){
    Reverb_default(_ctx.reverb);
+   Processor_reverb_setReverb(_ctx,0xa0000 /* 10.000000 */,true);
+   Processor_reverb_setDelay(_ctx,0x320000 /* 50.000000 */,true);
    Processor_reverb_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
 
