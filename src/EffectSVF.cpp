@@ -34,7 +34,7 @@ struct EffectSVF : Module {
       NUM_LIGHTS
    };
 
-   Processor_reverb_process_type processor;
+   Processor_svf_process_type processor;
 
    EffectSVF();
    void process(const ProcessArgs &args) override;
@@ -54,7 +54,7 @@ EffectSVF::EffectSVF() {
    configParam(EffectSVF::Q_AV, 0.0, 1.0, 0.0, "Q CV strength", " %", 0.0f, 100.f);
 
    // init engine and apply default parameter
-   Processor_reverb_process_init(processor);
+   Processor_svf_process_init(processor);
    sendParams(true);
 }
 
@@ -76,13 +76,13 @@ float EffectSVF::readParamCV(int PARAM, int CV_IN, int CV_AV) {
 }
 
 void EffectSVF::sendParams(bool force) {
-   //Processor_reverb_setReverb(processor, float_to_fix(readParamCV(FREQ, FREQ_IN, FREQ_AV)), force);
-   //Processor_reverb_setQ(processor, float_to_fix(readParamCV(Q, Q_IN, Q_AV)), force);
+   Processor_svf_setFreq(processor, float_to_fix(readParamCV(FREQ, FREQ_IN, FREQ_AV)), force);
+   Processor_svf_setQ(processor, float_to_fix(readParamCV(Q, Q_IN, Q_AV)), force);
 }
 
 void EffectSVF::process(const ProcessArgs &args) {
    // update parameters
-   Processor_reverb_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
+   Processor_svf_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
    sendParams();
    
    // input should be audio level, -5 .. 5
@@ -90,7 +90,7 @@ void EffectSVF::process(const ProcessArgs &args) {
    float in = inputs[IN].getVoltageSum() / 5.0f;
 
    // retrieve filter
-   float effect = fix_to_float(Processor_reverb_process(processor, float_to_fix(in)));
+   float effect = fix_to_float(Processor_svf_process(processor, float_to_fix(in)));
    // from processor -1..1 
    outputs[OUT].setVoltage(effect * 5.0f);
 }

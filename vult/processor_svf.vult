@@ -1,0 +1,59 @@
+
+
+fun process(in:real) {
+   return svf:SVF.process(in);
+}
+
+// send current frequency (in khz) and modifier
+and applyFreq() {
+   mem freq: real;
+   _ = svf:SVF.setFreq(freq);
+}
+// set default config
+and setFreq(newFreq: real, force: bool) {
+  if (Util.change(newFreq) || force) {
+    freq = newFreq;
+    _ = applyFreq();
+  }
+}
+
+// send current Q and modifier
+and applyQ() {
+   mem qval: real;
+   _ = svf:SVF.setQ(qval);
+}
+// set default config
+and setQ(newQ: real, force: bool) {
+  if (Util.change(newQ) || force) {
+    qval = newQ;
+    _ = applyQ();
+  }
+}
+
+// setting filter type
+// 0: disabled
+// 1: low-pass
+// 2: high-pass
+// 3: band-pass
+// 4: notch
+and setType(newType: real, force: bool) {
+  if (Util.change(newType) || force) {
+     _ = svf:SVF.setType(int(newType));
+  }
+}
+
+and setSamplerate(newFs:real) {
+   mem fs;
+   if (newFs > 0.0 && newFs <> fs) {
+      fs = newFs;
+      _ = svf:SVF.setSamplerate(fs);
+   }
+}
+and default() @[init] {
+   _ = svf:SVF.default();
+   _ = setFreq(5.0, true);
+   _ = setQ(0.0, true);
+   // default to low pass
+   _ = setType(1.0, true);
+   _ = setSamplerate(44.1);
+}

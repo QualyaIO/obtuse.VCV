@@ -124,6 +124,245 @@ static_inline fix16_t Util_velocityToLevel(int velocity){
    return fix_mul(0x204 /* 0.007874 */,int_to_fix(velocity));
 }
 
+typedef struct SVF__ctx_type_0 {
+   fix16_t z2;
+   fix16_t z1;
+   fix16_t targetFreq;
+   int sel;
+   fix16_t rsize;
+   fix16_t q;
+   fix16_t inv_den;
+   fix16_t g_table[1024];
+   fix16_t gRatio;
+   fix16_t g;
+   fix16_t fs_nyquist;
+   fix16_t fs;
+   fix16_t freq;
+   Util__ctx_type_3 _inst93b;
+   Util__ctx_type_6 _inst855;
+   Util__ctx_type_3 _inst163b;
+   Util__ctx_type_6 _inst1555;
+   fix16_t R;
+} SVF__ctx_type_0;
+
+typedef SVF__ctx_type_0 SVF_updateGTable_type;
+
+void SVF__ctx_type_0_init(SVF__ctx_type_0 &_output_);
+
+static_inline void SVF_updateGTable_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+void SVF_updateGTable(SVF__ctx_type_0 &_ctx);
+
+typedef SVF__ctx_type_0 SVF_updateG_type;
+
+static_inline void SVF_updateG_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+void SVF_updateG(SVF__ctx_type_0 &_ctx);
+
+typedef SVF__ctx_type_0 SVF_updateCoeffs_type;
+
+static_inline void SVF_updateCoeffs_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void SVF_updateCoeffs(SVF__ctx_type_0 &_ctx){
+   _ctx.R = fix_div(0x10000 /* 1.000000 */,((0x0 /* 0.000000 */ + _ctx.q) << 1));
+   _ctx.inv_den = fix_div(0x10000 /* 1.000000 */,(0x10000 /* 1.000000 */ + fix_mul(_ctx.g,_ctx.g) + (fix_mul(_ctx.R,_ctx.g) << 1)));
+}
+
+typedef SVF__ctx_type_0 SVF_setFreq_type;
+
+static_inline void SVF_setFreq_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void SVF_setFreq(SVF__ctx_type_0 &_ctx, fix16_t newFreq){
+   _ctx.targetFreq = fix_clip(newFreq,0x0 /* 0.000000 */,_ctx.fs_nyquist);
+   SVF_updateG(_ctx);
+   SVF_updateCoeffs(_ctx);
+}
+
+typedef SVF__ctx_type_0 SVF_setQ_type;
+
+static_inline void SVF_setQ_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void SVF_setQ(SVF__ctx_type_0 &_ctx, fix16_t newQ){
+   _ctx.q = (0x8000 /* 0.500000 */ + newQ);
+   SVF_updateCoeffs(_ctx);
+}
+
+typedef SVF__ctx_type_0 SVF_setType_type;
+
+static_inline void SVF_setType_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void SVF_setType(SVF__ctx_type_0 &_ctx, int newSel){
+   _ctx.sel = int_clip(newSel,0,4);
+};
+
+typedef SVF__ctx_type_0 SVF_process_type;
+
+static_inline void SVF_process_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+fix16_t SVF_process(SVF__ctx_type_0 &_ctx, fix16_t input);
+
+typedef SVF__ctx_type_0 SVF_process_bufferTo_type;
+
+static_inline void SVF_process_bufferTo_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+void SVF_process_bufferTo(SVF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+
+typedef SVF__ctx_type_0 SVF_setSamplerate_type;
+
+static_inline void SVF_setSamplerate_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+void SVF_setSamplerate(SVF__ctx_type_0 &_ctx, fix16_t newFs);
+
+typedef SVF__ctx_type_0 SVF_default_type;
+
+static_inline void SVF_default_init(SVF__ctx_type_0 &_output_){
+   SVF__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void SVF_default(SVF__ctx_type_0 &_ctx){
+   _ctx.rsize = 0x4000000 /* 1024.000000 */;
+   _ctx.freq = 0x0 /* 0.000000 */;
+   _ctx.q = 0x0 /* 0.000000 */;
+   SVF_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
+}
+
+typedef struct Processor_svf__ctx_type_0 {
+   SVF__ctx_type_0 svf;
+   fix16_t qval;
+   fix16_t fs;
+   fix16_t freq;
+   Util__ctx_type_3 _inst93b;
+   Util__ctx_type_3 _inst63b;
+   Util__ctx_type_3 _inst23b;
+} Processor_svf__ctx_type_0;
+
+typedef Processor_svf__ctx_type_0 Processor_svf_process_type;
+
+void Processor_svf__ctx_type_0_init(Processor_svf__ctx_type_0 &_output_);
+
+static_inline void Processor_svf_process_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline fix16_t Processor_svf_process(Processor_svf__ctx_type_0 &_ctx, fix16_t in){
+   return SVF_process(_ctx.svf,in);
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_applyFreq_type;
+
+static_inline void Processor_svf_applyFreq_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_svf_applyFreq(Processor_svf__ctx_type_0 &_ctx){
+   SVF_setFreq(_ctx.svf,_ctx.freq);
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_setFreq_type;
+
+static_inline void Processor_svf_setFreq_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_svf_setFreq(Processor_svf__ctx_type_0 &_ctx, fix16_t newFreq, uint8_t force){
+   if(Util_change(_ctx._inst23b,newFreq) || force){
+      _ctx.freq = newFreq;
+      Processor_svf_applyFreq(_ctx);
+   }
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_applyQ_type;
+
+static_inline void Processor_svf_applyQ_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_svf_applyQ(Processor_svf__ctx_type_0 &_ctx){
+   SVF_setQ(_ctx.svf,_ctx.qval);
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_setQ_type;
+
+static_inline void Processor_svf_setQ_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_svf_setQ(Processor_svf__ctx_type_0 &_ctx, fix16_t newQ, uint8_t force){
+   if(Util_change(_ctx._inst63b,newQ) || force){
+      _ctx.qval = newQ;
+      Processor_svf_applyQ(_ctx);
+   }
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_setType_type;
+
+static_inline void Processor_svf_setType_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_svf_setType(Processor_svf__ctx_type_0 &_ctx, fix16_t newType, uint8_t force){
+   if(Util_change(_ctx._inst93b,newType) || force){
+      SVF_setType(_ctx.svf,fix_to_int(newType));
+   }
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_setSamplerate_type;
+
+static_inline void Processor_svf_setSamplerate_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_svf_setSamplerate(Processor_svf__ctx_type_0 &_ctx, fix16_t newFs){
+   if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
+      _ctx.fs = newFs;
+      SVF_setSamplerate(_ctx.svf,_ctx.fs);
+   }
+};
+
+typedef Processor_svf__ctx_type_0 Processor_svf_default_type;
+
+static_inline void Processor_svf_default_init(Processor_svf__ctx_type_0 &_output_){
+   Processor_svf__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Processor_svf_default(Processor_svf__ctx_type_0 &_ctx);
+
 typedef struct CombFB__ctx_type_0 {
    fix16_t scale;
    int pos;
