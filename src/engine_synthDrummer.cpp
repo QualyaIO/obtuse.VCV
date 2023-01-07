@@ -1840,37 +1840,12 @@ int synthDrummer_Processor_cvToPitch(fix16_t cv){
 void synthDrummer_Processor__ctx_type_1_init(synthDrummer_Processor__ctx_type_1 &_output_){
    synthDrummer_Processor__ctx_type_1 _ctx;
    synthDrummer_Voice__ctx_type_0_init(_ctx.voice);
-   _ctx.process_ret_3 = 0x0 /* 0.000000 */;
-   _ctx.process_ret_2 = 0x0 /* 0.000000 */;
-   _ctx.process_ret_1 = 0x0 /* 0.000000 */;
-   _ctx.process_ret_0 = 0x0 /* 0.000000 */;
-   _ctx.param4 = 0x0 /* 0.000000 */;
-   _ctx.param3 = 0x0 /* 0.000000 */;
-   _ctx.param2 = 0x0 /* 0.000000 */;
-   _ctx.param1 = 0x0 /* 0.000000 */;
    int_init_array(16,0,_ctx.last_pitches);
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
    synthDrummer_Processor_default(_ctx);
    _output_ = _ctx;
-   return ;
-}
-
-void synthDrummer_Processor_process(synthDrummer_Processor__ctx_type_1 &_ctx, fix16_t in4, fix16_t fs){
-   fix16_t out1;
-   fix16_t out2;
-   fix16_t out3;
-   fix16_t out4;
-   out1 = 0x0 /* 0.000000 */;
-   out2 = 0x0 /* 0.000000 */;
-   out3 = 0x0 /* 0.000000 */;
-   out4 = in4;
-   out1 = synthDrummer_Voice_process(_ctx.voice);
-   _ctx.process_ret_0 = out1;
-   _ctx.process_ret_1 = out2;
-   _ctx.process_ret_2 = out3;
-   _ctx.process_ret_3 = out4;
    return ;
 }
 
