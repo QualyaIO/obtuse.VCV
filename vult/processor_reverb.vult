@@ -1,0 +1,25 @@
+
+
+fun process(in:real) {
+   // in -> reverb -> out, 50% wet
+   val out = 0.5 * in + 0.5 * reverb:Reverb.process(in);
+
+   return out;
+}
+// (re)apply parameters for used module, e.g. reverb has to recompute delay compared to sample rate
+and config() {
+   _ = reverb:Reverb.setReverbTime(10.0);
+   _ = reverb:Reverb.setDelayms(50.0);
+}
+and setSamplerate(newFs:real) {
+   mem fs;
+   if (newFs > 0.0 && newFs <> fs) {
+      fs = newFs;
+      _ = reverb:Reverb.setSamplerate(fs);
+      _ = config();
+   }
+}
+and default() @[init] {
+   _ = reverb:Reverb.default();
+   _ = setSamplerate(44.1);
+}

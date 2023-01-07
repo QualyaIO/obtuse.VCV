@@ -13,8 +13,8 @@
    "donateUrl": "",
   "modules": [
     {
-      "slug": "BotaniaEffects",
-      "name": "BotaniaEffects",
+      "slug": "BotaniaReverb",
+      "name": "BotaniaReverb",
       "description": "I filter things",
       "tags": []
     },

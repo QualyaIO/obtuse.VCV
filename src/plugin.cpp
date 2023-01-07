@@ -5,7 +5,7 @@ Plugin *pluginInstance;
 void init(Plugin *p) {
    pluginInstance = p;
 
-   p->addModel(effects);
+   p->addModel(effectReverb);
    p->addModel(synthFM);
    p->addModel(synthSampler);
    p->addModel(synthDrummer);
