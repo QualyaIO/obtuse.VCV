@@ -62,7 +62,7 @@ EffectSVF::EffectSVF() {
    // 2: high-pass
    // 3: band-pass
    // 4: notch
-   configParam(EffectSVF::TYPE, 1.0, 4.0, 1.0, "Filter type", "");
+   configParam(EffectSVF::TYPE, 0.0, 4.0, 1.0, "Filter type", "");
 
    // init engine and apply default parameter
    Processor_svf_process_init(processor);
