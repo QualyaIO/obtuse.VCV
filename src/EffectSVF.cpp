@@ -9,6 +9,7 @@ struct EffectSVF : Module {
       FREQ_AV,
       Q,
       Q_AV,
+      TYPE,
       NUM_PARAMS
    };
    enum InputIds {
@@ -45,13 +46,6 @@ struct EffectSVF : Module {
 
    // if switch to change filter type is currently held-down or not
    bool switch_pressed = false;
-   // filter type
-   // 0: disabled
-   // 1: low-pass
-   // 2: high-pass
-   // 3: band-pass
-   // 4: notch
-   unsigned int current_type = 1;
 };
 
 EffectSVF::EffectSVF() {
@@ -62,6 +56,13 @@ EffectSVF::EffectSVF() {
    // still unsure of range for Q
    configParam(EffectSVF::Q, 0.0, 10.0, 0.0, "Q" "");
    configParam(EffectSVF::Q_AV, 0.0, 1.0, 0.0, "Q CV strength", " %", 0.0f, 100.f);
+   // filter type, will be shown through lights
+   // 0: disabled
+   // 1: low-pass
+   // 2: high-pass
+   // 3: band-pass
+   // 4: notch
+   configParam(EffectSVF::TYPE, 1.0, 4.0, 1.0, "Filter type", "");
 
    // init engine and apply default parameter
    Processor_svf_process_init(processor);
@@ -90,28 +91,30 @@ void EffectSVF::sendParams(bool force) {
    Processor_svf_setQ(processor, float_to_fix(readParamCV(Q, Q_IN, Q_AV)), force);
 
    // deal with button to change filter
+   float type = params[TYPE].getValue();
    bool press = params[SWITCH].getValue() > 0.0;
    // new press, increment on release
    if (!press && switch_pressed) {
       switch_pressed = press;
-      current_type++;
+      type = type + 1;
       // back to square one (and low) after notch
-      if (current_type > 4) {
-         current_type = 1;
+      if (type > paramQuantities[TYPE]->getMaxValue()) {
+         type = paramQuantities[TYPE]->getMinValue();
       }
+      params[TYPE].setValue(type);
    }
    else if (press && !switch_pressed) {
       switch_pressed = press;
    }
 
-   Processor_svf_setType(processor, float_to_fix(current_type), force);;
+   Processor_svf_setType(processor, float_to_fix(type), force);;
 
    // update lights
    lights[SWITCH_LIGHT].setBrightnessSmooth(press, 10.0f);
-   lights[LOW_LIGHT].setBrightnessSmooth(current_type == 1, 1.0f);
-   lights[HIGH_LIGHT].setBrightnessSmooth(current_type == 2, 1.0f);
-   lights[BAND_LIGHT].setBrightnessSmooth(current_type == 3, 1.0f);
-   lights[NOTCH_LIGHT].setBrightnessSmooth(current_type == 4, 1.0f);
+   lights[LOW_LIGHT].setBrightnessSmooth(type == 1.0, 1.0f);
+   lights[HIGH_LIGHT].setBrightnessSmooth(type == 2.0, 1.0f);
+   lights[BAND_LIGHT].setBrightnessSmooth(type == 3.0, 1.0f);
+   lights[NOTCH_LIGHT].setBrightnessSmooth(type == 4.0, 1.0f);
 }
 
 void EffectSVF::process(const ProcessArgs &args) {
