@@ -149,18 +149,6 @@ void SynthFM::process(const ProcessArgs &args) {
    // from processor -1..1 to max audio voltage range
    outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 5.0f));
 }
-// ullo pink
-static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);
-
-template <typename TBase = GrayModuleLightWidget>
-struct TPinkLight : TBase {
-    TPinkLight() {
-        this->addBaseColor(SCHEME_PINK);
-    }
-};
-using PinkLight = TPinkLight<>;
-
-struct LEDSliderPink : VCVLightSlider<PinkLight> {};
 
 struct SynthFMWidget : ModuleWidget {
    SynthFMWidget(SynthFM *module) {

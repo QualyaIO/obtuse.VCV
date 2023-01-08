@@ -12,3 +12,16 @@ extern Model *effectSVF;
 extern Model *synthFM;
 extern Model *synthSampler;
 extern Model *synthDrummer;
+
+// ullo pink
+static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);
+
+template <typename TBase = GrayModuleLightWidget>
+struct TPinkLight : TBase {
+    TPinkLight() {
+        this->addBaseColor(SCHEME_PINK);
+    }
+};
+using PinkLight = TPinkLight<>;
+
+struct LEDSliderPink : VCVLightSlider<PinkLight> {};
