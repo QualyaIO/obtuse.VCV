@@ -131,10 +131,10 @@ typedef struct SVF__ctx_type_0 {
    fix16_t fs_nyquist;
    fix16_t fs;
    fix16_t freq;
-   Util__ctx_type_3 _inst93b;
-   Util__ctx_type_6 _inst855;
-   Util__ctx_type_3 _inst163b;
-   Util__ctx_type_6 _inst1555;
+   Util__ctx_type_6 _inst955;
+   Util__ctx_type_3 _inst173b;
+   Util__ctx_type_6 _inst1655;
+   Util__ctx_type_3 _inst103b;
    fix16_t R;
 } SVF__ctx_type_0;
 
@@ -191,7 +191,9 @@ static_inline void SVF_setQ_init(SVF__ctx_type_0 &_output_){
 }
 
 static_inline void SVF_setQ(SVF__ctx_type_0 &_ctx, fix16_t newQ){
-   _ctx.q = (0x8000 /* 0.500000 */ + newQ);
+   if(newQ >= 0x0 /* 0.000000 */){
+      _ctx.q = newQ;
+   }
    SVF_updateCoeffs(_ctx);
 }
 
@@ -243,7 +245,7 @@ static_inline void SVF_default_init(SVF__ctx_type_0 &_output_){
 static_inline void SVF_default(SVF__ctx_type_0 &_ctx){
    _ctx.rsize = 0x4000000 /* 1024.000000 */;
    _ctx.freq = 0x0 /* 0.000000 */;
-   _ctx.q = 0x0 /* 0.000000 */;
+   _ctx.q = 0x1999 /* 0.100000 */;
    SVF_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
 

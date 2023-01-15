@@ -54,7 +54,7 @@ EffectSVF::EffectSVF() {
    configParam(EffectSVF::FREQ, 0.0, 22.0, 5.0, "Frequency", " Hz", 0.0f, 1000.0f);
    configParam(EffectSVF::FREQ_AV, 0.0, 1.0, 0.0, "Frequency CV strength", " %", 0.0f, 100.f);
    // still unsure of range for Q
-   configParam(EffectSVF::Q, 0.0, 10.0, 0.0, "Q" "");
+   configParam(EffectSVF::Q, 0.0001, 100.0, 0.0, "Q" "");
    configParam(EffectSVF::Q_AV, 0.0, 1.0, 0.0, "Q CV strength", " %", 0.0f, 100.f);
    // filter type, will be shown through lights
    // 0: disabled
