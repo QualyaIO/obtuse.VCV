@@ -26,7 +26,7 @@ struct EffectCombFF : Module {
    };
    enum LightIds { NUM_LIGHTS };
 
-   Processor_combFF_process_type processor;
+   extra_Processor_combFF_process_type processor;
 
    EffectCombFF();
    void process(const ProcessArgs &args) override;
@@ -47,7 +47,7 @@ EffectCombFF::EffectCombFF() {
    configParam(EffectCombFF::DELAY_AV, 0.0, 1.0, 0.0, "Delay CV strength", " %", 0.0f, 100.f);
 
    // init engine and apply default parameter
-   Processor_combFF_process_init(processor);
+   extra_Processor_combFF_process_init(processor);
    sendParams(true);
 }
 
@@ -69,13 +69,13 @@ float EffectCombFF::readParamCV(int PARAM, int CV_IN, int CV_AV) {
 }
 
 void EffectCombFF::sendParams(bool force) {
-   Processor_combFF_setDecay(processor, float_to_fix(readParamCV(DECAY, DECAY_IN, DECAY_AV)), force);
-   Processor_combFF_setDelay(processor, float_to_fix(readParamCV(DELAY, DELAY_IN, DELAY_AV)), force);
+   extra_Processor_combFF_setDecay(processor, float_to_fix(readParamCV(DECAY, DECAY_IN, DECAY_AV)), force);
+   extra_Processor_combFF_setDelay(processor, float_to_fix(readParamCV(DELAY, DELAY_IN, DELAY_AV)), force);
 }
 
 void EffectCombFF::process(const ProcessArgs &args) {
    // update parameters
-   Processor_combFF_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
+   extra_Processor_combFF_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
    sendParams();
    
    // input should be audio level, -5 .. 5
@@ -83,7 +83,7 @@ void EffectCombFF::process(const ProcessArgs &args) {
    float in = inputs[IN].getVoltageSum() / 5.0f;
 
    // retrieve comb
-   float effect = fix_to_float(Processor_combFF_process(processor, float_to_fix(in)));
+   float effect = fix_to_float(extra_Processor_combFF_process(processor, float_to_fix(in)));
    // apply mix and output to max audio voltage range
    float dry_wet = params[DRY_WET].getValue();
    // from processor -1..1 

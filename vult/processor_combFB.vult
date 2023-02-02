@@ -1,0 +1,43 @@
+
+fun process(in:real) {
+   return filter:CombFB.process(in);
+}
+
+// send current delay and modifier
+and applyDelay() {
+   mem delayms: real;
+   _ = filter:CombFB.setDelayms(delayms);
+}
+// set default config
+and setDelay(newDelay: real, force: bool) {
+  if (Util.change(newDelay) || force) {
+    delayms = newDelay;
+    _ = applyDelay();
+  }
+}
+
+// set decay
+and setDecay(newDecay: real, force: bool) {
+  if (Util.change(newDecay) || force) {
+    _ = filter:CombFB.setDecay(newDecay);
+  }
+}
+
+// (re)apply parameters for used module, e.g. filter has to recompute delay compared to sample rate
+and updateConfig() {
+   applyDelay();
+} 
+
+and setSamplerate(newFs:real) {
+   mem fs;
+   if (newFs > 0.0 && newFs <> fs) {
+      fs = newFs;
+      _ = filter:CombFB.setSamplerate(fs);
+   }
+}
+and default() @[init] {
+   _ = filter:CombFB.default();
+   _ = setDecay(0.5, true);
+   _ = setDelay(50.0, true);
+   _ = setSamplerate(44.1);
+}

@@ -10,6 +10,7 @@ extern Plugin *pluginInstance;
 extern Model *effectReverb;
 extern Model *effectSVF;
 extern Model *effectCombFF;
+extern Model *effectCombFB;
 extern Model *synthFM;
 extern Model *synthSampler;
 extern Model *synthDrummer;

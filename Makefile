@@ -27,10 +27,10 @@ $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
 	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -i botania/vult/buffer_medium -o src/engine_effects -real fixed
 
 # variants with extra buffer
-VULT_EFFECTS_EXTRA_SRC =  vult/processor_combFF.vult 
+VULT_EFFECTS_EXTRA_SRC =  vult/processor_combFF.vult vult/processor_combFB.vult 
 VULT_EFFECTS_EXTRA_ENGINE_OUT = $(wildcard src/engine_effects_extra.*)
 $(VULT_EFFECTS_EXTRA_ENGINE_OUT): $(VULT_EFFECTS_EXTRA_SRC)
-	$(VULT_CMD) -ccode $(VULT_EFFECTS_EXTRA_SRC) -i botania/vult -i botania/vult/buffer_extra_large -o src/engine_effects_extra -real fixed
+	$(VULT_CMD) -ccode $(VULT_EFFECTS_EXTRA_SRC) -i botania/vult -i botania/vult/buffer_extra_large -o src/engine_effects_extra -output-prefix extra_ -real fixed
 
 
 # here as well using some sort of template between synths

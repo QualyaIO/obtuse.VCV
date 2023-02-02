@@ -27,7 +27,13 @@
     {
       "slug": "BotaniaCombFF",
       "name": "BotaniaCombFF",
-      "description": "I comb filter things",
+      "description": "I comb forward filter things",
+      "tags": []
+    },
+    {
+      "slug": "BotaniaCombFB",
+      "name": "BotaniaCombFB",
+      "description": "I comb backward filter things",
       "tags": []
     },
     {
