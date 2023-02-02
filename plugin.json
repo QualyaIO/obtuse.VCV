@@ -25,6 +25,12 @@
       "tags": []
     },
     {
+      "slug": "BotaniaCombFF",
+      "name": "BotaniaCombFF",
+      "description": "I comb filter things",
+      "tags": []
+    },
+    {
       "slug": "BotaniaSynthFM",
       "name": "BotaniaSynthFM",
       "description": "I do FM things",

@@ -42,7 +42,7 @@ EffectReverb::EffectReverb() {
    configParam(EffectReverb::DRY_WET, 0.0, 1.0, 0.5, "Dry/Wet", " %", 0.0f, 100.f);
    configParam(EffectReverb::REVERB, 0.001, 60.0, 10.0, "Reverberation time (T60)", " seconds");
    configParam(EffectReverb::REVERB_AV, 0.0, 1.0, 0.0, "Reverberation CV strength", " %", 0.0f, 100.f);
-   // actually max delay will depend on buffer size, with 2048 buffer and 44100 fs it's only 46ms
+   // actually max delay will depend on buffer size, with medium 2048 buffer and 44100 fs it's only 46ms
    configParam(EffectReverb::DELAY, 1.0, 100.0, 50.0, "Delay", " ms");
    configParam(EffectReverb::DELAY_AV, 0.0, 1.0, 0.0, "Delay CV strength", " %", 0.0f, 100.f);
 

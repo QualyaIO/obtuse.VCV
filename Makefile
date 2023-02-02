@@ -21,10 +21,17 @@ DISTRIBUTABLES += $(wildcard LICENSE*)
 include $(RACK_DIR)/arch.mk
 include vult.inc
 
-VULT_EFFECTS_SRC = vult/processor_reverb.vult vult/processor_svf.vult 
+VULT_EFFECTS_SRC = vult/processor_reverb.vult vult/processor_svf.vult
 VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
 	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -i botania/vult/buffer_medium -o src/engine_effects -real fixed
+
+# variants with extra buffer
+VULT_EFFECTS_EXTRA_SRC =  vult/processor_combFF.vult 
+VULT_EFFECTS_EXTRA_ENGINE_OUT = $(wildcard src/engine_effects_extra.*)
+$(VULT_EFFECTS_EXTRA_ENGINE_OUT): $(VULT_EFFECTS_EXTRA_SRC)
+	$(VULT_CMD) -ccode $(VULT_EFFECTS_EXTRA_SRC) -i botania/vult -i botania/vult/buffer_medium -o src/engine_effects_extra -real fixed
+
 
 # here as well using some sort of template between synths
 VULT_SYNTH_FM_SRC = vult/synth_FM/processor.vult 
@@ -42,7 +49,7 @@ VULT_SYNTH_DRUMMER_ENGINE_OUT = $(wildcard src/engine_synthDrummer.*)
 $(VULT_SYNTH_DRUMMER_ENGINE_OUT): $(VULT_SYNTH_DRUMMER_SRC)
 	$(VULT_CMD) -ccode $(VULT_SYNTH_DRUMMER_SRC) -i botania/vult -i botania/vult/synth_drummer -i botania/vult/buffer_medium -o src/engine_synthDrummer -output-prefix synthDrummer_ -real fixed 
 
-vult: $(VULT_EFFECTS_ENGINE_OUT) $(VULT_SYNTH_FM_ENGINE_OUT) $(VULT_SYNTH_DRUMMER_ENGINE_OUT) $(VULT_SYNTH_SAMPLER_ENGINE_OUT)
+vult: $(VULT_EFFECTS_ENGINE_OUT) $(VULT_EFFECTS_EXTRA_ENGINE_OUT) $(VULT_SYNTH_FM_ENGINE_OUT) $(VULT_SYNTH_DRUMMER_ENGINE_OUT) $(VULT_SYNTH_SAMPLER_ENGINE_OUT)
 
 # Include the Rack plugin Makefile framework
 include $(RACK_DIR)/plugin.mk
