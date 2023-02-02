@@ -13,9 +13,9 @@ static_inline void Buffer_buffer(fix16_t (&_output_)[256]){
    return ;
 }
 
-static_inline void Buffer_buffer_large(fix16_t (&_output_)[2048]){
-   fix16_t buff[2048];
-   fix_copy_array(2048,_output_,buff);
+static_inline void Buffer_buffer_large(fix16_t (&_output_)[16384]){
+   fix16_t buff[16384];
+   fix_copy_array(16384,_output_,buff);
    return ;
 }
 
@@ -25,7 +25,7 @@ typedef struct CombFF__ctx_type_0 {
    fix16_t fs;
    int delay;
    fix16_t decay;
-   fix16_t buffer[2048];
+   fix16_t buffer[16384];
 } CombFF__ctx_type_0;
 
 typedef CombFF__ctx_type_0 CombFF_process_type;
@@ -68,7 +68,7 @@ static_inline void CombFF_getMaxDelay_init(CombFF__ctx_type_0 &_output_){
 }
 
 static_inline int CombFF_getMaxDelay(CombFF__ctx_type_0 &_ctx){
-   return 2048;
+   return 16384;
 };
 
 typedef CombFF__ctx_type_0 CombFF_getMaxDelayms_type;
@@ -82,7 +82,7 @@ static_inline fix16_t CombFF_getMaxDelayms(CombFF__ctx_type_0 &_ctx){
    if(_ctx.fs <= 0x0 /* 0.000000 */){
       return 0x0 /* 0.000000 */;
    }
-   return fix_div(0x8000000 /* 2048.000000 */,_ctx.fs);
+   return fix_div(0x40000000 /* 16384.000000 */,_ctx.fs);
 }
 
 typedef CombFF__ctx_type_0 CombFF_setDelay_type;
