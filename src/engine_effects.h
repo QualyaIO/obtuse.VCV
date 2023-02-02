@@ -77,37 +77,25 @@ static_inline uint8_t Util_change(Util__ctx_type_3 &_ctx, fix16_t x){
    return v;
 }
 
-static_inline void Util_buffer(fix16_t (&_output_)[256]){
-   fix16_t buff[256];
-   fix_copy_array(256,_output_,buff);
-   return ;
-}
-
-static_inline void Util_buffer_large(fix16_t (&_output_)[2048]){
-   fix16_t buff[2048];
-   fix_copy_array(2048,_output_,buff);
-   return ;
-}
-
-typedef struct Util__ctx_type_6 {
+typedef struct Util__ctx_type_4 {
    fix16_t x;
-} Util__ctx_type_6;
+} Util__ctx_type_4;
 
-typedef Util__ctx_type_6 Util_smooth_type;
+typedef Util__ctx_type_4 Util_smooth_type;
 
-static_inline void Util__ctx_type_6_init(Util__ctx_type_6 &_output_){
-   Util__ctx_type_6 _ctx;
+static_inline void Util__ctx_type_4_init(Util__ctx_type_4 &_output_){
+   Util__ctx_type_4 _ctx;
    _ctx.x = 0x0 /* 0.000000 */;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void Util_smooth_init(Util__ctx_type_6 &_output_){
-   Util__ctx_type_6_init(_output_);
+static_inline void Util_smooth_init(Util__ctx_type_4 &_output_){
+   Util__ctx_type_4_init(_output_);
    return ;
 }
 
-static_inline fix16_t Util_smooth(Util__ctx_type_6 &_ctx, fix16_t input, fix16_t coeff){
+static_inline fix16_t Util_smooth(Util__ctx_type_4 &_ctx, fix16_t input, fix16_t coeff){
    _ctx.x = (_ctx.x + fix_mul(coeff,(input + (- _ctx.x))));
    return _ctx.x;
 }
@@ -115,6 +103,18 @@ static_inline fix16_t Util_smooth(Util__ctx_type_6 &_ctx, fix16_t input, fix16_t
 static_inline fix16_t Util_velocityToLevel(int velocity){
    velocity = int_clip(velocity,0,127);
    return fix_mul(0x204 /* 0.007874 */,int_to_fix(velocity));
+}
+
+static_inline void Buffer_buffer(fix16_t (&_output_)[256]){
+   fix16_t buff[256];
+   fix_copy_array(256,_output_,buff);
+   return ;
+}
+
+static_inline void Buffer_buffer_large(fix16_t (&_output_)[2048]){
+   fix16_t buff[2048];
+   fix_copy_array(2048,_output_,buff);
+   return ;
 }
 
 typedef struct SVF__ctx_type_0 {
@@ -131,10 +131,10 @@ typedef struct SVF__ctx_type_0 {
    fix16_t fs_nyquist;
    fix16_t fs;
    fix16_t freq;
-   Util__ctx_type_3 _inst93b;
-   Util__ctx_type_6 _inst855;
-   Util__ctx_type_3 _inst163b;
-   Util__ctx_type_6 _inst1555;
+   Util__ctx_type_4 _inst955;
+   Util__ctx_type_3 _inst173b;
+   Util__ctx_type_4 _inst1655;
+   Util__ctx_type_3 _inst103b;
    fix16_t R;
 } SVF__ctx_type_0;
 
@@ -191,7 +191,9 @@ static_inline void SVF_setQ_init(SVF__ctx_type_0 &_output_){
 }
 
 static_inline void SVF_setQ(SVF__ctx_type_0 &_ctx, fix16_t newQ){
-   _ctx.q = (0x8000 /* 0.500000 */ + newQ);
+   if(newQ >= 0x0 /* 0.000000 */){
+      _ctx.q = newQ;
+   }
    SVF_updateCoeffs(_ctx);
 }
 
@@ -243,9 +245,29 @@ static_inline void SVF_default_init(SVF__ctx_type_0 &_output_){
 static_inline void SVF_default(SVF__ctx_type_0 &_ctx){
    _ctx.rsize = 0x4000000 /* 1024.000000 */;
    _ctx.freq = 0x0 /* 0.000000 */;
-   _ctx.q = 0x0 /* 0.000000 */;
+   _ctx.q = 0x1999 /* 0.100000 */;
    SVF_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
+
+typedef struct SVF__ctx_type_1 {
+   SVF__ctx_type_0 _inst1f;
+} SVF__ctx_type_1;
+
+typedef SVF__ctx_type_1 SVF_dummy_type;
+
+static_inline void SVF__ctx_type_1_init(SVF__ctx_type_1 &_output_){
+   SVF__ctx_type_1 _ctx;
+   SVF__ctx_type_0_init(_ctx._inst1f);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void SVF_dummy_init(SVF__ctx_type_1 &_output_){
+   SVF__ctx_type_1_init(_output_);
+   return ;
+}
+
+void SVF_dummy(SVF__ctx_type_1 &_ctx);
 
 typedef struct Processor_svf__ctx_type_0 {
    SVF__ctx_type_0 svf;
@@ -467,6 +489,26 @@ static_inline void CombFB_default_init(CombFB__ctx_type_0 &_output_){
 
 void CombFB_default(CombFB__ctx_type_0 &_ctx);
 
+typedef struct CombFB__ctx_type_1 {
+   CombFB__ctx_type_0 _inst13c;
+} CombFB__ctx_type_1;
+
+typedef CombFB__ctx_type_1 CombFB_dummy_type;
+
+static_inline void CombFB__ctx_type_1_init(CombFB__ctx_type_1 &_output_){
+   CombFB__ctx_type_1 _ctx;
+   CombFB__ctx_type_0_init(_ctx._inst13c);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void CombFB_dummy_init(CombFB__ctx_type_1 &_output_){
+   CombFB__ctx_type_1_init(_output_);
+   return ;
+}
+
+void CombFB_dummy(CombFB__ctx_type_1 &_ctx);
+
 typedef struct Allpass__ctx_type_0 {
    fix16_t scale;
    int pos;
@@ -579,6 +621,26 @@ static_inline void Allpass_default_init(Allpass__ctx_type_0 &_output_){
 
 void Allpass_default(Allpass__ctx_type_0 &_ctx);
 
+typedef struct Allpass__ctx_type_1 {
+   Allpass__ctx_type_0 _inst156;
+} Allpass__ctx_type_1;
+
+typedef Allpass__ctx_type_1 Allpass_dummy_type;
+
+static_inline void Allpass__ctx_type_1_init(Allpass__ctx_type_1 &_output_){
+   Allpass__ctx_type_1 _ctx;
+   Allpass__ctx_type_0_init(_ctx._inst156);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Allpass_dummy_init(Allpass__ctx_type_1 &_output_){
+   Allpass__ctx_type_1_init(_output_);
+   return ;
+}
+
+void Allpass_dummy(Allpass__ctx_type_1 &_ctx);
+
 typedef struct Reverb__ctx_type_0 {
    fix16_t reverbtime;
    fix16_t fs;
@@ -659,6 +721,26 @@ static_inline void Reverb_default_init(Reverb__ctx_type_0 &_output_){
 }
 
 void Reverb_default(Reverb__ctx_type_0 &_ctx);
+
+typedef struct Reverb__ctx_type_1 {
+   Reverb__ctx_type_0 _inst1f2;
+} Reverb__ctx_type_1;
+
+typedef Reverb__ctx_type_1 Reverb_dummy_type;
+
+static_inline void Reverb__ctx_type_1_init(Reverb__ctx_type_1 &_output_){
+   Reverb__ctx_type_1 _ctx;
+   Reverb__ctx_type_0_init(_ctx._inst1f2);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Reverb_dummy_init(Reverb__ctx_type_1 &_output_){
+   Reverb__ctx_type_1_init(_output_);
+   return ;
+}
+
+void Reverb_dummy(Reverb__ctx_type_1 &_ctx);
 
 typedef struct Processor_reverb__ctx_type_0 {
    fix16_t reverbTime;
