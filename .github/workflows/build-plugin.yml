@@ -44,6 +44,7 @@ jobs:
         with:
           submodules: recursive
           ssh-key: ${{ secrets.SSH_KEY }}
+          ssh-strict: false
           persist-credentials: true
       - uses: actions/cache@v3
         id: plugin-version-cache
@@ -74,6 +75,7 @@ jobs:
         with:
           submodules: recursive
           ssh-key: ${{ secrets.SSH_KEY }}
+          ssh-strict: false
           persist-credentials: true
       - uses: actions/cache@v3
         id: plugin-version-cache
