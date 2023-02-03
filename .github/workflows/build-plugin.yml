@@ -42,6 +42,7 @@ jobs:
     steps:
       - name: install ssh
         run: |
+          apt update
           apt install openssh-client
       - name: ssh host keys
         run: |
