@@ -41,7 +41,8 @@ jobs:
         platform: [win-x64, linux-x64]
     steps:
       - name: install ssh
-        apt install openssh
+        run: |
+          apt install openssh
       - name: ssh host keys
         run: |
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
