@@ -24,6 +24,6 @@ Check original template for more details about programming https://github.com/vu
 
 # Changelog
 
-## v0.1.0
+## 2.0.0
 
 First release for testing github actions.
