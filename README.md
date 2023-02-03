@@ -20,3 +20,4 @@ Check original template for more details about programming https://github.com/vu
 # TODO
 
 - switch back to monophonic synth when polyphony cable is 1? (would need some change in botania DSP)
+- setting highest delay on effect, depending on the sample rate, will fail due to overflow with fixed float. Clamp beforehand.
