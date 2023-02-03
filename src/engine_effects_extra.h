@@ -19,6 +19,138 @@ static_inline void extra_Buffer_buffer_large(fix16_t (&_output_)[16384]){
    return ;
 }
 
+typedef struct extra_Allpass__ctx_type_0 {
+   fix16_t scale;
+   int pos;
+   fix16_t fs;
+   int delay;
+   fix16_t decay;
+   fix16_t buffer_allpassed[16384];
+   fix16_t buffer[16384];
+} extra_Allpass__ctx_type_0;
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_process_type;
+
+void extra_Allpass__ctx_type_0_init(extra_Allpass__ctx_type_0 &_output_);
+
+static_inline void extra_Allpass_process_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+fix16_t extra_Allpass_process(extra_Allpass__ctx_type_0 &_ctx, fix16_t sample);
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_process_bufferTo_type;
+
+static_inline void extra_Allpass_process_bufferTo_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+void extra_Allpass_process_bufferTo(extra_Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_setDecay_type;
+
+static_inline void extra_Allpass_setDecay_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Allpass_setDecay(extra_Allpass__ctx_type_0 &_ctx, fix16_t newDecay){
+   _ctx.decay = fix_clip(newDecay,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+   _ctx.scale = fix_div(0x10000 /* 1.000000 */,(0x10000 /* 1.000000 */ + (_ctx.decay << 1)));
+}
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_getMaxDelay_type;
+
+static_inline void extra_Allpass_getMaxDelay_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int extra_Allpass_getMaxDelay(extra_Allpass__ctx_type_0 &_ctx){
+   return 16384;
+};
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_getMaxDelayms_type;
+
+static_inline void extra_Allpass_getMaxDelayms_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline fix16_t extra_Allpass_getMaxDelayms(extra_Allpass__ctx_type_0 &_ctx){
+   if(_ctx.fs <= 0x0 /* 0.000000 */){
+      return 0x0 /* 0.000000 */;
+   }
+   return fix_div(0x40000000 /* 16384.000000 */,_ctx.fs);
+}
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_setDelay_type;
+
+static_inline void extra_Allpass_setDelay_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Allpass_setDelay(extra_Allpass__ctx_type_0 &_ctx, int newDelay){
+   _ctx.delay = int_clip(newDelay,1,extra_Allpass_getMaxDelay(_ctx));
+   _ctx.pos = 0;
+}
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_setDelayms_type;
+
+static_inline void extra_Allpass_setDelayms_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Allpass_setDelayms(extra_Allpass__ctx_type_0 &_ctx, fix16_t delayms){
+   extra_Allpass_setDelay(_ctx,fix_to_int(fix_mul(_ctx.fs,delayms)));
+};
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_setSamplerate_type;
+
+static_inline void extra_Allpass_setSamplerate_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Allpass_setSamplerate(extra_Allpass__ctx_type_0 &_ctx, fix16_t newFs){
+   if(newFs > 0x0 /* 0.000000 */){
+      _ctx.fs = newFs;
+   }
+};
+
+typedef extra_Allpass__ctx_type_0 extra_Allpass_default_type;
+
+static_inline void extra_Allpass_default_init(extra_Allpass__ctx_type_0 &_output_){
+   extra_Allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+void extra_Allpass_default(extra_Allpass__ctx_type_0 &_ctx);
+
+typedef struct extra_Allpass__ctx_type_1 {
+   extra_Allpass__ctx_type_0 _inst156;
+} extra_Allpass__ctx_type_1;
+
+typedef extra_Allpass__ctx_type_1 extra_Allpass_dummy_type;
+
+static_inline void extra_Allpass__ctx_type_1_init(extra_Allpass__ctx_type_1 &_output_){
+   extra_Allpass__ctx_type_1 _ctx;
+   extra_Allpass__ctx_type_0_init(_ctx._inst156);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void extra_Allpass_dummy_init(extra_Allpass__ctx_type_1 &_output_){
+   extra_Allpass__ctx_type_1_init(_output_);
+   return ;
+}
+
+void extra_Allpass_dummy(extra_Allpass__ctx_type_1 &_ctx);
+
 typedef struct extra_CombFB__ctx_type_0 {
    fix16_t scale;
    int pos;
@@ -93,7 +225,7 @@ static_inline void extra_CombFB_setDelay_init(extra_CombFB__ctx_type_0 &_output_
 }
 
 static_inline void extra_CombFB_setDelay(extra_CombFB__ctx_type_0 &_ctx, int newDelay){
-   _ctx.delay = int_clip(newDelay,0,extra_CombFB_getMaxDelay(_ctx));
+   _ctx.delay = int_clip(newDelay,1,extra_CombFB_getMaxDelay(_ctx));
    _ctx.pos = 0;
 }
 
@@ -346,6 +478,104 @@ static_inline void extra_Processor_combFB_default(extra_Processor_combFB__ctx_ty
    extra_Processor_combFB_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
 
+typedef struct extra_Processor_allpass__ctx_type_0 {
+   fix16_t fs;
+   extra_Allpass__ctx_type_0 filter;
+   fix16_t delayms;
+   extra_Util__ctx_type_3 _inst53b;
+   extra_Util__ctx_type_3 _inst23b;
+} extra_Processor_allpass__ctx_type_0;
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_process_type;
+
+void extra_Processor_allpass__ctx_type_0_init(extra_Processor_allpass__ctx_type_0 &_output_);
+
+static_inline void extra_Processor_allpass_process_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline fix16_t extra_Processor_allpass_process(extra_Processor_allpass__ctx_type_0 &_ctx, fix16_t in){
+   return extra_Allpass_process(_ctx.filter,in);
+};
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_applyDelay_type;
+
+static_inline void extra_Processor_allpass_applyDelay_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Processor_allpass_applyDelay(extra_Processor_allpass__ctx_type_0 &_ctx){
+   extra_Allpass_setDelayms(_ctx.filter,_ctx.delayms);
+};
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_setDelay_type;
+
+static_inline void extra_Processor_allpass_setDelay_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Processor_allpass_setDelay(extra_Processor_allpass__ctx_type_0 &_ctx, fix16_t newDelay, uint8_t force){
+   if(extra_Util_change(_ctx._inst23b,newDelay) || force){
+      _ctx.delayms = newDelay;
+      extra_Processor_allpass_applyDelay(_ctx);
+   }
+};
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_setDecay_type;
+
+static_inline void extra_Processor_allpass_setDecay_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Processor_allpass_setDecay(extra_Processor_allpass__ctx_type_0 &_ctx, fix16_t newDecay, uint8_t force){
+   if(extra_Util_change(_ctx._inst53b,newDecay) || force){
+      extra_Allpass_setDecay(_ctx.filter,newDecay);
+   }
+};
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_updateConfig_type;
+
+static_inline void extra_Processor_allpass_updateConfig_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Processor_allpass_updateConfig(extra_Processor_allpass__ctx_type_0 &_ctx){
+   extra_Processor_allpass_applyDelay(_ctx);
+};
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_setSamplerate_type;
+
+static_inline void extra_Processor_allpass_setSamplerate_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Processor_allpass_setSamplerate(extra_Processor_allpass__ctx_type_0 &_ctx, fix16_t newFs){
+   if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
+      _ctx.fs = newFs;
+      extra_Allpass_setSamplerate(_ctx.filter,_ctx.fs);
+   }
+};
+
+typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_default_type;
+
+static_inline void extra_Processor_allpass_default_init(extra_Processor_allpass__ctx_type_0 &_output_){
+   extra_Processor_allpass__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void extra_Processor_allpass_default(extra_Processor_allpass__ctx_type_0 &_ctx){
+   extra_Allpass_default(_ctx.filter);
+   extra_Processor_allpass_setDecay(_ctx,0x8000 /* 0.500000 */,true);
+   extra_Processor_allpass_setDelay(_ctx,0x320000 /* 50.000000 */,true);
+   extra_Processor_allpass_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
+}
+
 typedef struct extra_CombFF__ctx_type_0 {
    fix16_t scale;
    int pos;
@@ -420,7 +650,7 @@ static_inline void extra_CombFF_setDelay_init(extra_CombFF__ctx_type_0 &_output_
 }
 
 static_inline void extra_CombFF_setDelay(extra_CombFF__ctx_type_0 &_ctx, int newDelay){
-   _ctx.delay = int_clip(newDelay,0,extra_CombFF_getMaxDelay(_ctx));
+   _ctx.delay = int_clip(newDelay,1,extra_CombFF_getMaxDelay(_ctx));
    _ctx.pos = 0;
 }
 

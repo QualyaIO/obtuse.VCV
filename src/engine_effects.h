@@ -452,7 +452,7 @@ static_inline void CombFB_setDelay_init(CombFB__ctx_type_0 &_output_){
 }
 
 static_inline void CombFB_setDelay(CombFB__ctx_type_0 &_ctx, int newDelay){
-   _ctx.delay = int_clip(newDelay,0,CombFB_getMaxDelay(_ctx));
+   _ctx.delay = int_clip(newDelay,1,CombFB_getMaxDelay(_ctx));
    _ctx.pos = 0;
 }
 
@@ -584,7 +584,7 @@ static_inline void Allpass_setDelay_init(Allpass__ctx_type_0 &_output_){
 }
 
 static_inline void Allpass_setDelay(Allpass__ctx_type_0 &_ctx, int newDelay){
-   _ctx.delay = int_clip(newDelay,0,Allpass_getMaxDelay(_ctx));
+   _ctx.delay = int_clip(newDelay,1,Allpass_getMaxDelay(_ctx));
    _ctx.pos = 0;
 }
 

@@ -9,6 +9,7 @@ void init(Plugin *p) {
    p->addModel(effectSVF);
    p->addModel(effectCombFF);
    p->addModel(effectCombFB);
+   p->addModel(effectAllpass);
    p->addModel(synthFM);
    p->addModel(synthSampler);
    p->addModel(synthDrummer);

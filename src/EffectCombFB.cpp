@@ -43,7 +43,7 @@ EffectCombFB::EffectCombFB() {
    configParam(EffectCombFB::DECAY, 0.0, 1.0, 0.5, "Decay", "");
    configParam(EffectCombFB::DECAY_AV, 0.0, 1.0, 0.0, "Decay CV strength", " %", 0.0f, 100.f);
    // actually max delay will depend on buffer size, with XL 16384 buffer and 44100 fs it's only 371ms
-   configParam(EffectCombFB::DELAY, 1.0, 1000.0, 50.0, "Delay", " ms");
+   configParam(EffectCombFB::DELAY, 0.0, 1000.0, 50.0, "Delay", " ms");
    configParam(EffectCombFB::DELAY_AV, 0.0, 1.0, 0.0, "Delay CV strength", " %", 0.0f, 100.f);
 
    // init engine and apply default parameter

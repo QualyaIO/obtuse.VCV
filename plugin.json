@@ -37,6 +37,12 @@
       "tags": []
     },
     {
+      "slug": "BotaniaAllpass",
+      "name": "BotaniaAllpass",
+      "description": "I allpass filter things",
+      "tags": []
+    },
+    {
       "slug": "BotaniaSynthFM",
       "name": "BotaniaSynthFM",
       "description": "I do FM things",
