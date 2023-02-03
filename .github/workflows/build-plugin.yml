@@ -2,7 +2,7 @@ name: Build VCV Rack Plugin
 on: [push, pull_request]
 
 env:
-  rack-sdk-version: 2.1.2
+  rack-sdk-version: 2.2.1
   rack-plugin-toolchain-dir: /home/build/rack-plugin-toolchain
 
 defaults:
@@ -42,7 +42,7 @@ jobs:
     steps:
       - name: install ssh
         run: |
-          apt install openssh
+          apt install openssh-client
       - name: ssh host keys
         run: |
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
