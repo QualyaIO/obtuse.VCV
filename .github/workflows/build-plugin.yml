@@ -43,7 +43,7 @@ jobs:
       - name: install ssh
         run: |
           apt update
-          apt install openssh-client
+          apt install openssh-client -y
       - name: ssh host keys
         run: |
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
