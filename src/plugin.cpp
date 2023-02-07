@@ -13,4 +13,5 @@ void init(Plugin *p) {
    p->addModel(synthFM);
    p->addModel(synthSampler);
    p->addModel(synthDrummer);
+   p->addModel(utilTrigg);
 }

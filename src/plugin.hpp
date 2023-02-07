@@ -15,6 +15,7 @@ extern Model *effectAllpass;
 extern Model *synthFM;
 extern Model *synthSampler;
 extern Model *synthDrummer;
+extern Model *utilTrigg;
 
 // ullo pink
 static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);
