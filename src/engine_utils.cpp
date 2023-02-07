@@ -61,7 +61,7 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    uint8_t sparse;
    sparse = true;
    if((_ctx.density > 0x0 /* 0.000000 */) && (_ctx.density <= 0x8000 /* 0.500000 */)){
-      mod = fix_to_int(fix_div(0x10000 /* 1.000000 */,_ctx.density));
+      mod = fix_to_int((0x8000 /* 0.500000 */ + fix_div(0x10000 /* 1.000000 */,_ctx.density)));
    }
    else
    {
@@ -74,7 +74,7 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    i = 0;
    while((i < 128) && (i < _ctx.length)){
       if(mod > 1){
-         if(((i % mod) == 0) || sparse){
+         if((((i % mod) == 0) && sparse) || ((((1 + i + mod) % mod) != 0) && bool_not(sparse))){
             _ctx.ptriggers[i] = (_ctx.density + fix_mul(_ctx.balance,(0x10000 /* 1.000000 */ + (- _ctx.density))));
          }
          else
@@ -106,20 +106,20 @@ void Trigg_setLength(Trigg__ctx_type_0 &_ctx, int newLength){
 void Trigg_setBalance(Trigg__ctx_type_0 &_ctx, fix16_t newBalance){
    newBalance = fix_clip(newBalance,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newBalance != _ctx.balance){
+      _ctx.balance = newBalance;
       Trigg__recompute(_ctx);
       _ctx.dirty = true;
       Trigg__refresh(_ctx);
-      _ctx.balance = newBalance;
    }
 }
 
 void Trigg_setDensity(Trigg__ctx_type_0 &_ctx, fix16_t newDensity){
    newDensity = fix_clip(newDensity,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newDensity != _ctx.density){
+      _ctx.density = newDensity;
       Trigg__recompute(_ctx);
       _ctx.dirty = true;
       Trigg__refresh(_ctx);
-      _ctx.density = newDensity;
    }
 }
 
