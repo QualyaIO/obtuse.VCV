@@ -3,16 +3,34 @@
 // expect input normed to 0..1 from 0..10v
 // clock (new pulse from clock) or reset if >= 0.1, i.e. 1v
 // reset applied before clock
+// sent a 1ms trigger (if for some reason we trig too often, there wil be overlap)
 fun process(clock: real, reset: real) : int {
+   // how long should last the trigger (even with a 0 tail we will have one sample trigger)
+   mem tail: int;
+   // count how long we have been trigerring
+   mem trign: int;
    // returned value
    val trigger = 0;
+
+   if (trign > 0 && trign < tail) {
+     trign = trign + 1;
+     trigger = 1;
+   }
+   // stpping triggering
+   else {
+     trign = 0;
+   }
    // new reset and clock to pass (we are only interested in raising front)
    if (Util.edge(reset >= 0.1)) {
      _ = trigg:Trigg.reset();
    }
    // new clock is actually calling the underlying code
    if (Util.edge(clock >= 0.1)) {
-     trigger = trigg:Trigg.process();
+     val newTrigger = trigg:Trigg.process();
+     if (newTrigger > 0) {
+       trigger = 1;
+       trign = 1;
+     }
    }
    return trigger;
 }
@@ -57,4 +75,14 @@ and setDensity(param: real, force: bool) {
   if (Util.change(param) || force) {
     _ = trigg:Trigg.setDensity(param);
   }
+}
+
+// adapt tail to match 1ms upon new sample rate
+and setSamplerate(newFs:real) {
+   mem fs;
+   if (newFs > 0.0 && newFs <> fs) {
+      fs = newFs;
+      // fs is in kHz
+      tail = int(fs);
+   }
 }

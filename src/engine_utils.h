@@ -257,14 +257,17 @@ static_inline void Trigg_setPosition(Trigg__ctx_type_0 &_ctx, int newPosition){
 };
 
 typedef struct Processor_trigg__ctx_type_0 {
+   int trign;
    Trigg__ctx_type_0 trigg;
+   int tail;
+   fix16_t fs;
    Util__ctx_type_3 _inst73b;
+   Util__ctx_type_1 _inst551;
    Util__ctx_type_3 _inst43b;
    Util__ctx_type_1 _inst351;
    Util__ctx_type_3 _inst223b;
    Util__ctx_type_3 _inst193b;
    Util__ctx_type_3 _inst163b;
-   Util__ctx_type_1 _inst151;
    Util__ctx_type_3 _inst13b;
    Util__ctx_type_3 _inst133b;
    Util__ctx_type_3 _inst103b;
@@ -382,6 +385,20 @@ static_inline void Processor_trigg_setDensity_init(Processor_trigg__ctx_type_0 &
 static_inline void Processor_trigg_setDensity(Processor_trigg__ctx_type_0 &_ctx, fix16_t param, uint8_t force){
    if(Util_change(_ctx._inst223b,param) || force){
       Trigg_setDensity(_ctx.trigg,param);
+   }
+};
+
+typedef Processor_trigg__ctx_type_0 Processor_trigg_setSamplerate_type;
+
+static_inline void Processor_trigg_setSamplerate_init(Processor_trigg__ctx_type_0 &_output_){
+   Processor_trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_trigg_setSamplerate(Processor_trigg__ctx_type_0 &_ctx, fix16_t newFs){
+   if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
+      _ctx.fs = newFs;
+      _ctx.tail = fix_to_int(_ctx.fs);
    }
 };
 

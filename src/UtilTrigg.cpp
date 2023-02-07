@@ -105,6 +105,7 @@ void UtilTrigg::sendParams(bool force) {
 
 void UtilTrigg::process(const ProcessArgs &args) {
    // update parameters
+   Processor_trigg_setSamplerate(processor, float_to_fix(args.sampleRate/1000.0));
    sendParams();
    
    // input at clock and reset should be audio level, 0 .. 10

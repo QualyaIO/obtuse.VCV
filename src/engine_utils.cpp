@@ -125,14 +125,17 @@ void Trigg_setDensity(Trigg__ctx_type_0 &_ctx, fix16_t newDensity){
 
 void Processor_trigg__ctx_type_0_init(Processor_trigg__ctx_type_0 &_output_){
    Processor_trigg__ctx_type_0 _ctx;
+   _ctx.trign = 0;
    Trigg__ctx_type_0_init(_ctx.trigg);
+   _ctx.tail = 0;
+   _ctx.fs = 0x0 /* 0.000000 */;
    Util__ctx_type_3_init(_ctx._inst73b);
+   Util__ctx_type_1_init(_ctx._inst551);
    Util__ctx_type_3_init(_ctx._inst43b);
    Util__ctx_type_1_init(_ctx._inst351);
    Util__ctx_type_3_init(_ctx._inst223b);
    Util__ctx_type_3_init(_ctx._inst193b);
    Util__ctx_type_3_init(_ctx._inst163b);
-   Util__ctx_type_1_init(_ctx._inst151);
    Util__ctx_type_3_init(_ctx._inst13b);
    Util__ctx_type_3_init(_ctx._inst133b);
    Util__ctx_type_3_init(_ctx._inst103b);
@@ -143,11 +146,24 @@ void Processor_trigg__ctx_type_0_init(Processor_trigg__ctx_type_0 &_output_){
 int Processor_trigg_process(Processor_trigg__ctx_type_0 &_ctx, fix16_t clock, fix16_t reset){
    int trigger;
    trigger = 0;
-   if(Util_edge(_ctx._inst151,(reset >= 0x1999 /* 0.100000 */))){
+   if((_ctx.trign > 0) && (_ctx.trign < _ctx.tail)){
+      _ctx.trign = (1 + _ctx.trign);
+      trigger = 1;
+   }
+   else
+   {
+      _ctx.trign = 0;
+   }
+   if(Util_edge(_ctx._inst351,(reset >= 0x1999 /* 0.100000 */))){
       Trigg_reset(_ctx.trigg);
    }
-   if(Util_edge(_ctx._inst351,(clock >= 0x1999 /* 0.100000 */))){
-      trigger = Trigg_process(_ctx.trigg);
+   if(Util_edge(_ctx._inst551,(clock >= 0x1999 /* 0.100000 */))){
+      int newTrigger;
+      newTrigger = Trigg_process(_ctx.trigg);
+      if(newTrigger > 0){
+         trigger = 1;
+         _ctx.trign = 1;
+      }
    }
    return trigger;
 }
