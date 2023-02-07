@@ -38,6 +38,7 @@ void Trigg__refresh(Trigg__ctx_type_0 &_ctx){
 int Trigg_process(Trigg__ctx_type_0 &_ctx){
    int trig;
    trig = 0;
+   _ctx.ticks = (1 + _ctx.ticks);
    if(_ctx.length > 0){
       if((_ctx.divider > 0) && (((_ctx.shift + _ctx.ticks) % _ctx.divider) == 0)){
          if(_ctx.triggers[((_ctx.n + _ctx.position) % _ctx.length)]){
@@ -50,7 +51,6 @@ int Trigg_process(Trigg__ctx_type_0 &_ctx){
          Trigg__refresh(_ctx);
          _ctx.n = 0;
       }
-      _ctx.ticks = (1 + _ctx.ticks);
    }
    return trig;
 }
@@ -73,7 +73,6 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    int i;
    i = 0;
    while((i < 128) && (i < _ctx.length)){
-      i = (1 + i);
       if(mod > 1){
          if(((i % mod) == 0) || sparse){
             _ctx.ptriggers[i] = (_ctx.density + fix_mul(_ctx.balance,(0x10000 /* 1.000000 */ + (- _ctx.density))));
@@ -87,6 +86,7 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
       {
          _ctx.ptriggers[i] = _ctx.density;
       }
+      i = (1 + i);
    }
 }
 
@@ -96,6 +96,7 @@ void Trigg_setLength(Trigg__ctx_type_0 &_ctx, int newLength){
       _ctx.length = newLength;
       Trigg__recompute(_ctx);
       _ctx.dirty = true;
+      Trigg__refresh(_ctx);
       if(_ctx.length <= _ctx.n){
          Trigg_restartLoop(_ctx);
       }
@@ -105,7 +106,9 @@ void Trigg_setLength(Trigg__ctx_type_0 &_ctx, int newLength){
 void Trigg_setBalance(Trigg__ctx_type_0 &_ctx, fix16_t newBalance){
    newBalance = fix_clip(newBalance,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newBalance != _ctx.balance){
+      Trigg__recompute(_ctx);
       _ctx.dirty = true;
+      Trigg__refresh(_ctx);
       _ctx.balance = newBalance;
    }
 }
@@ -113,7 +116,9 @@ void Trigg_setBalance(Trigg__ctx_type_0 &_ctx, fix16_t newBalance){
 void Trigg_setDensity(Trigg__ctx_type_0 &_ctx, fix16_t newDensity){
    newDensity = fix_clip(newDensity,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newDensity != _ctx.density){
+      Trigg__recompute(_ctx);
       _ctx.dirty = true;
+      Trigg__refresh(_ctx);
       _ctx.density = newDensity;
    }
 }

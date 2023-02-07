@@ -112,7 +112,7 @@ void UtilTrigg::process(const ProcessArgs &args) {
    float reset = inputs[RESET].getVoltage() / 10.0f;
 
    // from processor 0 / 1 
-   int trigger = Processor_trigg_process(processor, clock, reset);
+   int trigger = Processor_trigg_process(processor, float_to_fix(clock), float_to_fix(reset));
    outputs[TRIGGER].setVoltage(trigger * 5.0f);
 }
 
