@@ -61,8 +61,8 @@ UtilTrigg::UtilTrigg() {
    // arbitrary max divider
    configParam(UtilTrigg::DIVIDER, 1, 1024, 2, "Clock divider", "");
    configParam(UtilTrigg::SHIFT, 0, 1023, 0, "Clock shift", "");
-   // correspond to implemeted max -- TODO: read that
-   configParam(UtilTrigg::LENGTH, 1, 128, 16, "Loop length", " steps");
+   // correspond to implemeted max -- TODO: read that. 0 will be autolength.
+   configParam(UtilTrigg::LENGTH, 0, 128, 16, "Loop length", " steps");
    configParam(UtilTrigg::POSITION, 0, 127, 0, "Loop starting position", "");
    configParam(UtilTrigg::DENSITY, 0.0, 1.0, 0.5, "Density", " %", 0.0f, 100.f);
    configParam(UtilTrigg::BALANCE, 0.0, 1.0, 0.5, "Balance", " %", 0.0f, 100.f);
@@ -92,10 +92,11 @@ float UtilTrigg::readParamCV(int PARAM, int CV_IN, int CV_AV) {
 }
 
 void UtilTrigg::sendParams(bool force) {
-   Processor_trigg_setDivider(processor, int(readParamCV(DIVIDER, DIVIDER_IN, DIVIDER_AV)), force);
-   Processor_trigg_setShift(processor, int(readParamCV(SHIFT, SHIFT_IN, SHIFT_AV)), force);
-   Processor_trigg_setLength(processor, int(readParamCV(LENGTH, LENGTH_IN, LENGTH_AV)), force);
-   Processor_trigg_setPosition(processor, int(readParamCV(POSITION, POSITION_IN, POSITION_AV)), force);
+   // rounding all parameters
+   Processor_trigg_setDivider(processor, int(readParamCV(DIVIDER, DIVIDER_IN, DIVIDER_AV) + 0.5), force);
+   Processor_trigg_setShift(processor, int(readParamCV(SHIFT, SHIFT_IN, SHIFT_AV) + 0.5), force);
+   Processor_trigg_setLength(processor, int(readParamCV(LENGTH, LENGTH_IN, LENGTH_AV) + 0.5), force);
+   Processor_trigg_setPosition(processor, int(readParamCV(POSITION, POSITION_IN, POSITION_AV) + 0.5), force);
 
    Processor_trigg_setDensity(processor, float_to_fix(readParamCV(DENSITY, DENSITY_IN, DENSITY_AV)), force);
    Processor_trigg_setBalance(processor, float_to_fix(readParamCV(BALANCE, BALANCE_IN, BALANCE_AV)), force);

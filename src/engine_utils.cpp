@@ -17,12 +17,14 @@ void Trigg__ctx_type_0_init(Trigg__ctx_type_0 &_output_){
    _ctx.dirty = false;
    _ctx.density = 0x0 /* 0.000000 */;
    _ctx.balance = 0x0 /* 0.000000 */;
+   _ctx.autolength = false;
+   Trigg_default(_ctx);
    _output_ = _ctx;
    return ;
 }
 
 void Trigg__refresh(Trigg__ctx_type_0 &_ctx){
-   if(_ctx.dirty || ((_ctx.balance < 0x10000 /* 1.000000 */) && (_ctx.evolve > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.evolve))){
+   if(_ctx.dirty || ((_ctx.evolve > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.evolve))){
       int i;
       i = 0;
       while((i < 128) && (i < _ctx.length)){
@@ -66,8 +68,34 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    else
    {
       if((_ctx.density > 0x8000 /* 0.500000 */) && (_ctx.density < 0x10000 /* 1.000000 */)){
-         mod = fix_to_int(fix_div(0x10000 /* 1.000000 */,(0x10000 /* 1.000000 */ + (- _ctx.density))));
+         mod = fix_to_int((0x8000 /* 0.500000 */ + fix_div(0x10000 /* 1.000000 */,(0x10000 /* 1.000000 */ + (- _ctx.density)))));
          sparse = false;
+      }
+   }
+   fix16_t max_p;
+   max_p = 0x10000 /* 1.000000 */;
+   fix16_t min_p;
+   min_p = 0x0 /* 0.000000 */;
+   if((mod > 0) && (_ctx.length > 0)){
+      int nbplus;
+      int nbminus;
+      if(sparse){
+         nbplus = (((-1) + _ctx.length + mod) / mod);
+         nbminus = (_ctx.length + (- nbplus));
+      }
+      else
+      {
+         nbminus = (_ctx.length / mod);
+         nbplus = (_ctx.length + (- nbminus));
+      }
+      fix16_t modp;
+      modp = fix_div(int_to_fix(nbplus),int_to_fix(_ctx.length));
+      if(modp >= _ctx.density){
+         max_p = fix_div(fix_mul(_ctx.density,int_to_fix(_ctx.length)),int_to_fix(nbplus));
+      }
+      else
+      {
+         min_p = fix_div(((- int_to_fix(nbplus)) + fix_mul(_ctx.density,int_to_fix(_ctx.length))),int_to_fix(nbminus));
       }
    }
    int i;
@@ -75,11 +103,11 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    while((i < 128) && (i < _ctx.length)){
       if(mod > 1){
          if((((i % mod) == 0) && sparse) || ((((1 + i + mod) % mod) != 0) && bool_not(sparse))){
-            _ctx.ptriggers[i] = (_ctx.density + fix_mul(_ctx.balance,(0x10000 /* 1.000000 */ + (- _ctx.density))));
+            _ctx.ptriggers[i] = (_ctx.density + fix_mul(_ctx.balance,(max_p + (- _ctx.density))));
          }
          else
          {
-            _ctx.ptriggers[i] = (_ctx.density + (- fix_mul(_ctx.balance,_ctx.density)));
+            _ctx.ptriggers[i] = (_ctx.density + (- fix_mul(_ctx.balance,(_ctx.density + (- min_p)))));
          }
       }
       else
@@ -90,17 +118,50 @@ void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    }
 }
 
-void Trigg_setLength(Trigg__ctx_type_0 &_ctx, int newLength){
+int Trigg__getAutolength(Trigg__ctx_type_0 &_ctx){
+   if(_ctx.density <= 0x0 /* 0.000000 */){
+      return 0;
+   }
+   if((_ctx.density >= 0x200 /* 0.007812 */) && (_ctx.density <= 0x8000 /* 0.500000 */)){
+      return fix_to_int((0x8000 /* 0.500000 */ + fix_div(0x10000 /* 1.000000 */,_ctx.density)));
+   }
+   if((_ctx.density > 0x8000 /* 0.500000 */) && (_ctx.density <= 0xfe00 /* 0.992188 */)){
+      return fix_to_int((0x8000 /* 0.500000 */ + fix_div(0x10000 /* 1.000000 */,(0x10000 /* 1.000000 */ + (- _ctx.density)))));
+   }
+   return 1;
+}
+
+uint8_t Trigg__applyLength(Trigg__ctx_type_0 &_ctx, int newLength){
    newLength = int_clip(newLength,0,128);
    if(newLength != _ctx.length){
       _ctx.length = newLength;
       Trigg__recompute(_ctx);
       _ctx.dirty = true;
-      Trigg__refresh(_ctx);
       if(_ctx.length <= _ctx.n){
          Trigg_restartLoop(_ctx);
       }
+      else
+      {
+         Trigg__refresh(_ctx);
+      }
+      return true;
    }
+   return false;
+}
+
+void Trigg_setLength(Trigg__ctx_type_0 &_ctx, int newLength){
+   newLength = int_clip(newLength,0,128);
+   if((newLength == 0) && bool_not(_ctx.autolength)){
+      _ctx.autolength = true;
+      newLength = Trigg__getAutolength(_ctx);
+   }
+   else
+   {
+      if((newLength > 0) && _ctx.autolength){
+         _ctx.autolength = false;
+      }
+   }
+   Trigg__applyLength(_ctx,newLength);
 }
 
 void Trigg_setBalance(Trigg__ctx_type_0 &_ctx, fix16_t newBalance){
@@ -117,10 +178,29 @@ void Trigg_setDensity(Trigg__ctx_type_0 &_ctx, fix16_t newDensity){
    newDensity = fix_clip(newDensity,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newDensity != _ctx.density){
       _ctx.density = newDensity;
-      Trigg__recompute(_ctx);
-      _ctx.dirty = true;
-      Trigg__refresh(_ctx);
+      uint8_t update;
+      update = true;
+      if(_ctx.autolength){
+         update = bool_not(Trigg__applyLength(_ctx,Trigg__getAutolength(_ctx)));
+      }
+      if(update){
+         Trigg__recompute(_ctx);
+         _ctx.dirty = true;
+         Trigg__refresh(_ctx);
+      }
    }
+}
+
+void Trigg_default(Trigg__ctx_type_0 &_ctx){
+   _ctx.divider = 1;
+   _ctx.length = 16;
+   _ctx.density = 0x8000 /* 0.500000 */;
+   _ctx.balance = 0x8000 /* 0.500000 */;
+   _ctx.evolve = 0x3333 /* 0.200000 */;
+   _ctx.magnitude = 0x4000 /* 0.250000 */;
+   Trigg__recompute(_ctx);
+   _ctx.dirty = true;
+   Trigg__refresh(_ctx);
 }
 
 void Processor_trigg__ctx_type_0_init(Processor_trigg__ctx_type_0 &_output_){

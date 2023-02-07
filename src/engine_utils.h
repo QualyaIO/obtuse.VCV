@@ -119,6 +119,7 @@ typedef struct Trigg__ctx_type_0 {
    uint8_t dirty;
    fix16_t density;
    fix16_t balance;
+   uint8_t autolength;
 } Trigg__ctx_type_0;
 
 typedef Trigg__ctx_type_0 Trigg__refresh_type;
@@ -174,6 +175,24 @@ static_inline void Trigg__recompute_init(Trigg__ctx_type_0 &_output_){
 
 void Trigg__recompute(Trigg__ctx_type_0 &_ctx);
 
+typedef Trigg__ctx_type_0 Trigg__getAutolength_type;
+
+static_inline void Trigg__getAutolength_init(Trigg__ctx_type_0 &_output_){
+   Trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Trigg__getAutolength(Trigg__ctx_type_0 &_ctx);
+
+typedef Trigg__ctx_type_0 Trigg__applyLength_type;
+
+static_inline void Trigg__applyLength_init(Trigg__ctx_type_0 &_output_){
+   Trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+uint8_t Trigg__applyLength(Trigg__ctx_type_0 &_ctx, int newLength);
+
 typedef Trigg__ctx_type_0 Trigg_setLength_type;
 
 static_inline void Trigg_setLength_init(Trigg__ctx_type_0 &_output_){
@@ -182,6 +201,17 @@ static_inline void Trigg_setLength_init(Trigg__ctx_type_0 &_output_){
 }
 
 void Trigg_setLength(Trigg__ctx_type_0 &_ctx, int newLength);
+
+typedef Trigg__ctx_type_0 Trigg_getLength_type;
+
+static_inline void Trigg_getLength_init(Trigg__ctx_type_0 &_output_){
+   Trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Trigg_getLength(Trigg__ctx_type_0 &_ctx){
+   return _ctx.length;
+};
 
 typedef Trigg__ctx_type_0 Trigg_setDivider_type;
 
@@ -255,6 +285,15 @@ static_inline void Trigg_setPosition_init(Trigg__ctx_type_0 &_output_){
 static_inline void Trigg_setPosition(Trigg__ctx_type_0 &_ctx, int newPosition){
    _ctx.position = int_clip(newPosition,0,128);
 };
+
+typedef Trigg__ctx_type_0 Trigg_default_type;
+
+static_inline void Trigg_default_init(Trigg__ctx_type_0 &_output_){
+   Trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Trigg_default(Trigg__ctx_type_0 &_ctx);
 
 typedef struct Processor_trigg__ctx_type_0 {
    int trign;
