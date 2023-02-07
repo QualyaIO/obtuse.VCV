@@ -59,10 +59,10 @@ UtilTrigg::UtilTrigg() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
    // arbitrary max divider
-   configParam(UtilTrigg::DIVIDER, 0, 1024, 2, "Clock divider", "");
-   configParam(UtilTrigg::DIVIDER, 0, 1023, 0, "Clock shift", "");
+   configParam(UtilTrigg::DIVIDER, 1, 1024, 2, "Clock divider", "");
+   configParam(UtilTrigg::SHIFT, 0, 1023, 0, "Clock shift", "");
    // correspond to implemeted max -- TODO: read that
-   configParam(UtilTrigg::LENGTH, 0, 128, 16, "Loop length", " steps");
+   configParam(UtilTrigg::LENGTH, 1, 128, 16, "Loop length", " steps");
    configParam(UtilTrigg::POSITION, 0, 127, 0, "Loop starting position", "");
    configParam(UtilTrigg::DENSITY, 0.0, 1.0, 0.5, "Density", " %", 0.0f, 100.f);
    configParam(UtilTrigg::BALANCE, 0.0, 1.0, 0.5, "Balance", " %", 0.0f, 100.f);
@@ -151,19 +151,20 @@ struct UtilTriggWidget : ModuleWidget {
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(av_knob_x, evolve_y)), module, UtilTrigg::EVOLVE_AV));
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(av_knob_x, magnitude_y)), module, UtilTrigg::MAGNITUDE_AV));
 
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, divider_y)), module, UtilTrigg::DIVIDER_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, shift_y)), module, UtilTrigg::SHIFT_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, length_y)), module, UtilTrigg::LENGTH_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, position_y)), module, UtilTrigg::POSITION_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, density_y)), module, UtilTrigg::DENSITY_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, balance_y)), module, UtilTrigg::BALANCE_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, evolve_y)), module, UtilTrigg::EVOLVE_AV));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, magnitude_y)), module, UtilTrigg::MAGNITUDE_AV));
-
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, divider_y)), module, UtilTrigg::DIVIDER_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, shift_y)), module, UtilTrigg::SHIFT_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, length_y)), module, UtilTrigg::LENGTH_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, position_y)), module, UtilTrigg::POSITION_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, density_y)), module, UtilTrigg::DENSITY_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, balance_y)), module, UtilTrigg::BALANCE_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, evolve_y)), module, UtilTrigg::EVOLVE_IN));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, magnitude_y)), module, UtilTrigg::MAGNITUDE_IN));
+      
       float in_out_y = 128.5-13.609;
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(7.320, in_out_y)), module, UtilTrigg::CLOCK));
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(20.020, in_out_y)), module, UtilTrigg::RESET));
       addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(32.718, in_out_y)), module, UtilTrigg::TRIGGER));
+      
    }
 };
 
