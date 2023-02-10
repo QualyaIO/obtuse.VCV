@@ -114,12 +114,12 @@ typedef struct Trigg__ctx_type_0 {
    int n;
    fix16_t magnitude;
    int length;
+   uint8_t isautolength;
    fix16_t evolve;
    int divider;
    uint8_t dirty;
    fix16_t density;
    fix16_t balance;
-   uint8_t autolength;
 } Trigg__ctx_type_0;
 
 typedef Trigg__ctx_type_0 Trigg__refresh_type;
