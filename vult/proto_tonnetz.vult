@@ -1,0 +1,92 @@
+
+// testing a tonnetz implementation using VCV.Prototype. Cannot use external files, so we will code here instead
+
+/*
+
+ getKnob(n:int) : real // value of the nth knob range: 0.0-1.0
+ getSwitch(n:int) : bool // value of the nth switch: true/false
+
+ setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+ setSwitchLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+
+ samplerate() : real  // current sample rate
+ sampletime() : real  // current time step (1.0 / samplerate())
+
+ */
+
+
+// generating chords using Tonnetz relationships
+
+//    8 - - 3
+//   / \   / \
+// 5 - - 0 - - 7
+//  \   / \   /
+//    9 - - 4 
+
+// generate a new chord depending on rules, returning three notes
+fun tonnetz() {
+  // which of the 12 notes is enabled or not in this scale. 0 being the root, it should be always true.
+  mem scale: array(bool, 12); 
+
+  // temp hack to change chords at each call
+  mem i;
+  i = i + 1;
+  if (i >= 12) {
+      i = 0;
+  }
+  // major starting C 
+  return 60+i, 64+i, 67+i;
+}
+
+// choose from one of the scale
+// 0: diatonic ionian (major)
+//    5 - - 0 - - 7
+//   / \   / \   / \   
+// 2 - - 9 - - 4 - - 11
+
+// 1: diatonic aeolian (minor)
+//    8 - - 3 - - 10
+//   / \   / \   / \   
+// 5 - - 0 - - 7 - - 2
+
+// won't change scale otherwise
+and setScale(id: int) {
+  // diatonic ionian (major)
+  if (id == 0) {
+    scale = [true, false, true, false, true, true, false, true, false, true, false, true];
+  }
+  // diatonic aeolian (minor)
+  else if (id == 1) {
+    scale = [true, false, true, true, false, true, false, true, true, false, true, false];
+  }
+}
+
+// from vult util
+fun pitchToCv(pitch) {
+   return 1.0/120.0 * (-24.0 + pitch);
+}
+
+
+// intput and output (up to 6) normalized from -10/10v to -1/1
+fun process() {
+    // notes of the chords
+    mem n1, n2, n3;
+
+    return pitchToCv(real(n1)), pitchToCv(real(n2)), pitchToCv(real(n3)); 
+}
+// called once every 32 loops
+and update() {
+    // detecting first switch press
+    mem lastSwitch;
+    if (lastSwitch == 0 && getSwitch(1)) {
+        lastSwitch = 1;
+        n1, n2, n3 = tonnetz();
+    }
+    else if (not(getSwitch(1))) {
+        lastSwitch = 0;
+    }
+    // some light feedback about switch press
+    setSwitchLight(1, 0.0, real(lastSwitch * 255), 0.0);
+
+    _ = display("Press first switch to update chord");
+}
