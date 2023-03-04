@@ -15,6 +15,14 @@
  */
 
 
+// super pow(), to overcome some limitation with vult
+// TODO: check up to which point pow() really differs with fixed float
+fun spow(base: real, x: real) {
+    val log_base = log10(base)/log10(exp(1.0));
+    return exp(log_base * x);
+}
+
+
 // generating chords using Tonnetz relationships
 
 //    8 - - 3
@@ -27,15 +35,23 @@
 fun tonnetz() {
   // which of the 12 notes is enabled or not in this scale. 0 being the root, it should be always true.
   mem scale: array(bool, 12); 
+  // root note for the scale
+  mem root: int;
+  // chords probabilities, augmented, major, suspended 4, suspended 2, minor, diminished
+  mem chords: array(real, 6);
+  // main chord, index of chords
+  mem chord: int;
+  // up to which point we go beyond selected chord (0: no, 1: all)
+  mem chordSpread: real;
+
 
   // temp hack to change chords at each call
-  mem i;
-  i = i + 1;
-  if (i >= 12) {
-      i = 0;
+  mem c;
+  c = c + 1;
+  if (c >= 12) {
+      c = 0;
   }
-  // major starting C 
-  return 60+i, 64+i, 67+i;
+  return root+c, root+4+c, root+7+c;
 }
 
 // choose from one of the scale
@@ -61,11 +77,80 @@ and setScale(id: int) {
   }
 }
 
-// from vult util
-fun pitchToCv(pitch) {
-   return 1.0/120.0 * (-24.0 + pitch);
+// change root note
+and setRoot(note: int) {
+    root = clip(note, 0, 127);
 }
 
+// internally update the probability that each chord appears
+// using cumulative beta function, 0 being selected chord and 1.0 the extreme opposite. Computed with regularized incomplete beta function, which, with a == 1 (what is wanted in orded to go from equiprobability with b == 1 to only select chord with b big), I_{x}(1,b) = 1 - (1 - x)^{b}
+
+and _updateChords() {
+    // dismiss the easy case
+    if (size(chords) == 1) {
+        chords[0] = 1.0;
+    }
+    else {
+        //0   1   2   3   4   5;
+
+        //0.2 0.2 0.2 0.2 0.2;
+
+        // 
+        
+        // we will compute in both direction starting from selected chord, using modulo to loop through array.
+        val i = chord;
+        val maxi = size(chords) / 2 + 1;
+        
+        while(i < chord + maxi) {
+            // convert index to position in density function
+            // divide by 2 since only half
+            // divide by 4 for i == 0 and i == maxi - 1 in case size is even because we will go through those twice
+            chords[i % size(chords)] = 0.1;
+            i = i + 1;
+        }
+        
+        i = chord;
+        while(i > chord - maxi) {
+            // nosure up to which point 
+            chords[(i + size(chords)) % size(chords)] = 0.1;
+            i = i - 1;
+        }
+    }
+}
+
+// set main chord
+// 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished
+and setChord(newChord: int) {
+    newChord = clip(newChord, 0, size(chords));
+    if (newChord <> chord) {
+        chord = newChord;
+        _ = _updateChords();
+    }
+}
+
+// up to which point other chords will be considered, from 0 (only selected chord) to 1 (all chords equi-probable)
+// TODO: -1 for most distant chords only, or all chord but selected?
+and setChordSpread(newSpread: real) {
+    newSpread = clip(newSpread, 0.0, 1.0);
+    if (newSpread <> chordSpread) {
+        chordSpread = newSpread;
+        _ = _updateChords();
+    }
+}
+
+and default() @[init] {
+    // middle C by default
+    _ = setRoot(60);
+    // major
+    _ = setChord(1); 
+    // prefer selected chord
+    _ = setChordSpread(0.5);
+}
+
+// from a midi note to cv -1..1
+fun pitchToCv(pitch) {
+    return (pitch - 60.0) / 120.0;
+}
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
 fun process() {
@@ -88,5 +173,14 @@ and update() {
     // some light feedback about switch press
     setSwitchLight(1, 0.0, real(lastSwitch * 255), 0.0);
 
-    _ = display("Press first switch to update chord");
+    //_ = display("Press first switch to update chord");
+    // hack to display several things alternatively
+    mem disstep;
+    disstep = disstep + 1;
+    val disfreq = 1000;
+    if (disstep % disfreq < disfreq / 2) {
+        _ = display(string(spow(2.5, 2.2)));
+    } else {
+        _ = display(string(-3 % 4));
+    }
 }
