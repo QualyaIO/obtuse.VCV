@@ -18,11 +18,14 @@
 // super pow(), to overcome some limitation with vult
 // TODO: check up to which point pow() really differs with fixed float
 fun spow(base: real, x: real) {
-    val log_base = log10(base)/log10(exp(1.0));
-    return exp(log_base * x);
+  val log_base = log10(base)/log10(exp(1.0));
+  return exp(log_base * x);
 }
 
-
+// compute cumulative beta for x [0..1] and a == 1
+fun beta(x: real, b: real): real  {
+  return 1.0 - spow((1.0 - x), b);
+}
 // generating chords using Tonnetz relationships
 
 //    8 - - 3
@@ -37,7 +40,7 @@ fun tonnetz() {
   mem scale: array(bool, 12); 
   // root note for the scale
   mem root: int;
-  // chords probabilities, augmented, major, suspended 4, suspended 2, minor, diminished
+  // chords probabilities, destined to be augmented, major, suspended 4, suspended 2, minor, diminished, but the array will be used as is [0] is the selected chord
   mem chords: array(real, 6);
   // main chord, index of chords
   mem chord: int;
@@ -85,47 +88,66 @@ and setRoot(note: int) {
 // internally update the probability that each chord appears
 // using cumulative beta function, 0 being selected chord and 1.0 the extreme opposite. Computed with regularized incomplete beta function, which, with a == 1 (what is wanted in orded to go from equiprobability with b == 1 to only select chord with b big), I_{x}(1,b) = 1 - (1 - x)^{b}
 
-and _updateChords() {
-    // dismiss the easy case
-    if (size(chords) == 1) {
-        chords[0] = 1.0;
-    }
-    else {
-        //0   1   2   3   4   5;
+// bParam: b parameter in the beta distribution
+and _updateChords(bParam: real) {
+  bParam = clip(bParam, 0.0, bParam);
 
-        //0.2 0.2 0.2 0.2 0.2;
-
-        // 
-        
-        // we will compute in both direction starting from selected chord, using modulo to loop through array.
-        val i = chord;
-        val maxi = size(chords) / 2 + 1;
-        
-        while(i < chord + maxi) {
-            // convert index to position in density function
-            // divide by 2 since only half
-            // divide by 4 for i == 0 and i == maxi - 1 in case size is even because we will go through those twice
-            chords[i % size(chords)] = 0.1;
-            i = i + 1;
-        }
-        
-        i = chord;
-        while(i > chord - maxi) {
-            // nosure up to which point 
-            chords[(i + size(chords)) % size(chords)] = 0.1;
-            i = i - 1;
-        }
+  // dismiss the easy case
+  if (size(chords) == 1) {
+    chords[0] = 1.0;
+  }
+  else {
+    // since the chords "loop", will compute in two halves. max indice will depend on odd/even
+    val maxi;
+    if (size(chords) % 2 == 1) {
+      maxi = (size(chords) - 1) / 2;
+    } else {
+      maxi = (size(chords) / 2) - 1;
     }
+
+    // current chords index
+    val i = 0;
+    // where we are in the cumulative function, starting with selected chord
+    val x = 1.0/real(size(chords));
+    chords[i] = beta(x, bParam);
+    // save base value for selected chord
+    val chordP = chords[i];
+                     
+    // will scale to account for the fact that we aggregate two halves
+    val scaleP = 0.0;
+    scaleP = (1.0 - chordP) * (real(maxi) / real(size(chords)-1));
+
+    // starting first half
+    i = i + 1;
+    while (i <= maxi) {
+      x = real(i) / real(maxi);
+      chords[i] = chordP + beta(x, bParam) * scaleP;
+      i = i + 1;
+    }
+
+    // second half
+    while (i < size(chords) - 1) {
+      // index in this half
+      if (size(chords) % 2 == 1) {
+        x = real(i - maxi) / real(maxi);
+      }
+      else {
+        x = real(i - maxi - 1) / real(maxi);
+      }
+      // inverse cumulative function here for symmetry, the center of the array being the furthest from selected chord [0]
+      chords[i] = 1.0 - beta(1.0-x, bParam) * scaleP;
+      i = i + 1;
+    }
+
+    // mandatory 1 for last
+    chords[size(chords) - 1] = 1.0;
+  }
 }
 
 // set main chord
 // 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished
 and setChord(newChord: int) {
-    newChord = clip(newChord, 0, size(chords));
-    if (newChord <> chord) {
-        chord = newChord;
-        _ = _updateChords();
-    }
+  chord = clip(newChord, 0, size(chords));
 }
 
 // up to which point other chords will be considered, from 0 (only selected chord) to 1 (all chords equi-probable)
@@ -133,8 +155,10 @@ and setChord(newChord: int) {
 and setChordSpread(newSpread: real) {
     newSpread = clip(newSpread, 0.0, 1.0);
     if (newSpread <> chordSpread) {
-        chordSpread = newSpread;
-        _ = _updateChords();
+      chordSpread = newSpread;
+      // 0 will be map to b==100 (might actually leave *tiny* room for other chords), 1 to b==1
+      val bParam = ((1.0 - newSpread) * 99.0) + 1.0;
+        _ = _updateChords(bParam);
     }
 }
 
