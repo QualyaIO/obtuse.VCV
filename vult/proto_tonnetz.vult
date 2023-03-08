@@ -6,7 +6,7 @@
  getKnob(n:int) : real // value of the nth knob range: 0.0-1.0
  getSwitch(n:int) : bool // value of the nth switch: true/false
 
- setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+ setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0, i from 1 to 6
  setSwitchLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
 
  samplerate() : real  // current sample rate
@@ -87,6 +87,7 @@ and setRoot(note: int) {
 
 // internally update the probability that each chord appears
 // using cumulative beta function, 0 being selected chord and 1.0 the extreme opposite. Computed with regularized incomplete beta function, which, with a == 1 (what is wanted in orded to go from equiprobability with b == 1 to only select chord with b big), I_{x}(1,b) = 1 - (1 - x)^{b}
+// note that the function will be not called if spread == 0.0, directly set all p to 1.0 in order to clip to max
 
 // bParam: b parameter in the beta distribution
 and _updateChords(bParam: real) {
@@ -147,19 +148,48 @@ and _updateChords(bParam: real) {
 // set main chord
 // 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished
 and setChord(newChord: int) {
-  chord = clip(newChord, 0, size(chords));
+  chord = clip(newChord, 0, size(chords) - 1);
 }
 
-// up to which point other chords will be considered, from 0 (only selected chord) to 1 (all chords equi-probable)
+// up to which point other chords will be considered, from 0 (only selected chord) to 1 (all chords equi-probable). Using exponential to map value to b parameter of beta distribution
 // TODO: -1 for most distant chords only, or all chord but selected?
 and setChordSpread(newSpread: real) {
     newSpread = clip(newSpread, 0.0, 1.0);
     if (newSpread <> chordSpread) {
       chordSpread = newSpread;
-      // 0 will be map to b==100 (might actually leave *tiny* room for other chords), 1 to b==1
-      val bParam = ((1.0 - newSpread) * 99.0) + 1.0;
+      // simple case, force selection of the one chord
+      if (chordSpread == 0.0) {
+        val i = 0;
+        while (i < size(chords)) {
+          chords[i] = 1.0;
+          i = i + 1;
+        }
+      }
+      else {
+      // using exponential scale. 
+        // 0 mapped to ~ 54.5, 1 mapped to, conveniently, 1
+        val bParam = exp((1.0 - newSpread) * 4.0);
         _ = _updateChords(bParam);
+      }
     }
+}
+
+// retrieve probability associated to selected chords
+and getChordP(chordId: int): real {
+  chordId = clip(chordId, 0, size(chords));
+  // map chord of interest compared to selected chord
+  val idx = (chordId - chord) % size(chords);
+  // convert cumulative probability to probability
+  if (idx == 0) {
+    return chords[0];
+  } else {
+    return chords[idx] - chords[idx-1];
+  }
+}
+
+// how many chords we consider
+and getNbChords(): int {
+  return size(chords);
 }
 
 and default() @[init] {
@@ -167,7 +197,8 @@ and default() @[init] {
     _ = setRoot(60);
     // major
     _ = setChord(1); 
-    // prefer selected chord
+    // prefer selected chord, hack to force update
+    chordSpread = 2.0;
     _ = setChordSpread(0.5);
 }
 
@@ -185,26 +216,41 @@ fun process() {
 }
 // called once every 32 loops
 and update() {
-    // detecting first switch press
-    mem lastSwitch;
-    if (lastSwitch == 0 && getSwitch(1)) {
-        lastSwitch = 1;
-        n1, n2, n3 = tonnetz();
-    }
-    else if (not(getSwitch(1))) {
-        lastSwitch = 0;
-    }
-    // some light feedback about switch press
-    setSwitchLight(1, 0.0, real(lastSwitch * 255), 0.0);
+  // first knob: select chord
+  val chord = int(getKnob(1) * real(ton:getNbChords()) + 0.5);
+  _ = ton:setChord(chord);
+  // second knob: select spread
+  _ = ton:setChordSpread(getKnob(2));
 
-    //_ = display("Press first switch to update chord");
-    // hack to display several things alternatively
-    mem disstep;
-    disstep = disstep + 1;
-    val disfreq = 1000;
-    if (disstep % disfreq < disfreq / 2) {
-        _ = display(string(spow(2.5, 2.2)));
-    } else {
-        _ = display(string(-3 % 4));
-    }
+  // feedback about probabilities with lights, up to 6 (which should be fine here)
+  val i = 0;
+  while (i < ton:getNbChords() && i < 6) {
+    // from red for 0 chance to select to green for 100% chance
+    setLight(i+1, 1.0 - ton:getChordP(i), ton:getChordP(i), 0.0);
+    i = i + 1;
+  }
+
+  
+  // detecting first switch press
+  mem lastSwitch;
+  if (lastSwitch == 0 && getSwitch(1)) {
+    lastSwitch = 1;
+    n1, n2, n3 = ton:tonnetz();
+  }
+  else if (not(getSwitch(1))) {
+    lastSwitch = 0;
+  }
+  // some light feedback about switch press
+  setSwitchLight(1, 0.0, real(lastSwitch * 255), 0.0);
+  
+  //_ = display("Press first switch to update chord");
+  // hack to display several things alternatively
+  mem disstep;
+  disstep = disstep + 1;
+  val disfreq = 1000;
+  if (disstep % disfreq < disfreq / 2) {
+    _ = display(string(exp(4.0)));
+  } else {
+    _ = display(string(ton:getChordP(1)));
+  }
 }
