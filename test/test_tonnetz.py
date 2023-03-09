@@ -7,15 +7,12 @@ def beta(x, b):
 b = 1
 print(beta(0.5,b))
 
-chords = [0] * 3
+chords = [0] * 6
 
 print(chords)
 
 i = 0
-if len(chords) % 2 == 1:
-    maxi = (len(chords) - 1)/ 2
-else:
-    maxi = (len(chords) / 2 ) - 1
+maxi = (len(chords) - 1)/ 2
 print("maxi", maxi)
 
 
@@ -52,18 +49,14 @@ print("---")
 
 while i < len(chords) - 1:
     # index in this half
-    if len(chords) % 2 == 1:
-        x = (i - maxi) / (maxi)
-    else:
-        x = (i - maxi - 1) / (maxi)
+     x = (i - maxi) / (maxi)
 
     print("i", i)
     print("x", x)
 
-    new_p =  beta(1-x, b)
+    new_p =   beta(1-x, b)
     print("new", new_p)
-    print("new scale", new_p * scale_p)
-    chords[i % len(chords)] = 1 - new_p * scale_p
+    chords[i % len(chords)] =  1 - new_p * scale_p
 
     i = i + 1
 
