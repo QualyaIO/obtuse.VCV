@@ -98,13 +98,8 @@ and _updateChords(bParam: real) {
     chords[0] = 1.0;
   }
   else {
-    // since the chords "loop", will compute in two halves. max indice will depend on odd/even
-    val maxi;
-    if (size(chords) % 2 == 1) {
-      maxi = (size(chords) - 1) / 2;
-    } else {
-      maxi = (size(chords) / 2) - 1;
-    }
+    // since the chords "loop", will compute in two halves
+    val maxi = (size(chords) - 1) / 2;
 
     // current chords index
     val i = 0;
@@ -116,8 +111,13 @@ and _updateChords(bParam: real) {
                      
     // will scale to account for the fact that we aggregate two halves
     val scaleP = 0.0;
-    scaleP = (1.0 - chordP) * (real(maxi) / real(size(chords)-1));
-
+    // FIXME: hack because I cannot spend more time to tune the algo, correct scale so that when we have even elements in the array the furthest chord does not has probability greater than the ones next to it. The idea is that with (maxi + 0.5) this chord get 0 probability -- which is fine when b is big anyway, and as a matter of fact with current spread (exp * 4) it fits nicely
+    val scaleHack = 0.0;
+    if (size(chords) % 2 == 0) {
+      scaleHack = (1.0 - chordSpread) / 2.0;
+    }
+    scaleP = (1.0 - chordP) * ((real(maxi) + scaleHack) / real(size(chords)-1));
+ 
     // starting first half
     i = i + 1;
     while (i <= maxi) {
@@ -129,12 +129,7 @@ and _updateChords(bParam: real) {
     // second half
     while (i < size(chords) - 1) {
       // index in this half
-      if (size(chords) % 2 == 1) {
-        x = real(i - maxi) / real(maxi);
-      }
-      else {
-        x = real(i - maxi - 1) / real(maxi);
-      }
+      x = real(i - maxi) / real(maxi);
       // inverse cumulative function here for symmetry, the center of the array being the furthest from selected chord [0]
       chords[i] = 1.0 - beta(1.0-x, bParam) * scaleP;
       i = i + 1;
