@@ -217,11 +217,18 @@ and update() {
   // second knob: select spread
   _ = ton:setChordSpread(getKnob(2));
 
+  // color feedback compared to equiprobability
+  val baseP = 0.5;
+  if (ton:getNbChords() > 1) {
+    baseP = 1.0/real(ton:getNbChords());
+  }
   // feedback about probabilities with lights, up to 6 (which should be fine here)
   val i = 0;
   while (i < ton:getNbChords() && i < 6) {
     // from red for 0 chance to select to green for 100% chance
-    setLight(i+1, 1.0 - ton:getChordP(i), ton:getChordP(i), 0.0);
+    val goodP = clip((ton:getChordP(i)) / baseP, 0.0, 1.0);
+    val badP =  1.0 - clip((ton:getChordP(i) - baseP) / (1.0 - baseP), 0.0, 1.0);
+    setLight(i+1, badP, goodP, 0.0);
     i = i + 1;
   }
 
