@@ -34,20 +34,181 @@ fun beta(x: real, b: real): real  {
 //  \   / \   /
 //    9 - - 4 
 
-// generate a new chord depending on rules, returning three notes
-fun tonnetz() {
+// return three notes, for selected chord, base 0, then first and second note (shift)
+// 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished,
+fun getChord(chord: int) : int, int, int {
+  chord = chord % 6;
+  // augmented
+  // 0      
+  //  \      
+  //    1      
+  //      \    
+  //        2 
+  if (chord == 0) {
+    return 0, 4, 8;
+  }
+  // major
+  // 0 - - 2
+  //  \   /
+  //    1 
+  else if (chord == 1) {
+    return 0, 4, 7;
+  }
+  // suspensed 4
+  // 1 - - 0 - - 2
+  else if (chord == 2) {
+    return 0, 5, 7;
+  }
+  // suspended 2
+  // 0 - - 2 - - 1
+  else if (chord == 3) {
+    return 0, 2, 7;
+  }
+  // minor
+  //    1
+  //   / \ 
+  // 0 - - 2 
+  else if (chord == 4) {
+    return 0, 3, 7;
+  }
+  // diminished
+  //       2
+  //      /
+  //    1 
+  //   /
+  // 0 
+  else if (chord == 4) {
+    return 0, 3, 6;
+  }
+  // backup
+  else {
+    return 0, 0, 0;
+  }
+}
+
+// check if this shift, possess this chord (as first note only, not checking inversions)
+// 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished,
+fun isChordInShift(checkChord: int, checkShift: int): bool {
+  checkShift = checkShift % 12;
   // which of the 12 notes is enabled or not in this scale. 0 being the root, it should be always true.
   mem scale: array(bool, 12); 
-  // root note for the scale
-  mem root: int;
+  val n1, n2, n3 = getChold(checkChord);
+  return scale[(n1 + checkShift) % 12] && scale[(n2 + checkShift) % 12] && scale[(n3 + checkShift) % 12];
+}
+
+// return a (base) chord from current shift. If none, will -1
+// lookAround: select chord among shift and notes next to it
+and drawChord(lookAround: bool) : int {
   // chords probabilities, destined to be augmented, major, suspended 4, suspended 2, minor, diminished, but the array will be used as is [0] is the selected chord
   mem chords: array(real, 6);
+  // temporary array to test chords probabilities
+  val tChords: array(real, 6);
+
+  val i = 0;
+  // current cumulative probability, for chords and temporary chords
+  val curcumP = 0;
+  val curcumTP = 0;
+  while (i < size(chords)) {
+    // criteria for selection
+    cond = isChordInShift(i, shift);
+    if (lookAround) {
+      cond = cond || 
+        (isChordInShift(i, shift + 3)) ||
+        (isChordInShift(i, shift + 4)) ||
+        (isChordInShift(i, shift + 5)) ||
+        (isChordInShift(i, shift + 7)) ||
+        (isChordInShift(i, shift + 8)) ||
+        (isChordInShift(i, shift + 9));
+    }
+
+    // accumulate chord proba if selected
+    if (cond) {
+      // add this one chord proba to temp cumulative probability
+      tChords[i] = curcumTP + (chords[i] - curcumP);
+      curcumTP = tChords[i];
+    }
+    // only duplicate current p
+    else {
+      tChords[i] = curcumTP;
+    }
+    curcumP = chords[i];
+    i = i + 1;
+  }
+
+  // we got at least one chord, go through to select
+  if (curcumTP > 0.0) {
+    // select chord -- scaling draw to max proba
+    val pChord = random() * tChords[size(tChords) - 1];
+    // scroll chords to select
+    i = 0;
+    while (pChord > tChords[i] && i < size(chords)) {
+      i = i + 1;
+    }
+    // we should not need this check...
+    if (i < size(tChords)) {
+      return i;
+    }
+  }
+  // no chord for this shift, fallback
+  return -1;
+}
+
+// generate a new chord depending on rules, returning three notes
+and tonnetz() {
+  // root note for the scale
+  mem root: int;
   // main chord, index of chords
   mem chord: int;
   // up to which point we go beyond selected chord (0: no, 1: all)
   mem chordSpread: real;
+  // current shift compared to tonic in scale
+  mem shift: int;
+  // list of shift since root
+  mem shifts: array(int, 11);
+  // probability jump to another note (i.e. shift). NB: destination include current note
+  mem pJump: real;
 
+  // notes of selected chord
+  val n1, n2, n3;
+  
+  // should we jump?
+  if (random() < pJump) {
+    // select chord among shift and those around
+    val selectedChord = drawChord(true);
+    val lookShifts = [0, 3, 4, 5, 7, 8, 9];
+    val selectedShifts = [-1, -1, -1, -1, -1, -1, -1];
+    // find all shift for this chord
+    if (selectedChord >= 0) {
+    }
+    // could be all of them
+    else {
+    }
 
+    
+    // random among those shifts
+    ;
+
+  }
+  // otherwise go back toward root, draw from here
+  else {
+    // find current shift, go through until a 0 is found or all is full
+    val i = 0;
+    while (i < size(shifts) && shifts[i] != 0) {
+      i = i + 1;
+    }
+    // current shift at i-1, going back to i-2 found or reached the end (hence 
+    if (i > 1) {
+      shifts[i-1] = 0;
+      shift = shifts[i-2];
+    } else {
+      shifts,[0] = 0;
+      shift = 0;
+    }
+
+    val pChord = random();
+
+  }
+  
   // temp hack to change chords at each call
   mem c;
   c = c + 1;
@@ -187,6 +348,10 @@ and getNbChords(): int {
   return size(chords);
 }
 
+and setJump(p: real) {
+  pJump = clip(p, 0.0, 1.0);
+}
+
 and default() @[init] {
     // middle C by default
     _ = setRoot(60);
@@ -195,6 +360,7 @@ and default() @[init] {
     // prefer selected chord, hack to force update
     chordSpread = 2.0;
     _ = setChordSpread(0.5);
+    _ = setJump(0.5);
 }
 
 // from a midi note to cv -1..1
