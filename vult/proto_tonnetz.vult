@@ -89,16 +89,17 @@ fun getChord(chord: int) : int, int, int {
 // check if this shift, possess this chord (as first note only, not checking inversions)
 // 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished,
 fun isChordInShift(checkChord: int, checkShift: int): bool {
-  checkShift = checkShift % 12;
   // which of the 12 notes is enabled or not in this scale. 0 being the root, it should be always true.
   mem scale: array(bool, 12); 
-  val n1, n2, n3 = getChold(checkChord);
+  val n1, n2, n3 = getChord(checkChord);
   return scale[(n1 + checkShift) % 12] && scale[(n2 + checkShift) % 12] && scale[(n3 + checkShift) % 12];
 }
 
-// return a (base) chord from current shift. If none, will -1
+// return a chord from current shift. If none, will return -1
 // lookAround: select chord among shift and notes next to it
 and drawChord(lookAround: bool) : int {
+  // main chord, index of chords
+  mem chord: int;
   // chords probabilities, destined to be augmented, major, suspended 4, suspended 2, minor, diminished, but the array will be used as is [0] is the selected chord
   mem chords: array(real, 6);
   // temporary array to test chords probabilities
@@ -113,12 +114,12 @@ and drawChord(lookAround: bool) : int {
     cond = isChordInShift(i, shift);
     if (lookAround) {
       cond = cond || 
-        (isChordInShift(i, shift + 3)) ||
-        (isChordInShift(i, shift + 4)) ||
-        (isChordInShift(i, shift + 5)) ||
-        (isChordInShift(i, shift + 7)) ||
-        (isChordInShift(i, shift + 8)) ||
-        (isChordInShift(i, shift + 9));
+        (isChordInShift(i+chord, shift + 3)) ||
+        (isChordInShift(i+chord, shift + 4)) ||
+        (isChordInShift(i+chord, shift + 5)) ||
+        (isChordInShift(i+chord, shift + 7)) ||
+        (isChordInShift(i+chord, shift + 8)) ||
+        (isChordInShift(i+chord, shift + 9));
     }
 
     // accumulate chord proba if selected
@@ -146,7 +147,7 @@ and drawChord(lookAround: bool) : int {
     }
     // we should not need this check...
     if (i < size(tChords)) {
-      return i;
+      return (i + chord) % size(chords);
     }
   }
   // no chord for this shift, fallback
@@ -157,8 +158,6 @@ and drawChord(lookAround: bool) : int {
 and tonnetz() {
   // root note for the scale
   mem root: int;
-  // main chord, index of chords
-  mem chord: int;
   // up to which point we go beyond selected chord (0: no, 1: all)
   mem chordSpread: real;
   // current shift compared to tonic in scale
@@ -177,10 +176,8 @@ and tonnetz() {
     val selectedChord = drawChord(true);
     val lookShifts = [0, 3, 4, 5, 7, 8, 9];
     val selectedShifts = [-1, -1, -1, -1, -1, -1, -1];
-    // find all shift for this chord
     if (selectedChord >= 0) {
     }
-    // could be all of them
     else {
     }
 
