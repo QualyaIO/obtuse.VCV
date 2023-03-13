@@ -119,7 +119,7 @@ and drawChord(lookAround: bool) : int {
   val curcumTP = 0.0;
   while (i < size(chords)) {
     // criteria for selection
-    val cond = isChordInShift(i, shift);
+    val cond = isChordInShift(i+chord, shift);
     if (lookAround) {
       cond = cond || 
         // note: to sync with list in main function to select shifts
