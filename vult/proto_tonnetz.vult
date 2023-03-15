@@ -88,6 +88,22 @@ fun getChord(chord: int) : array(int, 3) {
   }
 }
 
+// get chord with inversion
+// 0: no inversion
+// 1: first inversion
+// 2: second inversion
+fun getChordInversion(chord: int, inversion: int) : array(int, 3) {
+  inversion = clip(inversion, 0, 2);
+  val notes = getChord(chord);
+  if (inversion == 1) {
+    notes = [notes[1], notes[2], notes[0] + 12];
+  }
+  else if (inversion == 2) {
+    notes = [notes[2], notes[0] + 12, notes[1] + 12];
+  }
+  return notes;
+}
+
 // check if this shift, possess this chord (as first note only, not checking inversions)
 // 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished. Loop beyond that.
 // if given chord is negative (which could happen upon invalid chord), will return false
@@ -151,7 +167,7 @@ and drawChord(lookAround: bool) : int {
     val pChord = random() * tChords[size(tChords) - 1];
     // scroll chords to select
     i = 0;
-    while (pChord > tChords[i] && i < size(chords)) {
+    while (i < size(chords) && pChord > tChords[i]) {
       i = i + 1;
     }
     // we should not need this check...
@@ -163,12 +179,31 @@ and drawChord(lookAround: bool) : int {
   return -1;
 }
 
+// select an inversion
+and drawInversion(): int {
+  // inversion probabilities (none, fist, second)
+  mem inversions: array(real, 3);
+  // draw and find which inversion it is
+  val pInversion  = random();
+  val i = 0;
+  while (i < size(inversions) && pInversion > inversions[i]) {
+    i = i + 1;
+  }
+  // failsafe, e.g. in case probabilities were not initialized, no inversion
+  if (i >= size(inversions)) {
+    i = 0;
+  }
+  return i;
+}
+
 // generate a new chord depending on rules, returning three notes
 and tonnetz() {
   // root note for the scale
   mem root: int;
   // up to which point we go beyond selected chord (0: no, 1: all)
   mem chordSpread: real;
+  // up to which point we invert (0: no, 1: might equally do 0, first or second inversion)
+  mem inversionSpread: real;
   // list of shift since root
   mem shifts: array(int, 11);
   // probability jump to another note (i.e. shift). NB: destination include current note
@@ -261,11 +296,11 @@ and tonnetz() {
     selectedChord = drawChord(false);
   }
 
-  // finally we can compute notes
-  notes = getChord(selectedChord); 
 
   // special case: backup chord (0, 0, 0). Will play the same note on thee octaves.
   if (selectedChord < 0) {
+    // no inversion for octave chord
+    notes = getChord(selectedChord);
     val baseNote = shift + root;
     // note too low, up it
     if (baseNote < 12) {
@@ -282,6 +317,8 @@ and tonnetz() {
   }
   // apply chord and shift
   else {
+    // finally we can compute notes
+    notes = getChordInversion(selectedChord, drawInversion()); 
     // note: not doing modulo 12 for n + shift, root will be the lowest
     val i = 0;
     while (i < size(notes)){
@@ -426,8 +463,11 @@ and tonnetz() {
 //  \   /
 //    10
 
-// won't change scale otherwise
+// will clip id to 0..19
 and setScale(id: int) {
+  mem scaleId;
+  id = clip(id, 0, 19);
+  scaleId = id;
   // all
   if (id == 0) {
     scale = [true, true, true, true, true, true, true, true, true, true, true, true];
@@ -576,6 +616,37 @@ and _updateChords(bParam: real) {
   }
 }
 
+// sadly we have to duplicate code from _updateChords because the array is not the same size
+// bParam: b parameter in the beta distribution
+and _updateInversions(bParam: real) {
+  // below condensed code, see _updateChords for comments on the algo
+  bParam = clip(bParam, 0.0, bParam);
+  if (size(inversions) == 1) {
+    inversions[0] = 1.0;
+  }
+  else {
+    val maxi = (size(inversions) - 1) / 2;
+    val i = 0;
+    val x = 1.0/real(size(inversions));
+    inversions[i] = beta(x, bParam);
+    val inversionP = inversions[i];
+    val scaleP = 0.0;
+    scaleP = (1.0 - inversionP) * (real(maxi) / real(size(inversions)-1));
+    i = i + 1;
+    while (i <= maxi) {
+      x = real(i) / real(maxi);
+      inversions[i] = inversionP + beta(x, bParam) * scaleP;
+      i = i + 1;
+    }
+    while (i < size(inversions) - 1) {
+      x = real(i - maxi) / real(maxi);
+      inversions[i] = 1.0 - beta(1.0-x, bParam) * scaleP;
+      i = i + 1;
+    }
+    inversions[size(inversions) - 1] = 1.0;
+  }
+}
+
 // set main chord
 // 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished
 and setChord(newChord: int) {
@@ -597,12 +668,35 @@ and setChordSpread(newSpread: real) {
         }
       }
       else {
-      // using exponential scale. 
+        // using exponential scale. 
         // 0 mapped to ~ 54.5, 1 mapped to, conveniently, 1
         val bParam = exp((1.0 - newSpread) * 4.0);
         _ = _updateChords(bParam);
       }
     }
+}
+
+// mirror chord spread... for inversion
+and setInversionSpread(newSpread: real) {
+    newSpread = clip(newSpread, 0.0, 1.0);
+    if (newSpread <> inversionSpread) {
+      inversionSpread = newSpread;
+      // simple case, force selection of the one chord
+      if (inversionSpread == 0.0) {
+        val i = 0;
+        while (i < size(inversions)) {
+          inversions[i] = 1.0;
+          i = i + 1;
+        }
+      }
+      else {
+        // using exponential scale. 
+        // 0 mapped to ~ 54.5, 1 mapped to, conveniently, 1
+        val bParam = exp((1.0 - newSpread) * 4.0);
+        _ = _updateInversions(bParam);
+      }
+    }
+
 }
 
 // retrieve probability associated to selected chords
@@ -623,6 +717,11 @@ and getNbChords(): int {
   return size(chords);
 }
 
+// getter for scale
+and getScale(): int {
+  return scaleId;
+}
+
 // how many scales we consider
 and getNbScales(): int {
   return 20;
@@ -634,7 +733,7 @@ and setJump(p: real) {
 
 and default() @[init] {
   // diatonic ionian (major)
-  _ = setScale(0);
+  _ = setScale(1);
   // middle C by default
   _ = setRoot(60);
   // major
@@ -642,12 +741,83 @@ and default() @[init] {
   // prefer selected chord, hack to force update
   chordSpread = 2.0;
   _ = setChordSpread(0.5);
+  // same for inversions
+  inversionSpread = 2.0;
+  _ = setInversionSpread(0.5);
+  // might venture outside sometime
   _ = setJump(0.5);
 }
 
 // from a midi note to cv -1..1
 fun pitchToCv(pitch) {
     return (pitch - 60.0) / 120.0;
+}
+
+// for debug
+fun getScaleName(scale: int): string {
+  if (scale == 0) {
+    return "scale all";
+  }
+  else if (scale == 1) {
+    return "scale ionian/major";
+  }
+  else if (scale == 2) {
+    return "scale dorian";
+  }
+  else if (scale == 3) {
+    return "scale phrygian";
+  }
+  else if (scale == 4) {
+    return "scale lydian";
+  }
+  else if (scale == 5) {
+    return "scale mixolydian";
+  }
+  else if (scale == 6) {
+    return "scale aeolian/minor";
+  }
+  else if (scale == 7) {
+    return "scale locrian";
+  }
+  else if (scale == 8) {
+    return "scale pentatonic major";
+  }
+  else if (scale == 9) {
+    return "scale pentatonic minor";
+  }
+  else if (scale == 10) {
+    return "scale melodic major";
+  }
+  else if (scale == 11) {
+    return "scale melodic minor";
+  }
+  else if (scale == 12) {
+    return "scale harmonic major";
+  }
+  else if (scale == 13) {
+    return "scale harmonic minor";
+  }
+  else if (scale == 14) {
+    return "scale hungarian major";
+  }
+  else if (scale == 15) {
+    return "scale hungarian minor";
+  }
+  else if (scale == 16) {
+    return "scale spanish heptatonic";
+  }
+  else if (scale == 17) {
+    return "scale flamenco";
+  }
+  else if (scale == 18) {
+    return "scale blues";
+  }
+  else if (scale == 19) {
+    return "scale enigmatic";
+  }
+  else {
+    return "scale ???";
+  }
 }
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
@@ -659,11 +829,22 @@ fun process() {
 }
 // called once every 32 loops
 and update() {
-  // first knob: select chord
-  val chord = int(getKnob(1) * real(ton:getNbChords()) + 0.5);
+  // first knob: select scale
+  val scale = int(getKnob(1) * real(ton:getNbScales()) + 0.5);
+  _ = ton:setScale(scale);
+  // second knob: select root
+  val root = int(getKnob(2) * 127.0 + 0.5);
+  _ = ton:setRoot(root);
+  // third knob: select chord
+  val chord = int(getKnob(3) * real(ton:getNbChords()) + 0.5);
   _ = ton:setChord(chord);
-  // second knob: select spread
-  _ = ton:setChordSpread(getKnob(2));
+  // fourth knob: select spread
+  _ = ton:setChordSpread(getKnob(4));
+  // fifth knob: select inversion spread
+  _ = ton:setInversionSpread(getKnob(5));
+  // sixth knob: select jump
+  _ = ton:setJump(getKnob(6));
+  
 
   // color feedback compared to equiprobability
   val baseP = 0.5;
@@ -696,10 +877,10 @@ and update() {
   // hack to display several things alternatively
   mem disstep;
   disstep = disstep + 1;
-  val disfreq = 1000;
+  val disfreq = 4000;
   if (disstep % disfreq < disfreq / 2) {
-    _ = display("Tonnetz");
+    _ = display("knobs: scale, root, chord, chordSpread, inversionSpread, jump");
   } else {
-    _ = display(string(ton:getChordP(1)));
+    _ = display(getScaleName(ton:getScale()));
   }
 }
