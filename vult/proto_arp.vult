@@ -1,0 +1,136 @@
+
+// testing a tonnetz implementation using VCV.Prototype. Cannot use external files, so we will code here instead
+
+/*
+
+ getKnob(n:int) : real // value of the nth knob range: 0.0-1.0
+ getSwitch(n:int) : bool // value of the nth switch: true/false
+
+ setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0, i from 1 to 6
+ setSwitchLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+
+ samplerate() : real  // current sample rate
+ sampletime() : real  // current time step (1.0 / samplerate())
+
+ */
+
+
+// from a midi note to cv -1..1
+fun pitchToCv(pitch) {
+    return (pitch - 60.0) / 120.0;
+}
+
+// and reciprocate
+fun cvToPitch(cv) : int {
+   val pitch = cv * 120.0 + 60.0;
+   // round
+   if (pitch % 1.0 >= 0.5) {
+      pitch = floor(pitch + 1.0);
+   } else {
+      pitch = floor(pitch);
+   }
+   pitch = clip(pitch, 0.0, 127.0);
+   return int(pitch);
+}
+
+// from vult examples
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+// arpeggiator
+fun arp(): int {
+  // up to 16 notes in the arp. 0..127, -1 if inactive
+  mem notes: array(int, 16);
+  // how many active notes
+  mem nbNotes: int;
+  return irandom() % 127;
+}
+
+// reset sequence
+and reset() {
+}
+
+// updates notes of the arp, expect increasing order of pitch 0..127. Notes below 0 will not be considered, above 127 will be clipped.
+// will reset sequence if the number of notes changes, otherwise left untouched
+and setNotes(newNotes: array(int, 16)) {
+  val i = 0;
+  val j = 0;
+  while (i < size(newNotes)){
+    if (newNotes[i] > 0) {
+      notes[j] = clip(newNotes[i], 0, 127);
+      j = j + 1;
+    }
+    i = i + 1;
+  }
+  // check if the number of active notes changed
+  if (j <> nbNotes) {
+    nbNotes = j;
+    _ = reset();
+  }
+}
+
+
+// intput and output (up to 6) normalized from -10/10v to -1/1
+// Note: since we have no way to know if input is connected or not, a knob will be used to set the number of active inputs
+// inputs notes from 1 to 4, 5 to trigger next note, 6 trigger to reset sequence
+fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
+  // the one output
+  mem out1;
+  // how many active inputs, current and update
+  mem nbInputs;
+  // current notes, 16 as handled by arp for simplification sake
+  mem notes: array(int, 16);
+  // candidates for new notes, first 5 inputs
+  mem inputNotes: array(int, 4);
+  // checking last values
+  mem li1, li2, li3, li4;
+  if (li1 <> i1 || li2 <> i2 || li3 <> i3 || li4 <> i4) {
+    li1 = i1;
+    li2 = i2;
+    li3 = i3;
+    li4 = i4;
+    inputNotes = [cvToPitch(i1), cvToPitch(i2), cvToPitch(i3), cvToPitch(i4)];
+    // updating notes
+    val i = 0;
+    while (i < nbInputs) {
+      notes[i] = inputNotes[i];
+      i = i + 1;
+    }
+    // disable remaining notes (notes from max input to 16 already set to -1 on init)
+    while (i < size(inputNotes)) {
+      notes[i] = -1;
+      i = i + 1;
+    }
+    // pass along
+    _ = arpe:setNotes(notes);
+  }
+  // check reset, if last input => 1v (we are only interested in raising front)
+  if (edge(i6 >= 0.1)) {
+    _ = arpe:reset();
+  }
+  // update output
+  if (edge(i5 >= 0.1)) {
+    out1 = pitchToCv(real(arpe:arp()));
+  }
+  return out1;
+}
+
+// called once every 32 loops
+and update() {
+  // update inputs
+  nbInputs = int(getKnob(1) * real(size(inputNotes)) + 0.5);
+  _ = display("Arp. input 1-4 notes, 5 trigger, 6 reset. Knob 1 number inputs, out 1 note.");
+}
+
+and default() @[init] {
+  // init notes to all disabled
+  val i = 0;
+  while (i < size(notes)) {
+    notes[i] = -1;
+    i = i + 1;
+  }
+}
