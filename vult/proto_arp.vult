@@ -41,17 +41,123 @@ fun edge(x:bool) : bool {
    return ret;
 }
 
+// for debug, name of mode
+fun getModeName(mode) {
+  if (mode == 0) {
+    return "up";
+  }
+  else if (mode == 1) {
+    return "down";
+  }
+  else if (mode == 2) {
+    return "up-down";
+  }
+  else if (mode == 3) {
+    return "up-down repeat";
+  }
+  else if (mode == 4) {
+    return "down-up";
+  }
+  else if (mode == 5) {
+    return "down-up repeat";
+  }
+  return "mode unknown";
+}
+
 // arpeggiator
-fun arp(): int {
+
+// reset sequence to beginning
+fun reset() {
+  // position in current sequence
+  mem step;
+  step = 0;
+}
+// main function, return new note, -1 if none
+and arp(): int {
   // up to 16 notes in the arp. 0..127, -1 if inactive
   mem notes: array(int, 16);
   // how many active notes
   mem nbNotes: int;
-  return irandom() % 127;
+  // type of arp (see setmode)
+  mem mode: int;
+  // notes index in the sequence (size of the sequence max)
+  mem sequence: array(int, 32);
+  // size of current sequence
+  mem sequenceSize;
+  val newNote = notes[sequence[step]];
+  step = step + 1;
+  // reset at the end of the sequence
+  if (step >= sequenceSize) {
+    _ = reset();
+  }
+  return newNote;
 }
 
-// reset sequence
-and reset() {
+
+// recompute sequence array
+and _updateSequence() {
+  // update number of active step in the sequence
+  if (mode == 0 || mode == 1) {
+    sequenceSize = nbNotes; 
+  }
+  else if (mode == 2 || mode == 4) {
+    sequenceSize = nbNotes * 2 - 2; 
+  }
+  else if (mode == 3 || mode == 5) {
+    sequenceSize = nbNotes * 2; 
+  }
+  // update sequence
+  // TODO: probably more concise way to do it
+  val i = 0;
+  while (i < sequenceSize) {
+    // up
+    if (mode == 0) {
+      sequence[i] = i;
+    }
+    // down
+    else if (mode == 1) {
+      sequence[i] = nbNotes - 1 - i;
+    }
+    // up-down no repeat
+    else if (mode == 2) {
+      if (i < nbNotes) {
+        sequence[i] = i;
+      }
+      else {
+        sequence[i] = nbNotes - 2 - (i - nbNotes);
+      }
+    }
+    // up-down repeat
+    else if (mode == 3) {
+      if (i < nbNotes) {
+        sequence[i] = i;
+      }
+      else {
+        sequence[i] = nbNotes - 1 - (i - nbNotes);
+      }
+    }
+    // down-up no repeat
+    else if (mode == 4) {
+      if (i < nbNotes) {
+        sequence[i] = nbNotes - 1 - i;
+      }
+      else {
+        sequence[i] = (i - nbNotes) + 1;
+      }
+    }
+    // up-down repeat
+    else if (mode == 5) {
+      if (i < nbNotes) {
+        sequence[i] = nbNotes - 1 - i;
+      }
+      else {
+        sequence[i] = i - nbNotes;
+      }
+    }
+    i = i + 1;
+  }
+  // re-init sequence
+  _ = reset();
 }
 
 // updates notes of the arp, expect increasing order of pitch 0..127. Notes below 0 will not be considered, above 127 will be clipped.
@@ -69,10 +175,29 @@ and setNotes(newNotes: array(int, 16)) {
   // check if the number of active notes changed
   if (j <> nbNotes) {
     nbNotes = j;
-    _ = reset();
+    _ = _updateSequence();
   }
 }
 
+// changing type of sequence -- resetting sequence if changed
+// 0: up (1 2 3 1 2 3), sequence size nbNotes
+// 1: down (3 2 1 3 2 1), sequence size nbNotes
+// 2: up-down no repeat (1 2 3 2 1 2 3 2 1), sequence size nbNotes * 2 - 2
+// 3: up-down repeat (1 2 3 3 2 1 1 2 3), sequence size nbNotes * 2
+// 4: down-up no repeat (3 2 1 2 3 2 1), sequence size nbNotes * 2 - 2
+// 5: down-up repeat (3 2 1 1 2 3 3 2 1), sequence size nbNotes * 2
+and setMode(newMode: int) {
+  newMode = clip(newMode, 0, 5);
+  if (newMode <> mode) {
+    mode = newMode;
+    _ = _updateSequence();
+  }
+}
+
+// get number of modes
+and getNbModes() : int {
+  return 6;
+}
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
 // Note: since we have no way to know if input is connected or not, a knob will be used to set the number of active inputs
@@ -82,13 +207,15 @@ fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
   mem out1;
   // how many active inputs, current and update
   mem nbInputs;
+  mem newNbInputs;
   // current notes, 16 as handled by arp for simplification sake
   mem notes: array(int, 16);
-  // candidates for new notes, first 5 inputs
+  // candidates for new notes, first 4 inputs
   mem inputNotes: array(int, 4);
   // checking last values
   mem li1, li2, li3, li4;
-  if (li1 <> i1 || li2 <> i2 || li3 <> i3 || li4 <> i4) {
+  if (nbInputs <> newNbInputs || li1 <> i1 || li2 <> i2 || li3 <> i3 || li4 <> i4) {
+    nbInputs = newNbInputs;
     li1 = i1;
     li2 = i2;
     li3 = i3;
@@ -121,9 +248,22 @@ fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
 
 // called once every 32 loops
 and update() {
-  // update inputs
-  nbInputs = int(getKnob(1) * real(size(inputNotes)) + 0.5);
-  _ = display("Arp. input 1-4 notes, 5 trigger, 6 reset. Knob 1 number inputs, out 1 note.");
+  // update inputs, at least one
+  newNbInputs = int(getKnob(1) * real(size(inputNotes) - 1) + 0.5) + 1;
+  // update mode
+  val mode = int(getKnob(2) * real(arpe:getNbModes() - 1) + 0.5);
+  _ = arpe:setMode(mode);
+
+  // hack to display several things alternatively
+  mem disstep;
+  disstep = disstep + 1;
+  val disfreq = 4000;
+  if (disstep % disfreq < disfreq / 2) {
+    _ = display("Arp. input 1-4 notes, 5 trigger, 6 reset. Knob 1 number inputs, 2 mode,  out 1 note.");
+    _ = display("knobs: scale, root, chord, chordSpread, inversionSpread, jump");
+  } else {
+    _ = display(getModeName(mode));
+  }
 }
 
 and default() @[init] {
