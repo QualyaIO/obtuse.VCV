@@ -34,6 +34,223 @@ fun beta(x: real, b: real): real  {
 //  \   / \   /
 //    9 - - 4 
 
+// get scale, which notes among the 12 are included. all false if not handled.
+// 
+// 0: all notes
+//
+// 1: diatonic ionian (major)
+//    5 - - 0 - - 7
+//   / \   / \   / \   
+// 2 - - 9 - - 4 - - 11
+//
+// 2: diatonic dorian
+//    3 - - 10- - 5
+//   / \   / \   / \   
+// 0 - - 7 - - 2 - - 9
+//
+// 3: diatonic phrygian
+//    1 - - 8 - - 3
+//   / \   / \   / \   
+// 10- - 5 - - 0 - - 7
+//
+// 4: diatonic lydian
+//    0 - - 7 - - 2
+//   / \   / \   / \   
+// 9 - - 4 - - 11 - - 6
+//
+// 5: diatonic mixolydian
+//    10- - 5 - - 0
+//   / \   / \   / \   
+// 7 - - 2 - - 9  - - 4
+//
+// 6: diatonic aeolian (minor)
+//    8 - - 3 - - 10
+//   / \   / \   / \   
+// 5 - - 0 - - 7 - - 2
+//
+// 7: diatonic locrian
+//    6 - - 1 - - 8 
+//   / \   / \   / \   
+// 3 - - 10- - 5 - - 0
+//
+// 8: pentatonic major
+//          0 - - 7
+//         / \   /
+// 2 - - 9 - - 4 
+//
+// 9: pentatonic minor
+//          3 - - 10
+//         / \   /
+// 5 - - 0 - - 7 
+//
+// 10: melodic major
+//                   8
+//                  /
+//          10 - - 5
+//         / \   /
+// 0 - - 7 - - 2
+//  \   /
+//    4
+//
+// 11: melodic minor
+//                   3
+//                  /
+//          5 - - 0
+//         / \   /
+// 7 - - 2 - - 9
+//  \   /
+//    11
+//
+// 12: harmonic major
+// 5 - - 0 - - 7 - - 2
+//        \   / \   /     
+//          4 - - 11
+//           \   /     
+//             8
+//
+// 13: harmonic minor
+//       11
+//      / \ 
+//    8 - - 3
+//   / \   / \ 
+// 5 - - 0 - - 7  - - 2
+//
+// 14: hungarian major
+//          6
+//         / \
+//       3 - - 10
+//      / \   / 
+//    0 - - 7 
+//   / \   /
+// 9 - - 4
+//
+// 15: hungarian minor
+//       2
+//      / \
+//    11- - 6
+//   / \   / 
+// 8 - - 3 
+//  \   / \  
+//    0 - - 7
+//
+// 16: spanish heptatonic
+// 1 - - 8 - - 3 - - 10
+//  \   / \   / \   /     
+//    5 - - 0 - - 7
+//           \   /     
+//             4
+//
+// 17: flamenco
+//       6 - - 1
+//      / \   /
+//    3 - - 10
+//   / \   / 
+// 0 - - 7 
+//  \   /
+//    4
+//
+// 18: blues
+//             6 
+//            / \
+//          3 - - 10
+//         / \   /     
+// 5 - - 0 - - 7
+//
+// 19: enigmatic
+//       0 
+//        \
+//          4 - - 11
+//         / \   /     
+// 6 - - 1 - - 8
+//  \   /
+//    10
+//
+and getScale(id: int): array(bool, 12) {
+  val scale = [false, false, false, false, false, false, false, false, false, false, false, false];
+  // all
+  if (id == 0) {
+    scale = [true, true, true, true, true, true, true, true, true, true, true, true];
+  }
+  // diatonic ionian (major)
+  else if (id == 1) {
+    scale = [true, false, true, false, true, true, false, true, false, true, false, true];
+  }
+  // diatonic dorian
+  else if (id == 2) {
+    scale = [true, false, true, true, false, true, false, true, false, true, true, false];
+  }
+  // diatonic phrygian
+  else if (id == 3) {
+    scale = [true, true, false, true, false, true, false, true, true, false, true, false];
+  }
+  // diatonic lydian
+  else if (id == 4) {
+    scale = [true, false, true, false, true, false, true, true, false, true, false, true];
+  }
+  // diatonic mixolydian
+  else if (id == 5) {
+    scale = [true, false, true, false, true, true, false, true, false, true, true, false];
+  }
+  // diatonic aeolian (minor)
+  else if (id == 6) {
+    scale = [true, false, true, true, false, true, false, true, true, false, true, false];
+  }
+  // diatonic locrian
+  else if (id == 7) {
+    scale = [true, true, false, true, false, true, true, false, true, false, true, false];
+  }
+  // pentatonic major
+  else if (id == 8) {
+    scale = [true, false, true, false, true, false, false, true, false, true, false, false];
+  }
+  // pentatonic minor
+  else if (id == 9) {
+    scale = [true, false, false, true, false, true, false, true, false, false, true, false];
+  }
+  // melodic major
+  else if (id == 10) {
+    scale = [true, false, true, false, true, true, false, true, true, false, true, false];
+  }
+  // melodic minor
+  else if (id == 11) {
+    scale = [true, false, true, true, false, true, false, true, false, true, false, true];
+  }
+  // harmonic major
+  else if (id == 12) {
+    scale = [true, false, true, false, true, true, false, true, true, false, false, true];
+  }
+  // harmonic minor
+  else if (id == 13) {
+    scale = [true, false, true, true, false, true,  false, true, true, false, false, true];
+  }
+  // hungarian major
+  else if (id == 14) {
+    scale = [true, false, false, true, true, false, true, true, false, true, true, false];
+  }
+  // hungarian minor
+  else if (id == 15) {
+    scale = [true, false, true, true, false, false, true, true, true, false, false, true];
+  }
+  // spanish heptatonic
+  else if (id == 16) {
+    scale = [true, true, false, true, true, true, false, true, true, false, true, false];
+  }
+  // flamenco
+  else if (id == 17) {
+    scale = [true, true, false, true, true, false, true, true, false, false, true, false];
+  }
+  // blues
+  else if (id == 18) {
+    scale = [true, false, false, true, false, true, true, true, false, false, true, false];
+  }
+  // enigmantic
+  else if (id == 19) {
+    scale = [true, true, false, false, true, false, true, false, true, false, true, true];
+  }
+  return scale;
+}
+
+
 // return three notes, for selected chord, base 0, then first and second note (shift)
 // 0: augmented, 1: major, 2: suspended 4, 3: suspended 2, 4: minor, 5: diminished,
 fun getChord(chord: int) : array(int, 3) {
@@ -346,222 +563,13 @@ and reset() {
 
 // choose from one of the scale
 // will reset shifts upon change
-//
-// 0: all notes
-//
-// 1: diatonic ionian (major)
-//    5 - - 0 - - 7
-//   / \   / \   / \   
-// 2 - - 9 - - 4 - - 11
-//
-// 2: diatonic dorian
-//    3 - - 10- - 5
-//   / \   / \   / \   
-// 0 - - 7 - - 2 - - 9
-//
-// 3: diatonic phrygian
-//    1 - - 8 - - 3
-//   / \   / \   / \   
-// 10- - 5 - - 0 - - 7
-//
-// 4: diatonic lydian
-//    0 - - 7 - - 2
-//   / \   / \   / \   
-// 9 - - 4 - - 11 - - 6
-//
-// 5: diatonic mixolydian
-//    10- - 5 - - 0
-//   / \   / \   / \   
-// 7 - - 2 - - 9  - - 4
-//
-// 6: diatonic aeolian (minor)
-//    8 - - 3 - - 10
-//   / \   / \   / \   
-// 5 - - 0 - - 7 - - 2
-//
-// 7: diatonic locrian
-//    6 - - 1 - - 8 
-//   / \   / \   / \   
-// 3 - - 10- - 5 - - 0
-//
-// 8: pentatonic major
-//          0 - - 7
-//         / \   /
-// 2 - - 9 - - 4 
-//
-// 9: pentatonic minor
-//          3 - - 10
-//         / \   /
-// 5 - - 0 - - 7 
-//
-// 10: melodic major
-//                   8
-//                  /
-//          10 - - 5
-//         / \   /
-// 0 - - 7 - - 2
-//  \   /
-//    4
-//
-// 11: melodic minor
-//                   3
-//                  /
-//          5 - - 0
-//         / \   /
-// 7 - - 2 - - 9
-//  \   /
-//    11
-//
-// 12: harmonic major
-// 5 - - 0 - - 7 - - 2
-//        \   / \   /     
-//          4 - - 11
-//           \   /     
-//             8
-//
-// 13: harmonic minor
-//       11
-//      / \ 
-//    8 - - 3
-//   / \   / \ 
-// 5 - - 0 - - 7  - - 2
-//
-// 14: hungarian major
-//          6
-//         / \
-//       3 - - 10
-//      / \   / 
-//    0 - - 7 
-//   / \   /
-// 9 - - 4
-//
-// 15: hungarian minor
-//       2
-//      / \
-//    11- - 6
-//   / \   / 
-// 8 - - 3 
-//  \   / \  
-//    0 - - 7
-//
-// 16: spanish heptatonic
-// 1 - - 8 - - 3 - - 10
-//  \   / \   / \   /     
-//    5 - - 0 - - 7
-//           \   /     
-//             4
-//
-// 17: flamenco
-//       6 - - 1
-//      / \   /
-//    3 - - 10
-//   / \   / 
-// 0 - - 7 
-//  \   /
-//    4
-//
-// 18: blues
-//             6 
-//            / \
-//          3 - - 10
-//         / \   /     
-// 5 - - 0 - - 7
-//
-// 19: enigmatic
-//       0 
-//        \
-//          4 - - 11
-//         / \   /     
-// 6 - - 1 - - 8
-//  \   /
-//    10
-//
 // will clip id to 0..19
 and setScale(id: int) {
   mem scaleId;
   id = clip(id, 0, 19);
   if (scaleId <> id) {
     scaleId = id;
-    // all
-    if (id == 0) {
-      scale = [true, true, true, true, true, true, true, true, true, true, true, true];
-    }
-    // diatonic ionian (major)
-    else if (id == 1) {
-      scale = [true, false, true, false, true, true, false, true, false, true, false, true];
-    }
-    // diatonic dorian
-    else if (id == 2) {
-      scale = [true, false, true, true, false, true, false, true, false, true, true, false];
-    }
-    // diatonic phrygian
-    else if (id == 3) {
-      scale = [true, true, false, true, false, true, false, true, true, false, true, false];
-    }
-    // diatonic lydian
-    else if (id == 4) {
-      scale = [true, false, true, false, true, false, true, true, false, true, false, true];
-    }
-    // diatonic mixolydian
-    else if (id == 5) {
-      scale = [true, false, true, false, true, true, false, true, false, true, true, false];
-    }
-    // diatonic aeolian (minor)
-    else if (id == 6) {
-      scale = [true, false, true, true, false, true, false, true, true, false, true, false];
-    }
-    // diatonic locrian
-    else if (id == 7) {
-      scale = [true, true, false, true, false, true, true, false, true, false, true, false];
-    }
-    // pentatonic major
-    else if (id == 8) {
-      scale = [true, false, true, false, true, false, false, true, false, true, false, false];
-    }
-    // pentatonic minor
-    else if (id == 9) {
-      scale = [true, false, false, true, false, true, false, true, false, false, true, false];
-    }
-    // melodic major
-    else if (id == 10) {
-      scale = [true, false, true, false, true, true, false, true, true, false, true, false];
-    }
-    // melodic minor
-    else if (id == 11) {
-      scale = [true, false, true, true, false, true, false, true, false, true, false, true];
-    }
-    // harmonic major
-    else if (id == 12) {
-      scale = [true, false, true, false, true, true, false, true, true, false, false, true];
-    }
-    // harmonic minor
-    else if (id == 13) {
-      scale = [true, false, true, true, false, true,  false, true, true, false, false, true];
-    }
-    // hungarian major
-    else if (id == 14) {
-      scale = [true, false, false, true, true, false, true, true, false, true, true, false];
-    }
-    // hungarian minor
-    else if (id == 15) {
-      scale = [true, false, true, true, false, false, true, true, true, false, false, true];
-    }
-    // spanish heptatonic
-    else if (id == 16) {
-      scale = [true, true, false, true, true, true, false, true, true, false, true, false];
-    }
-    // flamenco
-    else if (id == 17) {
-      scale = [true, true, false, true, true, false, true, true, false, false, true, false];
-    }
-    // blues
-    else if (id == 18) {
-      scale = [true, false, false, true, false, true, true, true, false, false, true, false];
-    }
-    // enigmantic
-    else if (id == 19) {
-      scale = [true, true, false, false, true, false, true, false, true, false, true, true];
-    }
+    scale = getScale(id);
     reset();
   }
 }
@@ -726,13 +734,17 @@ and getNbChords(): int {
 }
 
 // getter for scale
-and getScale(): int {
+and getScaleId(): int {
   return scaleId;
 }
 
 // how many scales we consider
 and getNbScales(): int {
   return 20;
+}
+
+and getRoot(): int {
+  return root;
 }
 
 and setJump(p: real) {
@@ -891,6 +903,6 @@ and update() {
   if (disstep % disfreq < disfreq / 2) {
     _ = display("knobs: scale, root, chord, chordSpread, inversionSpread, jump");
   } else {
-    _ = display(getScaleName(ton:getScale()));
+    _ = display(getScaleName(ton:getScaleId()));
   }
 }
