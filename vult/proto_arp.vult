@@ -66,25 +66,49 @@ fun getModeName(mode) {
 
 // arpeggiator
 
-// reset sequence to beginning
+// reset sequence to beginning -- and chance to update random notes, if any
 fun reset() {
+  // how many active notes
+  mem nbNotes: int;
+  // notes index in the sequence (size of the sequence max)
+  mem sequence: array(int, 32);
+  // the actual sequence to be played, with possible random notes
+  mem playSequence: array(int, 32);
+  // size of current sequence
+  mem sequenceSize;
+  // flag set internally upon change which require randomization
+  mem dirty;
   // position in current sequence
   mem step;
+  // probability that each note of the sequence is randomly selected
+  mem pRandomNotes;
+  // proability to re-compute random notes upon new sequence (or reset)
+  mem pRandomize;
+
+  // recompute actual sequence to be played if state changed or randomized
+  if (dirty || (pRandomize > 0.0 && pRandomNotes > 0.0 && random() <= pRandomize)) {
+    val i = 0;
+    while (i < sequenceSize) {
+      if (pRandomNotes > 0.0 && random() <= pRandomNotes) {
+        playSequence[i] = irandom() % nbNotes; 
+      }
+      else {
+        playSequence[i] = sequence[i];
+      }
+      i = i + 1;
+    }
+  }
   step = 0;
+  dirty = false;
 }
+
 // main function, return new note, -1 if none
 and arp(): int {
   // up to 16 notes in the arp. 0..127, -1 if inactive
   mem notes: array(int, 16);
-  // how many active notes
-  mem nbNotes: int;
   // type of arp (see setmode)
   mem mode: int;
-  // notes index in the sequence (size of the sequence max)
-  mem sequence: array(int, 32);
-  // size of current sequence
-  mem sequenceSize;
-  val newNote = notes[sequence[step]];
+  val newNote = notes[playSequence[step]];
   step = step + 1;
   // reset at the end of the sequence
   if (step >= sequenceSize) {
@@ -156,7 +180,8 @@ and _updateSequence() {
     }
     i = i + 1;
   }
-  // re-init sequence
+  // re-init sequence, flag state changed
+  dirty = true;
   _ = reset();
 }
 
@@ -197,6 +222,20 @@ and setMode(newMode: int) {
 // get number of modes
 and getNbModes() : int {
   return 6;
+}
+
+// change probability that each note of the sequence is random. Changing this value will recompute sequence upon reset
+and setPRandomNotes(p: real) {
+  p = clip(p, 0.0, 1.0);
+  if (pRandomNotes <> p) {
+    pRandomNotes = p;
+    dirty = true;
+  }
+}
+
+// change probability that random notes would change upon new sequence
+and setPRandomize(p: real) {
+  pRandomize = clip(p, 0.0, 1.0);
 }
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
@@ -253,14 +292,16 @@ and update() {
   // update mode
   val mode = int(getKnob(2) * real(arpe:getNbModes() - 1) + 0.5);
   _ = arpe:setMode(mode);
+  // update probabilities
+  _ = arpe:setPRandomNotes(getKnob(3));
+  _ = arpe:setPRandomize(getKnob(4));
 
   // hack to display several things alternatively
   mem disstep;
   disstep = disstep + 1;
   val disfreq = 4000;
   if (disstep % disfreq < disfreq / 2) {
-    _ = display("Arp. input 1-4 notes, 5 trigger, 6 reset. Knob 1 number inputs, 2 mode,  out 1 note.");
-    _ = display("knobs: scale, root, chord, chordSpread, inversionSpread, jump");
+    _ = display("Arp. i 1-4 notes, 5 trigg, 6 rst. Knob 1 nInputs, 2 mode, 3 rand, 4 randomize. o 1 note.");
   } else {
     _ = display(getModeName(mode));
   }
