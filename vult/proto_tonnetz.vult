@@ -566,12 +566,11 @@ and setScale(id: int) {
   }
 }
 
-// change root note, reset shift and list of shifts upon change
+// change root note (not resetting shifts)
 and setRoot(note: int) {
   note = clip(note, 0, 127);
   if (root <> note) {
     root = note;
-    reset();
   }
 }
 
