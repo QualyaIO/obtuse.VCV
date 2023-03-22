@@ -1,0 +1,114 @@
+
+// testing a tonnetz implementation using VCV.Prototype. Cannot use external files, so we will code here instead
+
+/*
+
+ getKnob(n:int) : real // value of the nth knob range: 0.0-1.0
+ getSwitch(n:int) : bool // value of the nth switch: true/false
+
+ setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0, i from 1 to 6
+ setSwitchLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+
+ samplerate() : real  // current sample rate
+ sampletime() : real  // current time step (1.0 / samplerate())
+
+ */
+
+
+
+// clock with swing and grouping
+
+
+// - . o . - . o . normal
+// - o . . - o . .  swing -
+// - . . o - . . o swing +
+// - . - . - . - . o . o . o . o . normal groupe 4 ... ou 8 en fait. swing pour min groupe 2. ratio 0.5
+// - - - - o . . o . . o . . o . .  swing -
+
+
+// inform the whole world about supported BPM range
+fun getMinBPM(): real {
+  return 0.002;
+}
+fun getMaxBPM(): real {
+  return 30000.0;
+}
+
+
+// time: passing by, in seconds, should be positive
+// return true upon new beat, false otherwise
+fun clock(time: real): bool {
+  // beats per minutes
+  mem bpm: real;
+  // interval between beats, in seconds
+  mem ibi: real;
+  // when last beat occurred
+  mem lastBeat;
+
+  val trigger = false;
+  // special case, we overflowed the time, or clock is wrong, consider that we should trigger
+  if (time < lastBeat) {
+    lastBeat = time; 
+    trigger = true;
+  }
+  // time to clock
+  else if (time - lastBeat >= ibi) {
+    lastBeat = lastBeat + ibi;
+    trigger = true;
+  }
+
+  return trigger;
+}
+
+// change current BPM, 0.002 to max 30000 bpm (to deal with fixed float range, and because why not)
+and setBPM(newBPM: real) {
+  newBPM = clip(newBPM, getMinBPM(), getMaxBPM());
+  if (newBPM <> bpm){
+    bpm = newBPM;
+    ibi = 60.0/bpm;
+  }
+}
+
+and default() @[init] {
+  // good ol' 120 BPM
+  _ = setBPM(120.0);
+}
+
+
+// intput and output (up to 6) normalized from -10/10v to -1/1
+fun process() {
+  // computing wall clock
+  mem time;
+  time = time + sampletime();
+  // saving current state
+  mem lastTrigg;
+  mem out1;
+
+  if (cloclo:clock(time)) {
+    out1 = 1.0;
+    lastTrigg = time;
+  }
+  // we want 1ms trigger
+  else if (time - lastTrigg > 0.001) {
+    out1 = 0.0;
+  }
+
+  return out1;
+}
+
+// called once every 32 loops
+and update() {
+  val bpm = clip(getKnob(1) * 1000.0, getMinBPM(), getMaxBPM());
+  _ = cloclo:setBPM(bpm);
+  
+  // hack to display several things alternatively
+  mem disstep;
+  disstep = disstep + 1;
+  val disfreq = 4000;
+  if (disstep % disfreq < disfreq / 2) {
+    _ = display("Clock. i BPM.");
+  } else {
+    _ = display(string(bpm));
+  }
+}
+
