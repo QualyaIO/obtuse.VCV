@@ -43,7 +43,7 @@ fun getMaxGroupSize(): int {
 
 
 // time: passing by, in seconds, should be positive
-// return 1 upon new beat from firs sub-group, 2 for second sub-group, 0 otherwise
+// return 1 upon first beat, 2 new beat from first sub-group, 3 for second sub-group, 0 otherwise
 // will return trigger upon first call (start with beat)
 fun clock(time: real): int {
   // check if first run (or if reset), since vult init to false
@@ -65,26 +65,36 @@ fun clock(time: real): int {
   mem pos: int; 
   // tune IBI, within sub-groups
   mem swing: real;
+  //should be mix subgroups, even beat subgroup 1, odd subgroup 2
+  mem orderMix: bool;
 
   val trigger = 0;
-  // special case, we overflowed the time, or clock is wrong, consider that we should trigger
+  // special case, we overflowed the time, or clock is wrong, consider that we should trigger, reset position
   if (not(init) || time < lastBeat) {
     init = true;
     lastBeat = time; 
     trigger = 1;
-    pos = pos + 1;
+    pos = 1;
   }
   // time to clock
   else {
     val ibi;
     val trigGroup;
-    if (pos < subSize) {
+    if (
+        (not(orderMix) && pos < subSize) ||
+        (orderMix && pos % 2 == 0)
+        ) {
       ibi = ibiA;
-      trigGroup = 1;
+      // can accentuate first beat
+      if (pos == 0) {
+        trigGroup = 1;
+      } else {
+        trigGroup = 2;
+      }
     }
     else {
       ibi = ibiB;
-      trigGroup = 2;
+      trigGroup = 3;
     }
     if (time - lastBeat >= ibi) {
       lastBeat = lastBeat + ibi;
@@ -161,6 +171,11 @@ and setSwing(newSwing: real) {
   }
 }
 
+// change sub group order, from all 1, all 2 to 1 on even beats an 2 on odd beats
+and setOrderMix(flag: bool) {
+  orderMix = flag;
+}
+
 and default() @[init] {
   // good ol' 120 BPM
   _ = setBPM(120.0);
@@ -197,21 +212,23 @@ fun bool2real(b: bool): real {
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
 // out1: trigger
-// out2: trigger first sub-group
-// out3: trigger second sub-group
+// out2: trigger first beat
+// out3: trigger first sub-group
+// out4: trigger second sub-group
 fun process() {
   // computing wall clock
   mem time;
   time = time + sampletime();
   // saving current state
-  mem out1, out2, out3;
+  val out1, out2, out3, out4;
 
   val beat = cloclo:clock(time);
   out1 = bool2real(gate1ms(beat > 0, time));
   out2 = bool2real(gate1ms(beat == 1, time));
-  out3 = bool2real(gate1ms(beat == 2, time));
+  out3 = bool2real(gate1ms(beat == 1 || beat == 2, time));
+  out4 = bool2real(gate1ms(beat == 3, time));
 
-  return out1, out2, out3;
+  return out1, out2, out3, out4;
 }
 
 // called once every 32 loops
@@ -219,6 +236,7 @@ fun process() {
 // knob2: swing
 // knob3: group size
 // knob4: group ratio
+// knob5: group order (from all A and all B to  mix A B A B)
 and update() {
   // first knob: BPM
   val bpm = clip(getKnob(1) * 1000.0, getMinBPM(), getMaxBPM());
@@ -229,6 +247,8 @@ and update() {
   _ = cloclo:setGroupSize(int(getKnob(3) * real(getMaxGroupSize())));
   // fourth knob: group ratio
   _ = cloclo:setGroupRatio(getKnob(4));
+  // fifth knob: group order
+  _ = cloclo:setOrderMix(getKnob(5) > 0.5);
   
   // hack to display several things alternatively
   mem disstep;
@@ -236,7 +256,7 @@ and update() {
   val disfreq = 4000;
 
   if (disstep % disfreq < disfreq / 2) {
-    _ = display("Clock. knob 1 BPM, 2 swing, 3 group size, 4 group ratio");
+    _ = display("Clock. knob 1 BPM, 2 swing, 3 group size, 4 group ratio, 5 group order");
   } else {
     _ = display(string(bpm));
   }
