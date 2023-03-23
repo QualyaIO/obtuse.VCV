@@ -26,19 +26,26 @@
 // - - - - o . . o . . o . . o . .  swing -
 
 
-// inform the whole world about supported BPM range
+// inform the whole world about supported BPM and group range
 fun getMinBPM(): real {
   return 0.002;
 }
 fun getMaxBPM(): real {
   return 30000.0;
 }
+// below 2 would probably crash something (e.g. division by 0 in IBI computation of clock)
+fun getMinGroupSize(): int {
+  return 2;
+}
+fun getMaxGroupSize(): int {
+  return 128;
+}
 
 
 // time: passing by, in seconds, should be positive
-// return true upon new beat, false otherwise
+// return 1 upon new beat from firs sub-group, 2 for second sub-group, 0 otherwise
 // will return trigger upon first call (start with beat)
-fun clock(time: real): bool {
+fun clock(time: real): int {
   // check if first run (or if reset), since vult init to false
   mem init: bool;
   // beats per minutes
@@ -59,26 +66,29 @@ fun clock(time: real): bool {
   // tune IBI, within sub-groups
   mem swing: real;
 
-  val trigger = false;
+  val trigger = 0;
   // special case, we overflowed the time, or clock is wrong, consider that we should trigger
   if (not(init) || time < lastBeat) {
     init = true;
     lastBeat = time; 
-    trigger = true;
+    trigger = 1;
     pos = pos + 1;
   }
   // time to clock
   else {
     val ibi;
+    val trigGroup;
     if (pos < subSize) {
       ibi = ibiA;
+      trigGroup = 1;
     }
     else {
       ibi = ibiB;
+      trigGroup = 2;
     }
     if (time - lastBeat >= ibi) {
       lastBeat = lastBeat + ibi;
-      trigger = true;
+      trigger = trigGroup;
       pos = pos + 1;
     }
   }
@@ -102,14 +112,14 @@ and _recompute() {
   val ibi = 60.0/bpm;
   // compress first sub-group
   if (swing <= 0.5) {
-    // 1ms minimum IBI
-    ibiA = clip(ibi * (swing * 2.0), 0.001, ibi);
+    // 2ms minimum IBI
+    ibiA = clip(ibi * (swing * 2.0), 0.002, ibi);
     // split IBI for the second sub-group
     ibiB = (real(groupSize) * ibi - ibiA * real(subSize)) / real((groupSize - subSize));
   }
   // same algo there
   else {
-    ibiB = clip(ibi * ((1.0 - swing) * 2.0), 0.001, ibi);
+    ibiB = clip(ibi * ((1.0 - swing) * 2.0), 0.002, ibi);
     ibiA = (real(groupSize) * ibi - ibiB * real(groupSize - subSize)) / real(subSize);
   }
 }
@@ -125,7 +135,7 @@ and setBPM(newBPM: real) {
 
 // set how many beats to consider for swing. Typical swing is size 4 (I would say, for 4/4 signature, with a 2 divider) Clip from 2 (one beat in each sub-group) to 128. Can reset group position if we overflowed new group size.
 and setGroupSize(newGroupSize: int) {
-  newGroupSize = clip(newGroupSize, 1, 128);
+  newGroupSize = clip(newGroupSize, getMinGroupSize(), getMaxGroupSize());
   if (newGroupSize <> groupSize) {
     groupSize = newGroupSize;
     _recompute();
@@ -161,35 +171,64 @@ and default() @[init] {
   _ = setSwing(0.5);
 }
 
+// creating 1ms gate from trigger and current time
+fun gate1ms(trig: bool, time: real): bool {
+  mem lastTrigg;
+  mem gate;
+  if (trig) {
+    lastTrigg = time;
+    gate = true;
+  }
+  else if (time - lastTrigg > 0.001) {
+    gate = false;
+  }
+  return gate;
+}
+
+// no cast like that already?
+fun bool2real(b: bool): real {
+  if (b) {
+    return 1.0;
+  }
+  else {
+    return 0.0;
+  }
+}
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
+// out1: trigger
+// out2: trigger first sub-group
+// out3: trigger second sub-group
 fun process() {
   // computing wall clock
   mem time;
   time = time + sampletime();
   // saving current state
-  mem lastTrigg;
-  mem out1;
+  mem out1, out2, out3;
 
-  if (cloclo:clock(time)) {
-    out1 = 1.0;
-    lastTrigg = time;
-  }
-  // we want 1ms trigger
-  else if (time - lastTrigg > 0.001) {
-    out1 = 0.0;
-  }
+  val beat = cloclo:clock(time);
+  out1 = bool2real(gate1ms(beat > 0, time));
+  out2 = bool2real(gate1ms(beat == 1, time));
+  out3 = bool2real(gate1ms(beat == 2, time));
 
-  return out1;
+  return out1, out2, out3;
 }
 
 // called once every 32 loops
+// knob1: BPM
+// knob2: swing
+// knob3: group size
+// knob4: group ratio
 and update() {
   // first knob: BPM
   val bpm = clip(getKnob(1) * 1000.0, getMinBPM(), getMaxBPM());
   _ = cloclo:setBPM(bpm);
   // second knob: swing
   _ = cloclo:setSwing(getKnob(2));
+  // third knob: group size
+  _ = cloclo:setGroupSize(int(getKnob(3) * real(getMaxGroupSize())));
+  // fourth knob: group ratio
+  _ = cloclo:setGroupRatio(getKnob(4));
   
   // hack to display several things alternatively
   mem disstep;
@@ -197,7 +236,7 @@ and update() {
   val disfreq = 4000;
 
   if (disstep % disfreq < disfreq / 2) {
-    _ = display("Clock. knob 1 BPM, 2 swing");
+    _ = display("Clock. knob 1 BPM, 2 swing, 3 group size, 4 group ratio");
   } else {
     _ = display(string(bpm));
   }
