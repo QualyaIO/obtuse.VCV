@@ -43,7 +43,7 @@ fun getMaxGroupSize(): int {
 
 
 // time: passing by, in seconds, should be positive
-// return 1 upon first beat, 2 new beat from first sub-group, 3 for second sub-group, 0 otherwise
+// return 1 upon first beat, 2 new beat from first sub-group, 3 for second sub-group (groupped by IBI length afterward), 0 otherwise
 // will return trigger upon first call (start with beat)
 fun clock(time: real): int {
   // check if first run (or if reset), since vult init to false
@@ -53,6 +53,8 @@ fun clock(time: real): int {
   // interval between beats, in seconds, for both sub-groups
   mem ibiA: real;
   mem ibiB: real;
+  // interval for next beat
+  mem ibi: real;
   // when last beat occurred
   mem lastBeat: real;
   // how many beats to consider for swing.
@@ -75,43 +77,41 @@ fun clock(time: real): int {
     lastBeat = time; 
     trigger = 1;
     pos = 1;
+    // starting with group A
+    ibi = ibiA;
   }
   // time to clock
-  else {
-    val ibi;
-    val trigGroup;
+  else if (time - lastBeat >= ibi) {
+    // update time
+    lastBeat = lastBeat + ibi;
+
     if (
         (not(orderMix) && pos < subSize) ||
-        (orderMix && pos % 2 == 0)
+        // in mix order, alternate between group A and B as long as there is enough group A left
+        (orderMix && ((pos/2 < subSize && pos % 2 == 0)  || (pos/2 > groupSize - subSize)) )
         ) {
+      // update interval to come
       ibi = ibiA;
       // can accentuate first beat
       if (pos == 0) {
-        trigGroup = 1;
+        trigger = 1;
       } else {
-        trigGroup = 2;
+        trigger = 2;
       }
     }
     else {
       ibi = ibiB;
-      trigGroup = 3;
+      trigger = 3;
     }
-    if (time - lastBeat >= ibi) {
-      lastBeat = lastBeat + ibi;
-      trigger = trigGroup;
-      pos = pos + 1;
-    }
+    pos = pos + 1;
+    pos = pos % groupSize;
   }
-
-  pos = pos % groupSize;
-
   return trigger;
 }
 
 // reset position in group, trigger on next call
 and reset() {
   init = false;
-  pos = 0;
 }
 
 // refresh groups and IBI for both groups
@@ -119,18 +119,18 @@ and _recompute() {
   // at least one beat in each group (groupSize + 1 for rounding)
   subSize = clip(int(real(groupSize + 1) * groupRatio), 1, groupSize - 1); 
   // base IBI
-  val ibi = 60.0/bpm;
+  val bibi = 60.0/bpm;
   // compress first sub-group
   if (swing <= 0.5) {
     // 2ms minimum IBI
-    ibiA = clip(ibi * (swing * 2.0), 0.002, ibi);
+    ibiA = clip(bibi * (swing * 2.0), 0.002, bibi);
     // split IBI for the second sub-group
-    ibiB = (real(groupSize) * ibi - ibiA * real(subSize)) / real((groupSize - subSize));
+    ibiB = (real(groupSize) * bibi - ibiA * real(subSize)) / real((groupSize - subSize));
   }
   // same algo there
   else {
-    ibiB = clip(ibi * ((1.0 - swing) * 2.0), 0.002, ibi);
-    ibiA = (real(groupSize) * ibi - ibiB * real(groupSize - subSize)) / real(subSize);
+    ibiB = clip(bibi * ((1.0 - swing) * 2.0), 0.002, bibi);
+    ibiA = (real(groupSize) * bibi - ibiB * real(groupSize - subSize)) / real(subSize);
   }
 }
 
