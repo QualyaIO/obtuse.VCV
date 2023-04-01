@@ -232,6 +232,8 @@ fun cvToPitch(cv) : int {
 // input: trigger 1, pitch v/oct 1, trigger 2, pitch v/oct 2,trigger 3, pitch v/oct 3
 // trigger: >= 1v, only processed within update
 // output: gate 1, pitch v/oct 1, etc. three times
+// Note: this implementation will ignore new notes after 3 currently active to avoid missing note off further down
+// FIXME: continue ignoring notes that are kept being triggered before gate ends.
 fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
    // computing wall clock
    mem time;
@@ -243,12 +245,11 @@ fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
 }
 
 and update() {
-   // TODO: store which trigger is associated to each note, kinda multiplex since we are limited in otuputs (only 3)... but also have some delay before retrigerring
+   // TODO: store which trigger is associated to each note, kinda multiplex since we are limited in outputs (only 3)... but also have some delay before retrigerring
 
-   // which output is associated with each note (trigger, +1 is pitch). Will default to 0.
+   // which trigger output is associated with each note, between 1, 3 or 5 (+1 is pitch). Will default to 0, i.e. no output associated.
    mem notes : array(int, 128);
-   // currently selected output
-   mem outN: int;
+   mem nbActive;
 
    // pass info to the gate
    _ = bill:setTime(time);
@@ -270,30 +271,46 @@ and update() {
    // here it is, main process
    _ = bill:gate();
 
-   // TODO: only deal with up to 3 notes at the same time to avoid missing note off further down
 
    // deal with note off, turning off output
    val note = bill:getNoteOff();
    while (note >= 0 && note < size(notes)) {
-      // find the associated output
-      // redirect to output (actual output number is 1..6)
+      // find the associated output, ignore if was not set
       val out = notes[note];
-      // the pitch and its trigger
-      outs[out] = 0.0;
-      outs[out + 1] = pitchToCv(real(note));
+      if (out > 0) {
+         // the pitch and its trigger, actual output array is obviously 0-index
+         outs[out-1] = 0.0;
+         outs[out] = pitchToCv(real(note));
+         // update how many notes we hold
+         nbActive = clip(nbActive - 1, 0, 3);
+      }
       note = bill:getNoteOff();
    }
    
    // deal with note on, turning on output
    note = bill:getNoteOn();
-   while (note >= 0 && note < size(notes)) {
-      // redirect to output (actual output number is 1..6)
-      notes[note] = outN;
-      // the pitch and its trigger
-      outs[outN] = 1.0;
-      outs[outN + 1] = pitchToCv(real(note));
-      // update for next output
-      outN = (outN + 2) % 6;
+   // ignoring if already too many active notes
+   while (note >= 0 && note < size(notes) && nbActive < 3) {
+      // find first free slot, if any
+      val outN = 0;
+      val findN = false;
+      while (outN < size(outs) && not(findN)) {
+         if (outs[outN] == 0.0) {
+            findN = true;
+         }
+         outN = outN + 2;
+      }
+      // we should always find with nbActive, but just in case...
+      if (findN) {
+         // we went one step further
+         outN = outN - 2;
+         // redirect to output (actual output number is 1..6)
+         notes[note] = outN + 1;
+         // the pitch and its trigger
+         outs[outN] = 1.0;
+         outs[outN+1] = pitchToCv(real(note));
+         nbActive = nbActive + 1;
+      }
       note = bill:getNoteOn();
    }
 
