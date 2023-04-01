@@ -47,8 +47,8 @@ and getListSpace(): int {
 
 // add an element to the list, will erase previous values if full
 and push(v: int) {
-   e = (e + 1) % size(values);
    values[e] = v;
+   e = (e + 1) % size(values);
 }
 
 // remove an element from the list, check size before -- last resort return -1 if nothing
@@ -114,12 +114,10 @@ fun gate() {
    mem time: real;
    // which notes are active? (to prune duplicated note on). Store time of trigger, 0.0 if not triggered (keep negative number in case we overflow time, but could give wrong behavior for a short period upon overflow or if something happen at time 0.0)
    mem notes: array(real, 128);
-   // notes currently active (during ate)
-   mem notesActive:list;
-   // notes which needs to be played by outside
-   mem notesOn: list;
-   // the ones to turn off
-   mem notesOff:list;
+   // contexts used:
+   // - notesActive:list, notes currently active (during ate)
+   // - notesOn: list, notes which needs to be played by outside
+   // - notesOff:list, the ones to turn off
    // how long the gate, in seconds
    mem gateDuration;
 
@@ -133,7 +131,7 @@ fun gate() {
       // extra check to make sure we are in range
       if (note >= 0 && note < size(notes)) {
          // check if we did not overflown and we are still within gate
-         if (notes[note] >= time && time - notes[note] < gateDuration) {
+         if (time >= notes[note] && time - notes[note] < gateDuration) {
             found = true;
          }
       }
@@ -151,6 +149,7 @@ fun gate() {
       }
       i = i - 1;
    }
+
 }
 
 // time: passing by, in seconds, should be strictly positive
@@ -165,16 +164,21 @@ and setTime(newTime: real) {
 and noteOn(note:int, velocity:int, channel:int): bool {
    note = clip(note, 0, 127);
    // check if the note is already active
-   val newNote = notes[note] <> 0.0;
-   // attempt to delete previous note from current list. Not processing return value...
+   val newNote = notes[note] == 0.0;
    if (not(newNote)) {
+   }
+   // only declare a new note... if new
+   if (newNote) {
+      _ = notesOn:push(note);
+   }
+   // otherwise we will only attempt to delete previous note from current list to re-order active notes. (Not processing return value...)
+   else {
      _ = notesActive:deleteValue(note);
    }
-   // update timestamp
+   // update timestamp anyhow
    notes[note] = time;
    // add to list of notes to process, both for gate and outside world
    _ = notesActive:push(note);
-   _ = notesOn:push(note);
    return newNote;
 }
 
@@ -196,21 +200,110 @@ and setDuration(duration: real) {
 
 and default() @[init] {
    // 200ms gate by default
-   _ = setDuration(0.200);
+   _ = setDuration(1.00);
 }
 
-fun process() {
+// from vult examples
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+// from a midi note to cv -1..1
+fun pitchToCv(pitch) {
+    return (pitch - 60.0) / 120.0;
+}
+
+// cv -1..1 to midi pitch
+fun cvToPitch(cv) : int {
+   val pitch = cv * 120.0 + 60.0;
+   // round
+   if (pitch % 1.0 >= 0.5) {
+      pitch = floor(pitch + 1.0);
+   } else {
+      pitch = floor(pitch);
+   }
+   pitch = clip(pitch, 0.0, 127.0);
+   return int(pitch);
+}
+
+// input: trigger 1, pitch v/oct 1, trigger 2, pitch v/oct 2,trigger 3, pitch v/oct 3
+// trigger: >= 1v, only processed within update
+// output: gate 1, pitch v/oct 1, etc. three times
+fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
+   // computing wall clock
+   mem time;
+   time = time + sampletime();
+   // input and output processed in update
+   mem in1, in2, in3, in4, in5, in6 = i1, i2, i3, i4, i5, i6;
+   mem outs : array(real, 6);
+   return outs[0], outs[1], outs[2], outs[3], outs[4], outs[5];
 }
 
 and update() {
+   // TODO: store which trigger is associated to each note, kinda multiplex since we are limited in otuputs (only 3)... but also have some delay before retrigerring
 
-  // hack to display several things alternatively
-  mem disstep;
-  disstep = disstep + 1;
-  val disfreq = 4000;
+   // which output is associated with each note (trigger, +1 is pitch). Will default to 0.
+   mem notes : array(int, 128);
+   // currently selected output
+   mem outN: int;
+
+   // pass info to the gate
+   _ = bill:setTime(time);
+
+// should call setTime(), noteOn(), gate(), getNoteOff() and process until empty, getNoteOn() and process until empty.
+
+   // check each trigger, >= 1v (we are only interested in raising front)
+   // TODO: move to process to avoid missing trigger
+   if (edge(in1 >= 0.1)) {
+      _ = bill:noteOn(cvToPitch(in2), 0, 0);
+   }
+   if (edge(in3 >= 0.1)) {
+      _ = bill:noteOn(cvToPitch(in4), 0, 0);
+   }
+   if (edge(in5 >= 0.1)) {
+      _ = bill:noteOn(cvToPitch(in6), 0, 0);
+   }
+
+   // here it is, main process
+   _ = bill:gate();
+
+   // TODO: only deal with up to 3 notes at the same time to avoid missing note off further down
+
+   // deal with note off, turning off output
+   val note = bill:getNoteOff();
+   while (note >= 0 && note < size(notes)) {
+      // find the associated output
+      // redirect to output (actual output number is 1..6)
+      val out = notes[note];
+      // the pitch and its trigger
+      outs[out] = 0.0;
+      outs[out + 1] = pitchToCv(real(note));
+      note = bill:getNoteOff();
+   }
+   
+   // deal with note on, turning on output
+   note = bill:getNoteOn();
+   while (note >= 0 && note < size(notes)) {
+      // redirect to output (actual output number is 1..6)
+      notes[note] = outN;
+      // the pitch and its trigger
+      outs[outN] = 1.0;
+      outs[outN + 1] = pitchToCv(real(note));
+      // update for next output
+      outN = (outN + 2) % 6;
+      note = bill:getNoteOn();
+   }
+
+   // hack to display several things alternatively
+   mem disstep;
+   disstep = disstep + 1;
+   val disfreq = 4000;
    if (disstep % disfreq < disfreq / 2) {
-      _ = display("Gate");
+      _ = display("Gate. Inputs: 3 trig/pitch duo");
    } else {
-      _ = display(string(0.0));
+      _ = display(string(in2));
    }
 }
