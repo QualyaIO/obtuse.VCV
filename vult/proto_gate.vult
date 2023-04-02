@@ -165,8 +165,6 @@ and noteOn(note:int, velocity:int, channel:int): bool {
    note = clip(note, 0, 127);
    // check if the note is already active
    val newNote = notes[note] == 0.0;
-   if (not(newNote)) {
-   }
    // only declare a new note... if new
    if (newNote) {
       _ = notesOn:push(note);
@@ -180,6 +178,13 @@ and noteOn(note:int, velocity:int, channel:int): bool {
    // add to list of notes to process, both for gate and outside world
    _ = notesActive:push(note);
    return newNote;
+}
+
+// to be called by client if could not handle a noteOn, so we will try later even in case of retrigger
+and noteKill(note: int) {
+   note = clip(note, 0, 127);
+   _ = notesActive:deleteValue(note);
+   notes[note] = 0.0;
 }
 
 // return next note to turn off, -1 if nothing left.
@@ -233,7 +238,6 @@ fun cvToPitch(cv) : int {
 // trigger: >= 1v, only processed within update
 // output: gate 1, pitch v/oct 1, etc. three times
 // Note: this implementation will ignore new notes after 3 currently active to avoid missing note off further down
-// FIXME: continue ignoring notes that are kept being triggered before gate ends.
 fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
    // computing wall clock
    mem time;
@@ -290,26 +294,33 @@ and update() {
    // deal with note on, turning on output
    note = bill:getNoteOn();
    // ignoring if already too many active notes
-   while (note >= 0 && note < size(notes) && nbActive < 3) {
-      // find first free slot, if any
-      val outN = 0;
-      val findN = false;
-      while (outN < size(outs) && not(findN)) {
-         if (outs[outN] == 0.0) {
-            findN = true;
+   while (note >= 0 && note < size(notes)) {
+      // consider new note only if we can
+      if (nbActive < 3) {
+         // find first free slot, if any
+         val outN = 0;
+         val findN = false;
+         while (outN < size(outs) && not(findN)) {
+            if (outs[outN] == 0.0) {
+               findN = true;
+            }
+            outN = outN + 2;
          }
-         outN = outN + 2;
+         // we should always find with nbActive, but just in case...
+         if (findN) {
+            // we went one step further
+            outN = outN - 2;
+            // redirect to output (actual output number is 1..6)
+            notes[note] = outN + 1;
+            // the pitch and its trigger
+            outs[outN] = 1.0;
+            outs[outN+1] = pitchToCv(real(note));
+            nbActive = nbActive + 1;
+         }
       }
-      // we should always find with nbActive, but just in case...
-      if (findN) {
-         // we went one step further
-         outN = outN - 2;
-         // redirect to output (actual output number is 1..6)
-         notes[note] = outN + 1;
-         // the pitch and its trigger
-         outs[outN] = 1.0;
-         outs[outN+1] = pitchToCv(real(note));
-         nbActive = nbActive + 1;
+      // signal that we cannot deal with note
+      else {
+        _ = bill:noteKill(note);
       }
       note = bill:getNoteOn();
    }
