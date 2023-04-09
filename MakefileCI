@@ -1,3 +1,6 @@
+
+# Warning: this Makefile is only used with Mac CI, for Windows and Linux another (default) one is used.
+
 # If RACK_DIR is not defined when calling the Makefile, default to two directories above
 RACK_DIR ?= ../..
 
