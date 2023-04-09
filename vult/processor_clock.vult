@@ -1,0 +1,74 @@
+
+
+// creating 1ms gate from trigger and current time
+fun gate1ms(trig: bool, time: real): bool {
+  mem lastTrigg;
+  mem gate;
+  if (trig) {
+    lastTrigg = time;
+    gate = true;
+  }
+  else if (time - lastTrigg > 0.001) {
+    gate = false;
+  }
+  return gate;
+}
+
+// no cast like that already?
+fun bool2real(b: bool): real {
+  if (b) {
+    return 1.0;
+  }
+  else {
+    return 0.0;
+  }
+}
+
+// time: time in seconds
+// out1: trigger
+// out2: trigger first beat
+// out3: trigger first sub-group
+// out4: trigger second sub-group
+fun process(time: real) {
+  // saving current state
+  val out1, out2, out3, out4;
+
+  val beat = cloclo:Clock.process(time);
+  out1 = bool2real(gate1ms(beat > 0, time));
+  out2 = bool2real(gate1ms(beat == 1, time));
+  out3 = bool2real(gate1ms(beat == 1 || beat == 2, time));
+  out4 = bool2real(gate1ms(beat == 3, time));
+
+  return out1, out2, out3, out4;
+}
+
+and setBPM(param: real, force: bool) {
+  if (Util.change(param) || force) {
+    _ = cloclo:Clock.setBPM(param);
+  }
+}
+
+and setSwing(param: real, force: bool) {
+  if (Util.change(param) || force) {
+    _ = cloclo:Clock.setSwing(param);
+  }
+}
+
+and setGroupSize(param: int, force: bool) {
+  if (Util.change(real(param)) || force) {
+    _ = cloclo:Clock.setGroupSize(param);
+  }
+}
+
+and setGroupRatio(param: real, force: bool) {
+  if (Util.change(param) || force) {
+    _ = cloclo:Clock.setGroupRatio(param);
+  }
+}
+
+// accept real, actually convert to false if <= 0.5, true if > 0.5
+and setOrderMix(param: real, force: bool) {
+  if (Util.change(bool2real(param > 0.5)) || force) {
+    _ = cloclo:Clock.setOrderMix(param > 0.5);
+  }
+}
