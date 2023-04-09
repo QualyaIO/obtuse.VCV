@@ -59,6 +59,12 @@
       "name": "BotaniaSynthDrummer",
       "description": "I doum doum things",
       "tags": []
+    },
+    {
+      "slug": "BotaniaTrigg",
+      "name": "BotaniaTrigg",
+      "description": "I trigger things",
+      "tags": []
     }
   ]
 }

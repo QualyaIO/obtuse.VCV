@@ -24,6 +24,12 @@ Check original template for more details about programming https://github.com/vu
 
 # Changelog
 
-## 2.0.0
+## (current)
 
-First release for testing github actions.
+- bump DSP, improve init
+- adding Trigg module
+- protoypes for new modules
+
+## 2.0.0 (2023-02-04)
+
+- first release for all 3 OS

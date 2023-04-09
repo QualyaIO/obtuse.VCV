@@ -1,0 +1,337 @@
+
+// testing a gate implementation using VCV.Prototype. Cannot use external files, so we will code here instead
+
+/*
+
+ getKnob(n:int) : real // value of the nth knob range: 0.0-1.0
+ getSwitch(n:int) : bool // value of the nth switch: true/false
+
+ setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0, i from 1 to 6
+ setSwitchLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+
+ samplerate() : real  // current sample rate
+ sampletime() : real  // current time step (1.0 / samplerate())
+
+ */
+
+// gate to put between tonnetz or arp and the rest
+// should call setTime(), noteOn(), gate(), getNoteOff() and process until empty, getNoteOn() and process until empty.
+// TODO: implement delay, because why not with this implementation?
+// TODO: add option for retrigger? (would need to handle delay for one note, maybe directly here)
+// FIXME: also handle velocity and channel?
+
+// implementing an list using double pointer on array
+// 128 int
+fun list() {
+   mem values: array(int, 128);
+   // index for beginning and end of array
+   // b: index of first element
+   // e: index of last element
+   mem b, e;
+}
+
+// number of element in the list
+and getListSize(): int {
+   return (e - b) % size(values);
+}
+
+// max number of element it can hold
+and getListMaxSize(): int {
+   return size(values);
+}
+
+// number of space let for writing
+and getListSpace(): int {
+   return size(values) - getListSize();
+}
+
+// add an element to the list, will erase previous values if full
+and push(v: int) {
+   values[e] = v;
+   e = (e + 1) % size(values);
+}
+
+// remove an element from the list, check size before -- last resort return -1 if nothing
+and pop(): int {
+   val v = -1;
+   if (getListSize() > 0) {
+      v = values[b];
+      b = (b + 1) % size(values);
+   }
+   return v;
+}
+
+// return value of the Nth element in the list without popping it, check size before -- last resort return -1 if nothing
+and peek(n: int): int {
+   val v = -1;
+   if (getListSize() > n) {
+      v = values[(b+n) % size(values)];
+   }
+   return v;
+}
+
+// remove and return one specific element. return value of deleted element -- last resort -1
+// warning: costly operation, moving around all data until tail
+and delete(n: int): int {
+   val ret = -1;
+   val s = getListSize();
+   if (n < s) {
+      ret = values[(b+n) % size(values)];
+      while(n < s) {
+         values[(b+n) % size(values)] = values[(b+n+1) % size(values)];
+         n = n + 1;
+      }
+      // reduce end by one
+      e = (e - 1) % size(values);
+   }
+   return ret;
+}
+
+// return index of the first element containing val, -1 if not found
+and search(value: int): int {
+   val idx = -1;
+   val s = getListSize();
+   val i = 0;
+   while (i < s && idx < 0) {
+      if(values[(b+i) % size(values)] == value) {
+         idx = i;
+      }
+      i = i + 1;
+   }
+   return idx;
+}
+
+// find and delete value, return true if successful (which might be misleading if the sought value is -1, being also a special code
+and deleteValue(value: int): bool {
+   val n = search(value);
+   return delete(n) == value;
+}
+
+// to be call after noteOn and setTime
+// Warning: take for granted that getNoteOff() was already processed in a previous loop, otherwise we might hit full capacity of the corresponding list
+fun gate() {
+   // current time in seconds
+   mem time: real;
+   // which notes are active? (to prune duplicated note on). Store time of trigger, 0.0 if not triggered (keep negative number in case we overflow time, but could give wrong behavior for a short period upon overflow or if something happen at time 0.0)
+   mem notes: array(real, 128);
+   // contexts used:
+   // - notesActive:list, notes currently active (during ate)
+   // - notesOn: list, notes which needs to be played by outside
+   // - notesOff:list, the ones to turn off
+   // how long the gate, in seconds
+   mem gateDuration;
+
+   // scroll through current notes to check starting which is not outdated
+   val nbActive = notesActive:getListSize();
+   val found = false;
+   val i = 0;
+   val note;
+   while (not(found) && i < nbActive) {
+      note = notesActive:peek(i);
+      // extra check to make sure we are in range
+      if (note >= 0 && note < size(notes)) {
+         // check if we did not overflown and we are still within gate
+         if (time >= notes[note] && time - notes[note] < gateDuration) {
+            found = true;
+         }
+      }
+      // counting only outdated notes
+      if (not(found)) {
+         i = i + 1;
+      }
+   }
+   // transfer notes to be extinguished
+   while (i > 0) {
+      note = notesActive:pop();
+      if (note >= 0 && note < size(notes)) {
+        _ = notesOff:push(note);
+        notes[note] = 0.0;
+      }
+      i = i - 1;
+   }
+
+}
+
+// time: passing by, in seconds, should be strictly positive
+and setTime(newTime: real) {
+   time = newTime;
+}
+
+// activate note
+// Warning: does not take into account velocity or channel
+// Warning: take for granted that getNoteOn() was already processed in a previous loop, otherwise we might hit full capacity of the corresponding list
+// return false if the note was already triggered -- in which case it will extend the gate
+and noteOn(note:int, velocity:int, channel:int): bool {
+   note = clip(note, 0, 127);
+   // check if the note is already active
+   val newNote = notes[note] == 0.0;
+   // only declare a new note... if new
+   if (newNote) {
+      _ = notesOn:push(note);
+   }
+   // otherwise we will only attempt to delete previous note from current list to re-order active notes. (Not processing return value...)
+   else {
+     _ = notesActive:deleteValue(note);
+   }
+   // update timestamp anyhow
+   notes[note] = time;
+   // add to list of notes to process, both for gate and outside world
+   _ = notesActive:push(note);
+   return newNote;
+}
+
+// to be called by client if could not handle a noteOn, so we will try later even in case of retrigger
+and noteKill(note: int) {
+   note = clip(note, 0, 127);
+   _ = notesActive:deleteValue(note);
+   notes[note] = 0.0;
+}
+
+// return next note to turn off, -1 if nothing left.
+and getNoteOff(): int {
+   return notesOff:pop();
+}
+
+// return next note to turn on, -1 if nothing left.
+and getNoteOn(): int {
+   return notesOn:pop();
+}
+
+// set gate length, in seconds (minimum duration of 1ms, clip to it)
+and setDuration(duration: real) {
+   gateDuration = clip(duration, 0.001, duration);
+}
+
+
+and default() @[init] {
+   // 200ms gate by default
+   _ = setDuration(1.00);
+}
+
+// from vult examples
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+// from a midi note to cv -1..1
+fun pitchToCv(pitch) {
+    return (pitch - 60.0) / 120.0;
+}
+
+// cv -1..1 to midi pitch
+fun cvToPitch(cv) : int {
+   val pitch = cv * 120.0 + 60.0;
+   // round
+   if (pitch % 1.0 >= 0.5) {
+      pitch = floor(pitch + 1.0);
+   } else {
+      pitch = floor(pitch);
+   }
+   pitch = clip(pitch, 0.0, 127.0);
+   return int(pitch);
+}
+
+// input: trigger 1, pitch v/oct 1, trigger 2, pitch v/oct 2,trigger 3, pitch v/oct 3
+// trigger: >= 1v, only processed within update
+// output: gate 1, pitch v/oct 1, etc. three times
+// Note: this implementation will ignore new notes after 3 currently active to avoid missing note off further down
+fun process(i1: real, i2: real, i3: real, i4: real, i5: real, i6: real) {
+   // computing wall clock
+   mem time;
+   time = time + sampletime();
+   // input and output processed in update
+   mem in1, in2, in3, in4, in5, in6 = i1, i2, i3, i4, i5, i6;
+   mem outs : array(real, 6);
+   return outs[0], outs[1], outs[2], outs[3], outs[4], outs[5];
+}
+
+and update() {
+   // TODO: store which trigger is associated to each note, kinda multiplex since we are limited in outputs (only 3)... but also have some delay before retrigerring
+
+   // which trigger output is associated with each note, between 1, 3 or 5 (+1 is pitch). Will default to 0, i.e. no output associated.
+   mem notes : array(int, 128);
+   mem nbActive;
+
+   // pass info to the gate
+   _ = bill:setTime(time);
+
+// should call setTime(), noteOn(), gate(), getNoteOff() and process until empty, getNoteOn() and process until empty.
+
+   // check each trigger, >= 1v (we are only interested in raising front)
+   // TODO: move to process to avoid missing trigger
+   if (edge(in1 >= 0.1)) {
+      _ = bill:noteOn(cvToPitch(in2), 0, 0);
+   }
+   if (edge(in3 >= 0.1)) {
+      _ = bill:noteOn(cvToPitch(in4), 0, 0);
+   }
+   if (edge(in5 >= 0.1)) {
+      _ = bill:noteOn(cvToPitch(in6), 0, 0);
+   }
+
+   // here it is, main process
+   _ = bill:gate();
+
+
+   // deal with note off, turning off output
+   val note = bill:getNoteOff();
+   while (note >= 0 && note < size(notes)) {
+      // find the associated output, ignore if was not set
+      val out = notes[note];
+      if (out > 0) {
+         // the pitch and its trigger, actual output array is obviously 0-index
+         outs[out-1] = 0.0;
+         outs[out] = pitchToCv(real(note));
+         // update how many notes we hold
+         nbActive = clip(nbActive - 1, 0, 3);
+      }
+      note = bill:getNoteOff();
+   }
+   
+   // deal with note on, turning on output
+   note = bill:getNoteOn();
+   // ignoring if already too many active notes
+   while (note >= 0 && note < size(notes)) {
+      // consider new note only if we can
+      if (nbActive < 3) {
+         // find first free slot, if any
+         val outN = 0;
+         val findN = false;
+         while (outN < size(outs) && not(findN)) {
+            if (outs[outN] == 0.0) {
+               findN = true;
+            }
+            outN = outN + 2;
+         }
+         // we should always find with nbActive, but just in case...
+         if (findN) {
+            // we went one step further
+            outN = outN - 2;
+            // redirect to output (actual output number is 1..6)
+            notes[note] = outN + 1;
+            // the pitch and its trigger
+            outs[outN] = 1.0;
+            outs[outN+1] = pitchToCv(real(note));
+            nbActive = nbActive + 1;
+         }
+      }
+      // signal that we cannot deal with note
+      else {
+        _ = bill:noteKill(note);
+      }
+      note = bill:getNoteOn();
+   }
+
+   // hack to display several things alternatively
+   mem disstep;
+   disstep = disstep + 1;
+   val disfreq = 4000;
+   if (disstep % disfreq < disfreq / 2) {
+      _ = display("Gate. Inputs: 3 trig/pitch duo");
+   } else {
+      _ = display(string(in2));
+   }
+}

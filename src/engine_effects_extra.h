@@ -7,16 +7,10 @@
 #include "vultin.h"
 #include "engine_effects_extra.tables.h"
 
-static_inline void extra_Buffer_buffer(fix16_t (&_output_)[256]){
-   fix16_t buff[256];
-   fix_copy_array(256,_output_,buff);
-   return ;
+static_inline void extra_Buffer_buffer(fix16_t (&oBuff)[256]){
 }
 
-static_inline void extra_Buffer_buffer_large(fix16_t (&_output_)[16384]){
-   fix16_t buff[16384];
-   fix_copy_array(16384,_output_,buff);
-   return ;
+static_inline void extra_Buffer_buffer_large(fix16_t (&oBuff)[16384]){
 }
 
 typedef struct extra_Allpass__ctx_type_0 {
@@ -149,7 +143,11 @@ static_inline void extra_Allpass_dummy_init(extra_Allpass__ctx_type_1 &_output_)
    return ;
 }
 
-void extra_Allpass_dummy(extra_Allpass__ctx_type_1 &_ctx);
+static_inline void extra_Allpass_dummy(extra_Allpass__ctx_type_1 &_ctx){
+   fix16_t buff[256];
+   extra_Buffer_buffer(buff);
+   extra_Allpass_process_bufferTo(_ctx._inst156,0,buff,buff);
+}
 
 typedef struct extra_CombFB__ctx_type_0 {
    fix16_t scale;
@@ -260,7 +258,12 @@ static_inline void extra_CombFB_default_init(extra_CombFB__ctx_type_0 &_output_)
    return ;
 }
 
-void extra_CombFB_default(extra_CombFB__ctx_type_0 &_ctx);
+static_inline void extra_CombFB_default(extra_CombFB__ctx_type_0 &_ctx){
+   extra_Buffer_buffer_large(_ctx.buffer);
+   extra_CombFB_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
+   extra_CombFB_setDelayms(_ctx,0x320000 /* 50.000000 */);
+   extra_CombFB_setDecay(_ctx,0x8000 /* 0.500000 */);
+}
 
 typedef struct extra_CombFB__ctx_type_1 {
    extra_CombFB__ctx_type_0 _inst13c;
@@ -280,7 +283,11 @@ static_inline void extra_CombFB_dummy_init(extra_CombFB__ctx_type_1 &_output_){
    return ;
 }
 
-void extra_CombFB_dummy(extra_CombFB__ctx_type_1 &_ctx);
+static_inline void extra_CombFB_dummy(extra_CombFB__ctx_type_1 &_ctx){
+   fix16_t buff[256];
+   extra_Buffer_buffer(buff);
+   extra_CombFB_process_bufferTo(_ctx._inst13c,0,buff,buff);
+}
 
 static_inline fix16_t extra_Util_noteToFrequency(int note){
    return fix_mul(0x217 /* 0.008176 */,fix_exp(fix_mul(0xec9 /* 0.057762 */,int_to_fix(note))));
@@ -685,7 +692,12 @@ static_inline void extra_CombFF_default_init(extra_CombFF__ctx_type_0 &_output_)
    return ;
 }
 
-void extra_CombFF_default(extra_CombFF__ctx_type_0 &_ctx);
+static_inline void extra_CombFF_default(extra_CombFF__ctx_type_0 &_ctx){
+   extra_Buffer_buffer_large(_ctx.buffer);
+   extra_CombFF_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
+   extra_CombFF_setDelayms(_ctx,0x320000 /* 50.000000 */);
+   extra_CombFF_setDecay(_ctx,0x8000 /* 0.500000 */);
+}
 
 typedef struct extra_CombFF__ctx_type_1 {
    extra_CombFF__ctx_type_0 _inst115;
@@ -705,7 +717,11 @@ static_inline void extra_CombFF_dummy_init(extra_CombFF__ctx_type_1 &_output_){
    return ;
 }
 
-void extra_CombFF_dummy(extra_CombFF__ctx_type_1 &_ctx);
+static_inline void extra_CombFF_dummy(extra_CombFF__ctx_type_1 &_ctx){
+   fix16_t buff[256];
+   extra_Buffer_buffer(buff);
+   extra_CombFF_process_bufferTo(_ctx._inst115,0,buff,buff);
+}
 
 typedef struct extra_Processor_combFF__ctx_type_0 {
    fix16_t fs;
