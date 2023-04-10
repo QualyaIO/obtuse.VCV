@@ -14,4 +14,5 @@ void init(Plugin *p) {
    p->addModel(synthSampler);
    p->addModel(synthDrummer);
    p->addModel(utilTrigg);
+   p->addModel(utilClock);
 }

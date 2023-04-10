@@ -734,6 +734,22 @@ static_inline void Processor_clock_setOrderMix(Processor_clock__ctx_type_2 &_ctx
    }
 };
 
+static_inline fix16_t Processor_clock_getMinBPM(){
+   return 0x83 /* 0.002000 */;
+};
+
+static_inline fix16_t Processor_clock_getMaxBPM(){
+   return 0x75300000 /* 30000.000000 */;
+};
+
+static_inline int Processor_clock_getMinGroupSize(){
+   return 2;
+};
+
+static_inline int Processor_clock_getMaxGroupSize(){
+   return 128;
+};
+
 
 
 #endif // ENGINE_UTILS_H

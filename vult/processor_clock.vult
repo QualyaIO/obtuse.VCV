@@ -72,3 +72,17 @@ and setOrderMix(param: real, force: bool) {
     _ = cloclo:Clock.setOrderMix(param > 0.5);
   }
 }
+
+fun getMinBPM(): real {
+  return Clock.getMinBPM();
+}
+fun getMaxBPM(): real {
+  return Clock.getMaxBPM();
+}
+
+fun getMinGroupSize(): int {
+  return Clock.getMinGroupSize();
+}
+fun getMaxGroupSize(): int {
+  return Clock.getMaxGroupSize();
+}

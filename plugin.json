@@ -65,6 +65,12 @@
       "name": "BotaniaTrigg",
       "description": "I trigger things",
       "tags": []
+    },
+    {
+      "slug": "BotaniaClock",
+      "name": "BotaniaClock",
+      "description": "I clock things",
+      "tags": []
     }
   ]
 }
