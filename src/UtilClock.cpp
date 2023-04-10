@@ -15,6 +15,7 @@ struct UtilClock : Module {
       SIZE_AV,
       RATIO,
       RATIO_AV,
+      SWITCH,
       NUM_PARAMS
    };
    enum InputIds {
@@ -31,7 +32,11 @@ struct UtilClock : Module {
       GROUP2,
       NUM_OUTPUTS
    };
-   enum LightIds { NUM_LIGHTS };
+   enum LightIds {
+      SWITCH_LIGHT,
+      ORDER_LIGHT,
+      NUM_LIGHTS
+   };
 
    Processor_clock_process_type processor;
 
@@ -41,6 +46,8 @@ struct UtilClock : Module {
    void sendParams(bool force=false);
    // ease reading parameters with modulation
    float readParamCV(int PARAM, int CV_IN, int CV_AV);
+   // if switch to change order is currently held-down or not
+   bool switch_pressed = false;
 };
 
 UtilClock::UtilClock() {
@@ -51,6 +58,9 @@ UtilClock::UtilClock() {
 
    configParam(UtilClock::SIZE, Processor_clock_getMinGroupSize(), Processor_clock_getMaxGroupSize(), 4, "Group size", " beats");
    configParam(UtilClock::RATIO, 0.0, 1.0, 0.5, "Group Ratio", "");
+
+   // changing group order
+   configParam(UtilClock::ORDER, 0.0, 1.0, 0.0, "Order", "");
 
    // init engine and apply default parameter
    Processor_clock_process_init(processor);
@@ -80,6 +90,30 @@ void UtilClock::sendParams(bool force) {
    Processor_clock_setSwing(processor, float_to_fix(readParamCV(SWING, SWING_IN, SWING_AV)), force);
    Processor_clock_setGroupSize(processor, int(readParamCV(SIZE, SIZE_IN, SIZE_AV) + 0.5), force);
    Processor_clock_setGroupRatio(processor, float_to_fix(readParamCV(RATIO, RATIO_IN, RATIO_AV)), force);
+
+   // deal with button to change filter
+   float order = params[ORDER].getValue();
+   bool press = params[SWITCH].getValue() > 0.0;
+
+   // new press, increment on release
+   if (!press && switch_pressed) {
+      switch_pressed = press;
+      order = order + 1;
+      // back to square one (and low) after notch
+      if (order > paramQuantities[ORDER]->getMaxValue()) {
+         order = paramQuantities[ORDER]->getMinValue();
+      }
+      params[ORDER].setValue(order);
+   }
+   else if (press && !switch_pressed) {
+      switch_pressed = press;
+   }
+
+   Processor_clock_setOrderMix(processor, float_to_fix(order), force);;
+
+   // update lights
+   lights[SWITCH_LIGHT].setBrightnessSmooth(press, 10.0f);
+   lights[ORDER_LIGHT].setBrightnessSmooth(order == 1.0, 1.0f);
 }
 
 void UtilClock::process(const ProcessArgs &args) {
@@ -133,6 +167,12 @@ struct UtilClockWidget : ModuleWidget {
       addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(20.322, outs_y)), module, UtilClock::GROUP1));
       addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(33.022, outs_y)), module, UtilClock::GROUP2));
       
+      // switch to order
+      float order_y = 128.5-90.665;
+      addParam(createLightParamCentered<VCVLightBezel<>>(mm2px(Vec(26.377, order_y)), module, UtilClock::SWITCH, UtilClock::SWITCH_LIGHT));
+      // light to indicate current order
+      addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(32.305, order_y)), module, UtilClock::ORDER_LIGHT));
+
    }
 };
 
