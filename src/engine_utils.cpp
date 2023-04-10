@@ -275,6 +275,7 @@ void Clock__ctx_type_4_init(Clock__ctx_type_4 &_output_){
    _ctx.subSize = 0;
    _ctx.pos = 0;
    _ctx.orderMix = false;
+   _ctx.lastTime = 0x0 /* 0.000000 */;
    _ctx.lastBeat = 0x0 /* 0.000000 */;
    _ctx.init = false;
    _ctx.ibiB = 0x0 /* 0.000000 */;
@@ -300,7 +301,7 @@ int Clock_process(Clock__ctx_type_4 &_ctx, fix16_t time){
    }
    else
    {
-      if((time + (- _ctx.lastBeat)) >= _ctx.ibi){
+      if((_ctx.lastTime != time) && ((time + (- _ctx.lastBeat)) >= _ctx.ibi)){
          _ctx.lastBeat = (_ctx.ibi + _ctx.lastBeat);
          if((bool_not(_ctx.orderMix) && (_ctx.pos < _ctx.subSize)) || (_ctx.orderMix && ((((_ctx.pos / 2) < _ctx.subSize) && ((_ctx.pos % 2) == 0)) || ((_ctx.pos / 2) > (_ctx.groupSize + (- _ctx.subSize)))))){
             _ctx.ibi = _ctx.ibiA;
@@ -321,11 +322,14 @@ int Clock_process(Clock__ctx_type_4 &_ctx, fix16_t time){
          _ctx.pos = (_ctx.pos % _ctx.groupSize);
       }
    }
+   _ctx.lastTime = time;
    return trigger;
 }
 
 void Clock__recompute(Clock__ctx_type_4 &_ctx){
    _ctx.subSize = int_clip(fix_to_int(fix_mul(_ctx.groupRatio,int_to_fix((1 + _ctx.groupSize)))),1,((-1) + _ctx.groupSize));
+   uint8_t isIBIA;
+   isIBIA = (_ctx.ibi == _ctx.ibiA);
    fix16_t bibi;
    bibi = fix_div(0x3c0000 /* 60.000000 */,_ctx.bpm);
    if(_ctx.swing <= 0x8000 /* 0.500000 */){
@@ -337,10 +341,17 @@ void Clock__recompute(Clock__ctx_type_4 &_ctx){
       _ctx.ibiB = fix_clip((fix_mul(bibi,(0x10000 /* 1.000000 */ + (- _ctx.swing))) << 1),0x83 /* 0.002000 */,bibi);
       _ctx.ibiA = fix_div(((- fix_mul(_ctx.ibiB,int_to_fix((_ctx.groupSize + (- _ctx.subSize))))) + fix_mul(bibi,int_to_fix(_ctx.groupSize))),int_to_fix(_ctx.subSize));
    }
+   if(isIBIA){
+      _ctx.ibi = _ctx.ibiA;
+   }
+   else
+   {
+      _ctx.ibi = _ctx.ibiB;
+   }
 }
 
 void Clock_setBPM(Clock__ctx_type_4 &_ctx, fix16_t newBPM){
-   newBPM = fix_clip(newBPM,0x83 /* 0.002000 */,0x75300000 /* 30000.000000 */);
+   newBPM = fix_clip(newBPM,0x4189 /* 0.256000 */,0x75300000 /* 30000.000000 */);
    if(newBPM != _ctx.bpm){
       _ctx.bpm = newBPM;
       Clock__recompute(_ctx);

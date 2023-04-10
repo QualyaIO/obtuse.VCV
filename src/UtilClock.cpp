@@ -1,6 +1,8 @@
 #include "plugin.hpp"
 #include "engine_utils.h"
 
+// Note that the CV input for frequency is *not* V/Oct as per VCV Rack guidelines, but mapped linearly from 0v to 10v to min/max BPM.
+
 struct UtilClock : Module {
 
    enum ParamIds {
@@ -79,20 +81,20 @@ void UtilClock::sendParams(bool force) {
    Processor_clock_setGroupSize(processor, int(readParamCV(SIZE, SIZE_IN, SIZE_AV) + 0.5), force);
    Processor_clock_setGroupRatio(processor, float_to_fix(readParamCV(RATIO, RATIO_IN, RATIO_AV)), force);
 }
-#include <iostream>
+
 void UtilClock::process(const ProcessArgs &args) {
    // TODO: ad-hoc variable for time?
    static float time = 0.0;
    time += 1./args.sampleRate;
+
    // update parameters
    sendParams();
    // run clock, retrieve all 4 outputs
    Processor_clock_process(processor, float_to_fix(time));
-   std::cout << "tot" << std::endl;
-   outputs[CLOCK].setVoltage(fix_to_float(processor.process_ret_0) * 5.0);
-   outputs[NEW].setVoltage(fix_to_float(processor.process_ret_1) * 5.0);
-   outputs[GROUP1].setVoltage(fix_to_float(processor.process_ret_2) * 5.0);
-   outputs[GROUP2].setVoltage(fix_to_float(processor.process_ret_3) * 5.0);
+   outputs[CLOCK].setVoltage(fix_to_float(Processor_clock_process_ret_0(processor)) * 5.0);
+   outputs[NEW].setVoltage(fix_to_float(Processor_clock_process_ret_1(processor)) * 5.0);
+   outputs[GROUP1].setVoltage(fix_to_float(Processor_clock_process_ret_2(processor)) * 5.0);
+   outputs[GROUP2].setVoltage(fix_to_float(Processor_clock_process_ret_3(processor)) * 5.0);
 }
 
 struct UtilClockWidget : ModuleWidget {

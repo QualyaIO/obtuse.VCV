@@ -448,14 +448,6 @@ static_inline void Processor_trigg_setSamplerate(Processor_trigg__ctx_type_0 &_c
    }
 };
 
-static_inline fix16_t Clock_getMinBPM(){
-   return 0x83 /* 0.002000 */;
-};
-
-static_inline fix16_t Clock_getMaxBPM(){
-   return 0x75300000 /* 30000.000000 */;
-};
-
 static_inline int Clock_getMinGroupSize(){
    return 2;
 };
@@ -464,11 +456,20 @@ static_inline int Clock_getMaxGroupSize(){
    return 128;
 };
 
+static_inline fix16_t Clock_getMinBPM(){
+   return 0x4189 /* 0.256000 */;
+};
+
+static_inline fix16_t Clock_getMaxBPM(){
+   return 0x75300000 /* 30000.000000 */;
+};
+
 typedef struct Clock__ctx_type_4 {
    fix16_t swing;
    int subSize;
    int pos;
    uint8_t orderMix;
+   fix16_t lastTime;
    fix16_t lastBeat;
    uint8_t init;
    fix16_t ibiB;
@@ -735,7 +736,7 @@ static_inline void Processor_clock_setOrderMix(Processor_clock__ctx_type_2 &_ctx
 };
 
 static_inline fix16_t Processor_clock_getMinBPM(){
-   return 0x83 /* 0.002000 */;
+   return 0x4189 /* 0.256000 */;
 };
 
 static_inline fix16_t Processor_clock_getMaxBPM(){
