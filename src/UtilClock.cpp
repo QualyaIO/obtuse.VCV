@@ -117,14 +117,19 @@ void UtilClock::sendParams(bool force) {
 }
 
 void UtilClock::process(const ProcessArgs &args) {
-   // TODO: ad-hoc variable for time?
-   static float time = 0.0;
-   time += 1./args.sampleRate;
+   // split in two to overcome fixed float limit. hacky much
+   static int timeS = 0.0;
+   static float timeFract = 0.0;
+   timeFract += 1./args.sampleRate;
+   while (timeFract >= 1.0) {
+      timeFract -= 1;
+      timeS +=  1;
+   }
 
    // update parameters
    sendParams();
    // run clock, retrieve all 4 outputs
-   Processor_clock_process(processor, float_to_fix(time));
+   Processor_clock_process(processor, timeS, float_to_fix(timeFract));
    outputs[CLOCK].setVoltage(fix_to_float(Processor_clock_process_ret_0(processor)) * 5.0);
    outputs[NEW].setVoltage(fix_to_float(Processor_clock_process_ret_1(processor)) * 5.0);
    outputs[GROUP1].setVoltage(fix_to_float(Processor_clock_process_ret_2(processor)) * 5.0);

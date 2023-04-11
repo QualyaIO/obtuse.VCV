@@ -24,20 +24,20 @@ fun bool2real(b: bool): real {
   }
 }
 
-// time: time in seconds
+// timeS, timeFract: time in seconds, seconds and remainder
 // out1: trigger
 // out2: trigger first beat
 // out3: trigger first sub-group
 // out4: trigger second sub-group
-fun process(time: real) {
+fun process(timeS: int, timeFract: real) {
   // saving current state
   val out1, out2, out3, out4;
 
-  val beat = cloclo:Clock.process(time);
-  out1 = bool2real(gate1ms(beat > 0, time));
-  out2 = bool2real(gate1ms(beat == 1, time));
-  out3 = bool2real(gate1ms(beat == 1 || beat == 2, time));
-  out4 = bool2real(gate1ms(beat == 3, time));
+  val beat = cloclo:Clock.process(timeS, timeFract);
+  out1 = bool2real(gate1ms(beat > 0, real(timeS) + timeFract));
+  out2 = bool2real(gate1ms(beat == 1, real(timeS) + timeFract));
+  out3 = bool2real(gate1ms(beat == 1 || beat == 2, real(timeS) + timeFract));
+  out4 = bool2real(gate1ms(beat == 3, real(timeS) + timeFract));
 
   return out1, out2, out3, out4;
 }

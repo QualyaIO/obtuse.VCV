@@ -464,13 +464,17 @@ static_inline fix16_t Clock_getMaxBPM(){
    return 0x75300000 /* 30000.000000 */;
 };
 
-typedef struct Clock__ctx_type_4 {
+int Clock_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract);
+
+typedef struct Clock__ctx_type_5 {
    fix16_t swing;
    int subSize;
    int pos;
    uint8_t orderMix;
-   fix16_t lastTime;
-   fix16_t lastBeat;
+   int lastTimeS;
+   fix16_t lastTimeFract;
+   int lastBeatS;
+   fix16_t lastBeatFract;
    uint8_t init;
    fix16_t ibiB;
    fix16_t ibiA;
@@ -478,94 +482,94 @@ typedef struct Clock__ctx_type_4 {
    int groupSize;
    fix16_t groupRatio;
    fix16_t bpm;
-} Clock__ctx_type_4;
+} Clock__ctx_type_5;
 
-typedef Clock__ctx_type_4 Clock_process_type;
+typedef Clock__ctx_type_5 Clock_process_type;
 
-void Clock__ctx_type_4_init(Clock__ctx_type_4 &_output_);
+void Clock__ctx_type_5_init(Clock__ctx_type_5 &_output_);
 
-static_inline void Clock_process_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_process_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-int Clock_process(Clock__ctx_type_4 &_ctx, fix16_t time);
+int Clock_process(Clock__ctx_type_5 &_ctx, int timeS, fix16_t timeFract);
 
-typedef Clock__ctx_type_4 Clock_reset_type;
+typedef Clock__ctx_type_5 Clock_reset_type;
 
-static_inline void Clock_reset_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_reset_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-static_inline void Clock_reset(Clock__ctx_type_4 &_ctx){
+static_inline void Clock_reset(Clock__ctx_type_5 &_ctx){
    _ctx.init = false;
 };
 
-typedef Clock__ctx_type_4 Clock__recompute_type;
+typedef Clock__ctx_type_5 Clock__recompute_type;
 
-static_inline void Clock__recompute_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock__recompute_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-void Clock__recompute(Clock__ctx_type_4 &_ctx);
+void Clock__recompute(Clock__ctx_type_5 &_ctx);
 
-typedef Clock__ctx_type_4 Clock_setBPM_type;
+typedef Clock__ctx_type_5 Clock_setBPM_type;
 
-static_inline void Clock_setBPM_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_setBPM_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-void Clock_setBPM(Clock__ctx_type_4 &_ctx, fix16_t newBPM);
+void Clock_setBPM(Clock__ctx_type_5 &_ctx, fix16_t newBPM);
 
-typedef Clock__ctx_type_4 Clock_setGroupSize_type;
+typedef Clock__ctx_type_5 Clock_setGroupSize_type;
 
-static_inline void Clock_setGroupSize_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_setGroupSize_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-void Clock_setGroupSize(Clock__ctx_type_4 &_ctx, int newGroupSize);
+void Clock_setGroupSize(Clock__ctx_type_5 &_ctx, int newGroupSize);
 
-typedef Clock__ctx_type_4 Clock_setGroupRatio_type;
+typedef Clock__ctx_type_5 Clock_setGroupRatio_type;
 
-static_inline void Clock_setGroupRatio_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_setGroupRatio_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-void Clock_setGroupRatio(Clock__ctx_type_4 &_ctx, fix16_t newGroupRatio);
+void Clock_setGroupRatio(Clock__ctx_type_5 &_ctx, fix16_t newGroupRatio);
 
-typedef Clock__ctx_type_4 Clock_setSwing_type;
+typedef Clock__ctx_type_5 Clock_setSwing_type;
 
-static_inline void Clock_setSwing_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_setSwing_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-void Clock_setSwing(Clock__ctx_type_4 &_ctx, fix16_t newSwing);
+void Clock_setSwing(Clock__ctx_type_5 &_ctx, fix16_t newSwing);
 
-typedef Clock__ctx_type_4 Clock_setOrderMix_type;
+typedef Clock__ctx_type_5 Clock_setOrderMix_type;
 
-static_inline void Clock_setOrderMix_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_setOrderMix_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-static_inline void Clock_setOrderMix(Clock__ctx_type_4 &_ctx, uint8_t flag){
+static_inline void Clock_setOrderMix(Clock__ctx_type_5 &_ctx, uint8_t flag){
    _ctx.orderMix = flag;
 };
 
-typedef Clock__ctx_type_4 Clock_default_type;
+typedef Clock__ctx_type_5 Clock_default_type;
 
-static_inline void Clock_default_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4_init(_output_);
+static_inline void Clock_default_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5_init(_output_);
    return ;
 }
 
-static_inline void Clock_default(Clock__ctx_type_4 &_ctx){
+static_inline void Clock_default(Clock__ctx_type_5 &_ctx){
    Clock_setBPM(_ctx,0x780000 /* 120.000000 */);
    Clock_setGroupSize(_ctx,4);
    Clock_setGroupRatio(_ctx,0x8000 /* 0.500000 */);
@@ -603,7 +607,7 @@ typedef struct Processor_clock__ctx_type_2 {
    fix16_t process_ret_2;
    fix16_t process_ret_1;
    fix16_t process_ret_0;
-   Clock__ctx_type_4 cloclo;
+   Clock__ctx_type_5 cloclo;
    Util__ctx_type_3 _inst73b;
    Processor_clock__ctx_type_0 _inst4d8;
    Util__ctx_type_3 _inst43b;
@@ -624,7 +628,7 @@ static_inline void Processor_clock_process_init(Processor_clock__ctx_type_2 &_ou
    return ;
 }
 
-void Processor_clock_process(Processor_clock__ctx_type_2 &_ctx, fix16_t time);
+void Processor_clock_process(Processor_clock__ctx_type_2 &_ctx, int timeS, fix16_t timeFract);
 
 typedef Processor_clock__ctx_type_2 Processor_clock_process_ret_0_type;
 

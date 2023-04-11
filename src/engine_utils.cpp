@@ -269,14 +269,48 @@ int Processor_trigg_process(Processor_trigg__ctx_type_0 &_ctx, fix16_t clock, fi
    return trigger;
 }
 
-void Clock__ctx_type_4_init(Clock__ctx_type_4 &_output_){
-   Clock__ctx_type_4 _ctx;
+int Clock_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract){
+   while(time1Fract < 0x0 /* 0.000000 */){
+      time1S = ((-1) + time1S);
+      time1Fract = (0x10000 /* 1.000000 */ + time1Fract);
+   }
+   while(time1Fract > 0x10000 /* 1.000000 */){
+      time1S = (1 + time1S);
+      time1Fract = (-0x10000 /* -1.000000 */ + time1Fract);
+   }
+   while(time2Fract < 0x0 /* 0.000000 */){
+      time2S = ((-1) + time2S);
+      time2Fract = (0x10000 /* 1.000000 */ + time2Fract);
+   }
+   while(time2Fract > 0x10000 /* 1.000000 */){
+      time2S = (1 + time2S);
+      time2Fract = (-0x10000 /* -1.000000 */ + time2Fract);
+   }
+   if((time1S == time2S) && (time1Fract == time2Fract)){
+      return 0;
+   }
+   else
+   {
+      if((time1S < time2S) || ((time1S == time2S) && (time1Fract <= time2Fract))){
+         return 1;
+      }
+      else
+      {
+         return (-1);
+      }
+   }
+}
+
+void Clock__ctx_type_5_init(Clock__ctx_type_5 &_output_){
+   Clock__ctx_type_5 _ctx;
    _ctx.swing = 0x0 /* 0.000000 */;
    _ctx.subSize = 0;
    _ctx.pos = 0;
    _ctx.orderMix = false;
-   _ctx.lastTime = 0x0 /* 0.000000 */;
-   _ctx.lastBeat = 0x0 /* 0.000000 */;
+   _ctx.lastTimeS = 0;
+   _ctx.lastTimeFract = 0x0 /* 0.000000 */;
+   _ctx.lastBeatS = 0;
+   _ctx.lastBeatFract = 0x0 /* 0.000000 */;
    _ctx.init = false;
    _ctx.ibiB = 0x0 /* 0.000000 */;
    _ctx.ibiA = 0x0 /* 0.000000 */;
@@ -289,20 +323,26 @@ void Clock__ctx_type_4_init(Clock__ctx_type_4 &_output_){
    return ;
 }
 
-int Clock_process(Clock__ctx_type_4 &_ctx, fix16_t time){
+int Clock_process(Clock__ctx_type_5 &_ctx, int timeS, fix16_t timeFract){
    int trigger;
    trigger = 0;
-   if(bool_not(_ctx.init) || (time < _ctx.lastBeat)){
+   if(bool_not(_ctx.init) || (Clock_compareTimeFract(timeS,timeFract,_ctx.lastBeatS,_ctx.lastBeatFract) > 0)){
       _ctx.init = true;
-      _ctx.lastBeat = time;
+      _ctx.lastBeatS = timeS;
+      _ctx.lastBeatFract = timeFract;
       trigger = 1;
       _ctx.pos = 1;
       _ctx.ibi = _ctx.ibiA;
    }
    else
    {
-      if((_ctx.lastTime != time) && ((time + (- _ctx.lastBeat)) >= _ctx.ibi)){
-         _ctx.lastBeat = (_ctx.ibi + _ctx.lastBeat);
+      if((Clock_compareTimeFract(_ctx.lastTimeS,_ctx.lastTimeFract,timeS,timeFract) != 0) && (Clock_compareTimeFract((timeS + (- _ctx.lastBeatS)),(timeFract + (- _ctx.lastBeatFract)),fix_to_int(_ctx.ibi),(_ctx.ibi % 0x10000 /* 1.000000 */)) <= 0)){
+         _ctx.lastBeatS = (_ctx.lastBeatS + fix_to_int(_ctx.ibi));
+         _ctx.lastBeatFract = (_ctx.lastBeatFract + (_ctx.ibi % 0x10000 /* 1.000000 */));
+         while(_ctx.lastBeatFract >= 0x10000 /* 1.000000 */){
+            _ctx.lastBeatS = (1 + _ctx.lastBeatS);
+            _ctx.lastBeatFract = (-0x10000 /* -1.000000 */ + _ctx.lastBeatFract);
+         }
          if((bool_not(_ctx.orderMix) && (_ctx.pos < _ctx.subSize)) || (_ctx.orderMix && ((((_ctx.pos / 2) < _ctx.subSize) && ((_ctx.pos % 2) == 0)) || ((_ctx.pos / 2) > (_ctx.groupSize + (- _ctx.subSize)))))){
             _ctx.ibi = _ctx.ibiA;
             if(_ctx.pos == 0){
@@ -322,11 +362,12 @@ int Clock_process(Clock__ctx_type_4 &_ctx, fix16_t time){
          _ctx.pos = (_ctx.pos % _ctx.groupSize);
       }
    }
-   _ctx.lastTime = time;
+   _ctx.lastTimeS = timeS;
+   _ctx.lastTimeFract = timeFract;
    return trigger;
 }
 
-void Clock__recompute(Clock__ctx_type_4 &_ctx){
+void Clock__recompute(Clock__ctx_type_5 &_ctx){
    _ctx.subSize = int_clip(fix_to_int(fix_mul(_ctx.groupRatio,int_to_fix((1 + _ctx.groupSize)))),1,((-1) + _ctx.groupSize));
    uint8_t isIBIA;
    isIBIA = (_ctx.ibi == _ctx.ibiA);
@@ -350,7 +391,7 @@ void Clock__recompute(Clock__ctx_type_4 &_ctx){
    }
 }
 
-void Clock_setBPM(Clock__ctx_type_4 &_ctx, fix16_t newBPM){
+void Clock_setBPM(Clock__ctx_type_5 &_ctx, fix16_t newBPM){
    newBPM = fix_clip(newBPM,0x4189 /* 0.256000 */,0x75300000 /* 30000.000000 */);
    if(newBPM != _ctx.bpm){
       _ctx.bpm = newBPM;
@@ -358,7 +399,7 @@ void Clock_setBPM(Clock__ctx_type_4 &_ctx, fix16_t newBPM){
    }
 }
 
-void Clock_setGroupSize(Clock__ctx_type_4 &_ctx, int newGroupSize){
+void Clock_setGroupSize(Clock__ctx_type_5 &_ctx, int newGroupSize){
    newGroupSize = int_clip(newGroupSize,2,128);
    if(newGroupSize != _ctx.groupSize){
       _ctx.groupSize = newGroupSize;
@@ -367,7 +408,7 @@ void Clock_setGroupSize(Clock__ctx_type_4 &_ctx, int newGroupSize){
    }
 }
 
-void Clock_setGroupRatio(Clock__ctx_type_4 &_ctx, fix16_t newGroupRatio){
+void Clock_setGroupRatio(Clock__ctx_type_5 &_ctx, fix16_t newGroupRatio){
    newGroupRatio = fix_clip(newGroupRatio,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newGroupRatio != _ctx.groupRatio){
       _ctx.groupRatio = newGroupRatio;
@@ -375,7 +416,7 @@ void Clock_setGroupRatio(Clock__ctx_type_4 &_ctx, fix16_t newGroupRatio){
    }
 }
 
-void Clock_setSwing(Clock__ctx_type_4 &_ctx, fix16_t newSwing){
+void Clock_setSwing(Clock__ctx_type_5 &_ctx, fix16_t newSwing){
    newSwing = fix_clip(newSwing,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(_ctx.swing != newSwing){
       _ctx.swing = newSwing;
@@ -411,7 +452,7 @@ void Processor_clock__ctx_type_2_init(Processor_clock__ctx_type_2 &_output_){
    _ctx.process_ret_2 = 0x0 /* 0.000000 */;
    _ctx.process_ret_1 = 0x0 /* 0.000000 */;
    _ctx.process_ret_0 = 0x0 /* 0.000000 */;
-   Clock__ctx_type_4_init(_ctx.cloclo);
+   Clock__ctx_type_5_init(_ctx.cloclo);
    Util__ctx_type_3_init(_ctx._inst73b);
    Processor_clock__ctx_type_0_init(_ctx._inst4d8);
    Util__ctx_type_3_init(_ctx._inst43b);
@@ -425,17 +466,17 @@ void Processor_clock__ctx_type_2_init(Processor_clock__ctx_type_2 &_output_){
    return ;
 }
 
-void Processor_clock_process(Processor_clock__ctx_type_2 &_ctx, fix16_t time){
+void Processor_clock_process(Processor_clock__ctx_type_2 &_ctx, int timeS, fix16_t timeFract){
    fix16_t out1;
    fix16_t out2;
    fix16_t out3;
    fix16_t out4;
    int beat;
-   beat = Clock_process(_ctx.cloclo,time);
-   out1 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst1d8,(beat > 0),time));
-   out2 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst2d8,(beat == 1),time));
-   out3 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst3d8,((beat == 1) || (beat == 2)),time));
-   out4 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst4d8,(beat == 3),time));
+   beat = Clock_process(_ctx.cloclo,timeS,timeFract);
+   out1 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst1d8,(beat > 0),(timeFract + int_to_fix(timeS))));
+   out2 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst2d8,(beat == 1),(timeFract + int_to_fix(timeS))));
+   out3 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst3d8,((beat == 1) || (beat == 2)),(timeFract + int_to_fix(timeS))));
+   out4 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst4d8,(beat == 3),(timeFract + int_to_fix(timeS))));
    _ctx.process_ret_0 = out1;
    _ctx.process_ret_1 = out2;
    _ctx.process_ret_2 = out3;
