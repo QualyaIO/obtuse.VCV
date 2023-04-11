@@ -1329,6 +1329,8 @@ void Processor_chord__ctx_type_2_init(Processor_chord__ctx_type_2 &_output_){
    _ctx.n1 = 0;
    Util__ctx_type_3_init(_ctx._inst73b);
    Util__ctx_type_3_init(_ctx._inst43b);
+   Util__ctx_type_1_init(_ctx._inst351);
+   Util__ctx_type_3_init(_ctx._inst163b);
    Util__ctx_type_1_init(_ctx._inst151);
    Util__ctx_type_3_init(_ctx._inst13b);
    Util__ctx_type_3_init(_ctx._inst133b);
@@ -1337,8 +1339,11 @@ void Processor_chord__ctx_type_2_init(Processor_chord__ctx_type_2 &_output_){
    return ;
 }
 
-void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig){
-   if(Util_edge(_ctx._inst151,(trig >= 0x1999 /* 0.100000 */))){
+void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig, fix16_t reset){
+   if(Util_edge(_ctx._inst151,(reset >= 0x1999 /* 0.100000 */))){
+      Tonnetz_reset(_ctx.ton);
+   }
+   if(Util_edge(_ctx._inst351,(trig >= 0x1999 /* 0.100000 */))){
       Tonnetz_process(_ctx.ton);
       _ctx.n1 = Tonnetz_process_ret_0(_ctx.ton);
       _ctx.n2 = Tonnetz_process_ret_1(_ctx.ton);

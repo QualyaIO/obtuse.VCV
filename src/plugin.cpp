@@ -15,4 +15,5 @@ void init(Plugin *p) {
    p->addModel(synthDrummer);
    p->addModel(utilTrigg);
    p->addModel(utilClock);
+   p->addModel(utilChord);
 }

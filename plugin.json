@@ -71,6 +71,12 @@
       "name": "BotaniaClock",
       "description": "I clock things",
       "tags": []
+    },
+    {
+      "slug": "BotaniaChord",
+      "name": "BotaniaChord",
+      "description": "I generate chords things",
+      "tags": []
     }
   ]
 }

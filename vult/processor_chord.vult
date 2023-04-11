@@ -19,8 +19,15 @@ fun cvToPitch(cv: real) : int {
 }
 
 // generate new chord upon trigger, returning the three notes
-fun process(trig: real) {
+// also process reset switch
+fun process(trig: real, reset: real) {
   mem n1, n2, n3;
+
+  
+  if (Util.edge(reset >= 0.1)) {
+    _ = ton:Tonnetz.reset();
+  }
+
   // detecting new trigger
   if (Util.edge(trig >= 0.1)) {
     n1, n2, n3 = ton:Tonnetz.process();
@@ -44,6 +51,12 @@ and setRoot(param: real, force: bool) {
 and setChord(param: int, force: bool) {
   if (Util.change(real(param)) || force) {
     _ = ton:Tonnetz.setChord(param);
+  }
+}
+
+and setChordSpread(param: real, force: bool) {
+  if (Util.change(param) || force) {
+    _ = ton:Tonnetz.setChordSpread(param);
   }
 }
 

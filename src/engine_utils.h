@@ -1039,6 +1039,8 @@ typedef struct Processor_chord__ctx_type_2 {
    int n1;
    Util__ctx_type_3 _inst73b;
    Util__ctx_type_3 _inst43b;
+   Util__ctx_type_1 _inst351;
+   Util__ctx_type_3 _inst163b;
    Util__ctx_type_1 _inst151;
    Util__ctx_type_3 _inst13b;
    Util__ctx_type_3 _inst133b;
@@ -1054,7 +1056,7 @@ static_inline void Processor_chord_process_init(Processor_chord__ctx_type_2 &_ou
    return ;
 }
 
-void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig);
+void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig, fix16_t reset);
 
 typedef Processor_chord__ctx_type_2 Processor_chord_process_ret_0_type;
 
@@ -1128,6 +1130,19 @@ static_inline void Processor_chord_setChord(Processor_chord__ctx_type_2 &_ctx, i
    }
 };
 
+typedef Processor_chord__ctx_type_2 Processor_chord_setChordSpread_type;
+
+static_inline void Processor_chord_setChordSpread_init(Processor_chord__ctx_type_2 &_output_){
+   Processor_chord__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void Processor_chord_setChordSpread(Processor_chord__ctx_type_2 &_ctx, fix16_t param, uint8_t force){
+   if(Util_change(_ctx._inst103b,param) || force){
+      Tonnetz_setChordSpread(_ctx.ton,param);
+   }
+};
+
 typedef Processor_chord__ctx_type_2 Processor_chord_setInversionSpread_type;
 
 static_inline void Processor_chord_setInversionSpread_init(Processor_chord__ctx_type_2 &_output_){
@@ -1136,7 +1151,7 @@ static_inline void Processor_chord_setInversionSpread_init(Processor_chord__ctx_
 }
 
 static_inline void Processor_chord_setInversionSpread(Processor_chord__ctx_type_2 &_ctx, fix16_t param, uint8_t force){
-   if(Util_change(_ctx._inst103b,param) || force){
+   if(Util_change(_ctx._inst133b,param) || force){
       Tonnetz_setInversionSpread(_ctx.ton,param);
    }
 };
@@ -1149,7 +1164,7 @@ static_inline void Processor_chord_setJump_init(Processor_chord__ctx_type_2 &_ou
 }
 
 static_inline void Processor_chord_setJump(Processor_chord__ctx_type_2 &_ctx, fix16_t param, uint8_t force){
-   if(Util_change(_ctx._inst133b,param) || force){
+   if(Util_change(_ctx._inst163b,param) || force){
       Tonnetz_setJump(_ctx.ton,param);
    }
 };
