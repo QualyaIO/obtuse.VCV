@@ -269,6 +269,826 @@ int Processor_trigg_process(Processor_trigg__ctx_type_0 &_ctx, fix16_t clock, fi
    return trigger;
 }
 
+void Tonnetz_getScale(int id, uint8_t (&_output_)[12]){
+   uint8_t scale[12];
+   {
+      scale[0] = false;
+      scale[1] = false;
+      scale[2] = false;
+      scale[3] = false;
+      scale[4] = false;
+      scale[5] = false;
+      scale[6] = false;
+      scale[7] = false;
+      scale[8] = false;
+      scale[9] = false;
+      scale[10] = false;
+      scale[11] = false;
+   }
+   switch(id) {
+      case 0:
+         {
+            scale[0] = true;
+            scale[1] = true;
+            scale[2] = true;
+            scale[3] = true;
+            scale[4] = true;
+            scale[5] = true;
+            scale[6] = true;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = true;
+            scale[10] = true;
+            scale[11] = true;
+         }
+      break;
+      case 1:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = false;
+            scale[11] = true;
+         }
+      break;
+      case 2:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 3:
+         {
+            scale[0] = true;
+            scale[1] = true;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 4:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = false;
+            scale[6] = true;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = false;
+            scale[11] = true;
+         }
+      break;
+      case 5:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 6:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 7:
+         {
+            scale[0] = true;
+            scale[1] = true;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = true;
+            scale[7] = false;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 8:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = false;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = false;
+            scale[11] = false;
+         }
+      break;
+      case 9:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 10:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 11:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = false;
+            scale[11] = true;
+         }
+      break;
+      case 12:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = false;
+            scale[11] = true;
+         }
+      break;
+      case 13:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = false;
+            scale[11] = true;
+         }
+      break;
+      case 14:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = true;
+            scale[5] = false;
+            scale[6] = true;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = true;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 15:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = true;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = false;
+            scale[6] = true;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = false;
+            scale[11] = true;
+         }
+      break;
+      case 16:
+         {
+            scale[0] = true;
+            scale[1] = true;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = true;
+            scale[5] = true;
+            scale[6] = false;
+            scale[7] = true;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 17:
+         {
+            scale[0] = true;
+            scale[1] = true;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = true;
+            scale[5] = false;
+            scale[6] = true;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 18:
+         {
+            scale[0] = true;
+            scale[1] = false;
+            scale[2] = false;
+            scale[3] = true;
+            scale[4] = false;
+            scale[5] = true;
+            scale[6] = true;
+            scale[7] = true;
+            scale[8] = false;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = false;
+         }
+      break;
+      case 19:
+         {
+            scale[0] = true;
+            scale[1] = true;
+            scale[2] = false;
+            scale[3] = false;
+            scale[4] = true;
+            scale[5] = false;
+            scale[6] = true;
+            scale[7] = false;
+            scale[8] = true;
+            scale[9] = false;
+            scale[10] = true;
+            scale[11] = true;
+         }
+      break;
+    
+   }
+   bool_copy_array(12,_output_,scale);
+   return ;
+}
+
+void Tonnetz_getChord(int chord, int (&_output_)[3]){
+   if(chord > 0){
+      chord = (chord % 6);
+   }
+   switch(chord) {
+      case 0:
+         {
+            int _array_15[3];
+            {
+               _array_15[0] = 0;
+               _array_15[1] = 4;
+               _array_15[2] = 8;
+            }
+            int_copy_array(3,_output_,_array_15);
+            return ;
+         }
+      break;
+      case 1:
+         {
+            int _array_17[3];
+            {
+               _array_17[0] = 0;
+               _array_17[1] = 4;
+               _array_17[2] = 7;
+            }
+            int_copy_array(3,_output_,_array_17);
+            return ;
+         }
+      break;
+      case 2:
+         {
+            int _array_19[3];
+            {
+               _array_19[0] = 0;
+               _array_19[1] = 5;
+               _array_19[2] = 7;
+            }
+            int_copy_array(3,_output_,_array_19);
+            return ;
+         }
+      break;
+      case 3:
+         {
+            int _array_21[3];
+            {
+               _array_21[0] = 0;
+               _array_21[1] = 2;
+               _array_21[2] = 7;
+            }
+            int_copy_array(3,_output_,_array_21);
+            return ;
+         }
+      break;
+      case 4:
+         {
+            int _array_23[3];
+            {
+               _array_23[0] = 0;
+               _array_23[1] = 3;
+               _array_23[2] = 7;
+            }
+            int_copy_array(3,_output_,_array_23);
+            return ;
+         }
+      break;
+      case 5:
+         {
+            int _array_25[3];
+            {
+               _array_25[0] = 0;
+               _array_25[1] = 3;
+               _array_25[2] = 6;
+            }
+            int_copy_array(3,_output_,_array_25);
+            return ;
+         }
+      break;
+    default: 
+      {
+         int _array_27[3];
+         {
+            _array_27[0] = 0;
+            _array_27[1] = 0;
+            _array_27[2] = 0;
+         }
+         int_copy_array(3,_output_,_array_27);
+         return ;
+      }
+   }
+}
+
+void Tonnetz_getChordInversion(int chord, int inversion, int (&_output_)[3]){
+   inversion = int_clip(inversion,0,2);
+   int notes[3];
+   Tonnetz_getChord(chord,notes);
+   switch(inversion) {
+      case 1:
+         {
+            notes[0] = notes[1];
+            notes[1] = notes[2];
+            notes[2] = (12 + notes[0]);
+         }
+      break;
+      case 2:
+         {
+            notes[0] = notes[2];
+            notes[1] = (12 + notes[0]);
+            notes[2] = (12 + notes[1]);
+         }
+      break;
+    
+   }
+   int_copy_array(3,_output_,notes);
+   return ;
+}
+
+void Tonnetz__ctx_type_4_init(Tonnetz__ctx_type_4 &_output_){
+   Tonnetz__ctx_type_4 _ctx;
+   int_init_array(11,0,_ctx.shifts);
+   _ctx.shift = 0;
+   _ctx.scaleId = 0;
+   bool_init_array(12,false,_ctx.scale);
+   _ctx.root = 0;
+   _ctx.process_ret_2 = 0;
+   _ctx.process_ret_1 = 0;
+   _ctx.process_ret_0 = 0;
+   _ctx.pJump = 0x0 /* 0.000000 */;
+   fix_init_array(3,0x0 /* 0.000000 */,_ctx.inversions);
+   _ctx.inversionSpread = 0x0 /* 0.000000 */;
+   fix_init_array(6,0x0 /* 0.000000 */,_ctx.chords);
+   _ctx.chordSpread = 0x0 /* 0.000000 */;
+   _ctx.chord = 0;
+   Tonnetz_default(_ctx);
+   _output_ = _ctx;
+   return ;
+}
+
+uint8_t Tonnetz_isChordInShift(Tonnetz__ctx_type_4 &_ctx, int checkChord, int checkShift){
+   if(checkChord < 0){
+      return false;
+   }
+   int notes[3];
+   Tonnetz_getChord(checkChord,notes);
+   return (_ctx.scale[((checkShift + notes[0]) % 12)] && _ctx.scale[((checkShift + notes[1]) % 12)] && _ctx.scale[((checkShift + notes[2]) % 12)]);
+}
+
+int Tonnetz_drawChord(Tonnetz__ctx_type_4 &_ctx, uint8_t lookAround){
+   fix16_t tChords[6];
+   int i;
+   i = 0;
+   fix16_t curcumP;
+   curcumP = 0x0 /* 0.000000 */;
+   fix16_t curcumTP;
+   curcumTP = 0x0 /* 0.000000 */;
+   while(i < 6){
+      uint8_t cond;
+      cond = Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),_ctx.shift);
+      if(lookAround){
+         cond = (cond || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(3 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(4 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(5 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(7 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(8 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(9 + _ctx.shift)));
+      }
+      if(cond){
+         tChords[i] = (curcumTP + _ctx.chords[i] + (- curcumP));
+         curcumTP = tChords[i];
+      }
+      else
+      {
+         tChords[i] = curcumTP;
+      }
+      curcumP = _ctx.chords[i];
+      i = (1 + i);
+   }
+   if(curcumTP > 0x0 /* 0.000000 */){
+      fix16_t pChord;
+      pChord = fix_mul(tChords[5],fix_random());
+      i = 0;
+      while((i < 6) && (pChord > tChords[i])){
+         i = (1 + i);
+      }
+      if(i < 6){
+         return ((_ctx.chord + i) % 6);
+      }
+   }
+   return (-1);
+}
+
+int Tonnetz_drawInversion(Tonnetz__ctx_type_4 &_ctx){
+   fix16_t pInversion;
+   pInversion = fix_random();
+   int i;
+   i = 0;
+   while((i < 3) && (pInversion > _ctx.inversions[i])){
+      i = (1 + i);
+   }
+   if(i >= 3){
+      i = 0;
+   }
+   return i;
+}
+
+void Tonnetz_process(Tonnetz__ctx_type_4 &_ctx){
+   int selectedChord;
+   int notes[3];
+   if(fix_random() < _ctx.pJump){
+      selectedChord = Tonnetz_drawChord(_ctx,true);
+      int lookShifts[7];
+      {
+         lookShifts[0] = 0;
+         lookShifts[1] = 3;
+         lookShifts[2] = 4;
+         lookShifts[3] = 5;
+         lookShifts[4] = 7;
+         lookShifts[5] = 8;
+         lookShifts[6] = 9;
+      }
+      int selectedShifts[7];
+      {
+         selectedShifts[0] = (-1);
+         selectedShifts[1] = (-1);
+         selectedShifts[2] = (-1);
+         selectedShifts[3] = (-1);
+         selectedShifts[4] = (-1);
+         selectedShifts[5] = (-1);
+         selectedShifts[6] = (-1);
+      }
+      int nbShifts;
+      nbShifts = 0;
+      if(selectedChord >= 0){
+         int i;
+         i = 0;
+         while(i < 7){
+            if(Tonnetz_isChordInShift(_ctx,selectedChord,(_ctx.shift + lookShifts[i]))){
+               selectedShifts[nbShifts] = lookShifts[i];
+               nbShifts = (1 + nbShifts);
+            }
+            i = (1 + i);
+         }
+      }
+      else
+      {
+         int_copy_array(7,selectedShifts,lookShifts);
+         nbShifts = 7;
+      }
+      if(nbShifts <= 0){
+         int_copy_array(7,selectedShifts,lookShifts);
+         nbShifts = 7;
+      }
+      _ctx.shift = ((_ctx.shift + selectedShifts[(irandom() % nbShifts)]) % 12);
+      if(_ctx.shift == 0){
+         int i;
+         i = 0;
+         while(i < 11){
+            _ctx.shifts[i] = 0;
+            i = (1 + i);
+         }
+      }
+      else
+      {
+         int i;
+         i = 0;
+         while((i < 11) && (_ctx.shifts[i] != _ctx.shift) && (_ctx.shifts[i] != 0)){
+            i = (1 + i);
+         }
+         _ctx.shifts[((-1) + i)] = _ctx.shift;
+         while(i < 11){
+            _ctx.shifts[i] = 0;
+            i = (1 + i);
+         }
+      }
+   }
+   else
+   {
+      int i;
+      i = 0;
+      while((i < 11) && (_ctx.shifts[i] != 0)){
+         i = (1 + i);
+      }
+      if(i > 1){
+         _ctx.shifts[((-1) + i)] = 0;
+         _ctx.shift = _ctx.shifts[((-2) + i)];
+      }
+      else
+      {
+         _ctx.shifts[0] = 0;
+         _ctx.shift = 0;
+      }
+      selectedChord = Tonnetz_drawChord(_ctx,false);
+   }
+   if(selectedChord < 0){
+      Tonnetz_getChord(selectedChord,notes);
+      int baseNote;
+      baseNote = (_ctx.root + _ctx.shift);
+      if(baseNote < 12){
+         baseNote = (12 + baseNote);
+      }
+      else
+      {
+         if(baseNote > 115){
+            baseNote = ((-12) + baseNote);
+         }
+      }
+      notes[0] = ((-12) + baseNote);
+      notes[1] = baseNote;
+      notes[2] = (12 + baseNote);
+   }
+   else
+   {
+      Tonnetz_getChordInversion(selectedChord,Tonnetz_drawInversion(_ctx),notes);
+      int i;
+      i = 0;
+      while(i < 3){
+         notes[i] = (_ctx.root + _ctx.shift + notes[i]);
+         if(notes[i] > 127){
+            notes[i] = ((-12) + notes[i]);
+         }
+         i = (1 + i);
+      }
+   }
+   _ctx.process_ret_0 = notes[0];
+   _ctx.process_ret_1 = notes[1];
+   _ctx.process_ret_2 = notes[2];
+   return ;
+}
+
+void Tonnetz_reset(Tonnetz__ctx_type_4 &_ctx){
+   _ctx.shift = 0;
+   int i;
+   i = 0;
+   while(i < 11){
+      _ctx.shifts[i] = 0;
+      i = (1 + i);
+   }
+}
+
+void Tonnetz_setScale(Tonnetz__ctx_type_4 &_ctx, int id){
+   id = int_clip(id,0,19);
+   if(_ctx.scaleId != id){
+      _ctx.scaleId = id;
+      Tonnetz_getScale(id,_ctx.scale);
+      Tonnetz_reset(_ctx);
+   }
+}
+
+void Tonnetz__updateChords(Tonnetz__ctx_type_4 &_ctx, fix16_t bParam){
+   bParam = fix_clip(bParam,0x0 /* 0.000000 */,bParam);
+   if(6 == 1){
+      _ctx.chords[0] = 0x10000 /* 1.000000 */;
+   }
+   else
+   {
+      int maxi;
+      maxi = (5 / 2);
+      int i;
+      i = 0;
+      fix16_t x;
+      x = 0x2aaa /* 0.166667 */;
+      _ctx.chords[i] = Tonnetz_beta(x,bParam);
+      fix16_t chordP;
+      chordP = _ctx.chords[i];
+      fix16_t scaleP;
+      scaleP = 0x0 /* 0.000000 */;
+      scaleP = fix_mul(fix_mul(0x3333 /* 0.200000 */,int_to_fix(maxi)),(0x10000 /* 1.000000 */ + (- chordP)));
+      i = (1 + i);
+      while(i <= maxi){
+         x = fix_div(int_to_fix(i),int_to_fix(maxi));
+         _ctx.chords[i] = (chordP + fix_mul(scaleP,Tonnetz_beta(x,bParam)));
+         i = (1 + i);
+      }
+      while(i < 5){
+         x = fix_div(int_to_fix((i + (- maxi))),int_to_fix(maxi));
+         _ctx.chords[i] = (0x10000 /* 1.000000 */ + (- fix_mul(scaleP,Tonnetz_beta((0x10000 /* 1.000000 */ + (- x)),bParam))));
+         i = (1 + i);
+      }
+      _ctx.chords[5] = 0x10000 /* 1.000000 */;
+   }
+}
+
+void Tonnetz__updateInversions(Tonnetz__ctx_type_4 &_ctx, fix16_t bParam){
+   bParam = fix_clip(bParam,0x0 /* 0.000000 */,bParam);
+   if(3 == 1){
+      _ctx.inversions[0] = 0x10000 /* 1.000000 */;
+   }
+   else
+   {
+      int maxi;
+      maxi = (2 / 2);
+      int i;
+      i = 0;
+      fix16_t x;
+      x = 0x5555 /* 0.333333 */;
+      _ctx.inversions[i] = Tonnetz_beta(x,bParam);
+      fix16_t inversionP;
+      inversionP = _ctx.inversions[i];
+      fix16_t scaleP;
+      scaleP = 0x0 /* 0.000000 */;
+      scaleP = (fix_mul(int_to_fix(maxi),(0x10000 /* 1.000000 */ + (- inversionP))) >> 1);
+      i = (1 + i);
+      while(i <= maxi){
+         x = fix_div(int_to_fix(i),int_to_fix(maxi));
+         _ctx.inversions[i] = (inversionP + fix_mul(scaleP,Tonnetz_beta(x,bParam)));
+         i = (1 + i);
+      }
+      while(i < 2){
+         x = fix_div(int_to_fix((i + (- maxi))),int_to_fix(maxi));
+         _ctx.inversions[i] = (0x10000 /* 1.000000 */ + (- fix_mul(scaleP,Tonnetz_beta((0x10000 /* 1.000000 */ + (- x)),bParam))));
+         i = (1 + i);
+      }
+      _ctx.inversions[2] = 0x10000 /* 1.000000 */;
+   }
+}
+
+void Tonnetz_setChordSpread(Tonnetz__ctx_type_4 &_ctx, fix16_t newSpread){
+   newSpread = fix_clip(newSpread,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+   if(newSpread != _ctx.chordSpread){
+      _ctx.chordSpread = newSpread;
+      if(_ctx.chordSpread == 0x0 /* 0.000000 */){
+         int i;
+         i = 0;
+         while(i < 6){
+            _ctx.chords[i] = 0x10000 /* 1.000000 */;
+            i = (1 + i);
+         }
+      }
+      else
+      {
+         fix16_t bParam;
+         bParam = fix_exp(((0x10000 /* 1.000000 */ + (- newSpread)) << 2));
+         Tonnetz__updateChords(_ctx,bParam);
+      }
+   }
+}
+
+void Tonnetz_setInversionSpread(Tonnetz__ctx_type_4 &_ctx, fix16_t newSpread){
+   newSpread = fix_clip(newSpread,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+   if(newSpread != _ctx.inversionSpread){
+      _ctx.inversionSpread = newSpread;
+      if(_ctx.inversionSpread == 0x0 /* 0.000000 */){
+         int i;
+         i = 0;
+         while(i < 3){
+            _ctx.inversions[i] = 0x10000 /* 1.000000 */;
+            i = (1 + i);
+         }
+      }
+      else
+      {
+         fix16_t bParam;
+         bParam = fix_exp(((0x10000 /* 1.000000 */ + (- newSpread)) << 2));
+         Tonnetz__updateInversions(_ctx,bParam);
+      }
+   }
+}
+
+fix16_t Tonnetz_getChordP(Tonnetz__ctx_type_4 &_ctx, int chordId){
+   chordId = int_clip(chordId,0,6);
+   int idx;
+   idx = ((chordId + (- _ctx.chord)) % 6);
+   if(idx == 0){
+      return _ctx.chords[0];
+   }
+   else
+   {
+      return (_ctx.chords[idx] + (- _ctx.chords[((-1) + idx)]));
+   }
+}
+
+void Tonnetz_default(Tonnetz__ctx_type_4 &_ctx){
+   _ctx.scaleId = (-1);
+   Tonnetz_setScale(_ctx,1);
+   Tonnetz_setRoot(_ctx,60);
+   Tonnetz_setChord(_ctx,1);
+   _ctx.chordSpread = 0x20000 /* 2.000000 */;
+   Tonnetz_setChordSpread(_ctx,0x8000 /* 0.500000 */);
+   _ctx.inversionSpread = 0x20000 /* 2.000000 */;
+   Tonnetz_setInversionSpread(_ctx,0x8000 /* 0.500000 */);
+   Tonnetz_setJump(_ctx,0x8000 /* 0.500000 */);
+}
+
 int Clock_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract){
    while(time1Fract < 0x0 /* 0.000000 */){
       time1S = ((-1) + time1S);
@@ -482,6 +1302,74 @@ void Processor_clock_process(Processor_clock__ctx_type_2 &_ctx, int timeS, fix16
    _ctx.process_ret_2 = out3;
    _ctx.process_ret_3 = out4;
    return ;
+}
+
+int Processor_chord_cvToPitch(fix16_t cv){
+   fix16_t pitch;
+   pitch = (0x3c0000 /* 60.000000 */ + fix_mul(0x780000 /* 120.000000 */,cv));
+   if((pitch % 0x10000 /* 1.000000 */) >= 0x8000 /* 0.500000 */){
+      pitch = fix_floor((0x10000 /* 1.000000 */ + pitch));
+   }
+   else
+   {
+      pitch = fix_floor(pitch);
+   }
+   pitch = fix_clip(pitch,0x0 /* 0.000000 */,0x7f0000 /* 127.000000 */);
+   return fix_to_int(pitch);
+}
+
+void Processor_chord__ctx_type_2_init(Processor_chord__ctx_type_2 &_output_){
+   Processor_chord__ctx_type_2 _ctx;
+   Tonnetz__ctx_type_4_init(_ctx.ton);
+   _ctx.process_ret_2 = 0x0 /* 0.000000 */;
+   _ctx.process_ret_1 = 0x0 /* 0.000000 */;
+   _ctx.process_ret_0 = 0x0 /* 0.000000 */;
+   _ctx.n3 = 0;
+   _ctx.n2 = 0;
+   _ctx.n1 = 0;
+   Util__ctx_type_3_init(_ctx._inst73b);
+   Util__ctx_type_3_init(_ctx._inst43b);
+   Util__ctx_type_1_init(_ctx._inst151);
+   Util__ctx_type_3_init(_ctx._inst13b);
+   Util__ctx_type_3_init(_ctx._inst133b);
+   Util__ctx_type_3_init(_ctx._inst103b);
+   _output_ = _ctx;
+   return ;
+}
+
+void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig){
+   if(Util_edge(_ctx._inst151,(trig >= 0x1999 /* 0.100000 */))){
+      Tonnetz_process(_ctx.ton);
+      _ctx.n1 = Tonnetz_process_ret_0(_ctx.ton);
+      _ctx.n2 = Tonnetz_process_ret_1(_ctx.ton);
+      _ctx.n3 = Tonnetz_process_ret_2(_ctx.ton);
+   }
+   _ctx.process_ret_0 = Processor_chord_pitchToCv(int_to_fix(_ctx.n1));
+   _ctx.process_ret_1 = Processor_chord_pitchToCv(int_to_fix(_ctx.n2));
+   _ctx.process_ret_2 = Processor_chord_pitchToCv(int_to_fix(_ctx.n3));
+   return ;
+}
+
+int Processor_chord_getScale(Processor_chord__ctx_type_2 &_ctx, fix16_t (&scale)[12]){
+   uint8_t rawScale[12];
+   Tonnetz_getScale(Tonnetz_getScaleId(_ctx.ton),rawScale);
+   if(12 != 12){
+      return 0;
+   }
+   int root;
+   root = Tonnetz_getRoot(_ctx.ton);
+   int i;
+   i = 0;
+   int s;
+   s = 0;
+   while(i < 12){
+      if(rawScale[i]){
+         scale[s] = Processor_chord_pitchToCv(int_to_fix((i + root)));
+         s = (1 + s);
+      }
+      i = (1 + i);
+   }
+   return s;
 }
 
 
