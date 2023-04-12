@@ -26,212 +26,218 @@ typedef struct _tuple___real_real_real__ {
    fix16_t field_2;
 } _tuple___real_real_real__;
 
-typedef struct Gate__ctx_type_0 {
+int Gate_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract);
+
+typedef struct Gate__ctx_type_1 {
    int values[128];
    int e;
    int b;
-} Gate__ctx_type_0;
+} Gate__ctx_type_1;
 
-typedef Gate__ctx_type_0 Gate_list_type;
+typedef Gate__ctx_type_1 Gate_list_type;
 
-void Gate__ctx_type_0_init(Gate__ctx_type_0 &_output_);
+void Gate__ctx_type_1_init(Gate__ctx_type_1 &_output_);
 
-static_inline void Gate_list_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_list_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Gate_list(Gate__ctx_type_0 &_ctx){
+static_inline void Gate_list(Gate__ctx_type_1 &_ctx){
 }
 
-typedef Gate__ctx_type_0 Gate_getListSize_type;
+typedef Gate__ctx_type_1 Gate_getListSize_type;
 
-static_inline void Gate_getListSize_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_getListSize_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline int Gate_getListSize(Gate__ctx_type_0 &_ctx){
+static_inline int Gate_getListSize(Gate__ctx_type_1 &_ctx){
    return ((_ctx.e + (- _ctx.b)) % 128);
 };
 
-typedef Gate__ctx_type_0 Gate_getListMaxSize_type;
+typedef Gate__ctx_type_1 Gate_getListMaxSize_type;
 
-static_inline void Gate_getListMaxSize_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_getListMaxSize_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline int Gate_getListMaxSize(Gate__ctx_type_0 &_ctx){
+static_inline int Gate_getListMaxSize(Gate__ctx_type_1 &_ctx){
    return 128;
 };
 
-typedef Gate__ctx_type_0 Gate_getListSpace_type;
+typedef Gate__ctx_type_1 Gate_getListSpace_type;
 
-static_inline void Gate_getListSpace_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_getListSpace_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline int Gate_getListSpace(Gate__ctx_type_0 &_ctx){
+static_inline int Gate_getListSpace(Gate__ctx_type_1 &_ctx){
    return (128 + (- Gate_getListSize(_ctx)));
 };
 
-typedef Gate__ctx_type_0 Gate_push_type;
+typedef Gate__ctx_type_1 Gate_push_type;
 
-static_inline void Gate_push_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_push_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline void Gate_push(Gate__ctx_type_0 &_ctx, int v){
+static_inline void Gate_push(Gate__ctx_type_1 &_ctx, int v){
    _ctx.values[_ctx.e] = v;
    _ctx.e = ((1 + _ctx.e) % 128);
 }
 
-typedef Gate__ctx_type_0 Gate_pop_type;
+typedef Gate__ctx_type_1 Gate_pop_type;
 
-static_inline void Gate_pop_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_pop_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-int Gate_pop(Gate__ctx_type_0 &_ctx);
+int Gate_pop(Gate__ctx_type_1 &_ctx);
 
-typedef Gate__ctx_type_0 Gate_peek_type;
+typedef Gate__ctx_type_1 Gate_peek_type;
 
-static_inline void Gate_peek_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_peek_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-int Gate_peek(Gate__ctx_type_0 &_ctx, int n);
+int Gate_peek(Gate__ctx_type_1 &_ctx, int n);
 
-typedef Gate__ctx_type_0 Gate_delete_type;
+typedef Gate__ctx_type_1 Gate_delete_type;
 
-static_inline void Gate_delete_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_delete_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-int Gate_delete(Gate__ctx_type_0 &_ctx, int n);
+int Gate_delete(Gate__ctx_type_1 &_ctx, int n);
 
-typedef Gate__ctx_type_0 Gate_search_type;
+typedef Gate__ctx_type_1 Gate_search_type;
 
-static_inline void Gate_search_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_search_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-int Gate_search(Gate__ctx_type_0 &_ctx, int value);
+int Gate_search(Gate__ctx_type_1 &_ctx, int value);
 
-typedef Gate__ctx_type_0 Gate_deleteValue_type;
+typedef Gate__ctx_type_1 Gate_deleteValue_type;
 
-static_inline void Gate_deleteValue_init(Gate__ctx_type_0 &_output_){
-   Gate__ctx_type_0_init(_output_);
+static_inline void Gate_deleteValue_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
    return ;
 }
 
-static_inline uint8_t Gate_deleteValue(Gate__ctx_type_0 &_ctx, int value){
+static_inline uint8_t Gate_deleteValue(Gate__ctx_type_1 &_ctx, int value){
    int n;
    n = Gate_search(_ctx,value);
    return (Gate_delete(_ctx,n) == value);
 }
 
-typedef struct Gate__ctx_type_1 {
-   fix16_t time;
-   Gate__ctx_type_0 notesOn;
-   Gate__ctx_type_0 notesOff;
-   Gate__ctx_type_0 notesActive;
-   fix16_t notes[128];
+typedef struct Gate__ctx_type_2 {
+   int timeS;
+   fix16_t timeFract;
+   int notesS[128];
+   Gate__ctx_type_1 notesOn;
+   Gate__ctx_type_1 notesOff;
+   fix16_t notesFract[128];
+   Gate__ctx_type_1 notesActive;
    fix16_t gateDuration;
-} Gate__ctx_type_1;
+} Gate__ctx_type_2;
 
-typedef Gate__ctx_type_1 Gate_process_type;
+typedef Gate__ctx_type_2 Gate_process_type;
 
-void Gate__ctx_type_1_init(Gate__ctx_type_1 &_output_);
+void Gate__ctx_type_2_init(Gate__ctx_type_2 &_output_);
 
-static_inline void Gate_process_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_process_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-void Gate_process(Gate__ctx_type_1 &_ctx);
+void Gate_process(Gate__ctx_type_2 &_ctx);
 
-typedef Gate__ctx_type_1 Gate_setTime_type;
+typedef Gate__ctx_type_2 Gate_setTime_type;
 
-static_inline void Gate_setTime_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_setTime_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void Gate_setTime(Gate__ctx_type_1 &_ctx, fix16_t newTime){
-   _ctx.time = newTime;
-};
+static_inline void Gate_setTime(Gate__ctx_type_2 &_ctx, int newTimeS, fix16_t newTimeFract){
+   _ctx.timeS = newTimeS;
+   _ctx.timeFract = newTimeFract;
+}
 
-typedef Gate__ctx_type_1 Gate_noteOn_type;
+typedef Gate__ctx_type_2 Gate_noteOn_type;
 
-static_inline void Gate_noteOn_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_noteOn_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-uint8_t Gate_noteOn(Gate__ctx_type_1 &_ctx, int note, int velocity, int channel);
+uint8_t Gate_noteOn(Gate__ctx_type_2 &_ctx, int note, int velocity, int channel);
 
-typedef Gate__ctx_type_1 Gate_noteKill_type;
+typedef Gate__ctx_type_2 Gate_noteKill_type;
 
-static_inline void Gate_noteKill_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_noteKill_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void Gate_noteKill(Gate__ctx_type_1 &_ctx, int note){
+static_inline void Gate_noteKill(Gate__ctx_type_2 &_ctx, int note){
    note = int_clip(note,0,127);
    Gate_deleteValue(_ctx.notesActive,note);
-   _ctx.notes[note] = 0x0 /* 0.000000 */;
+   _ctx.notesS[note] = 0;
+   _ctx.notesFract[note] = 0x0 /* 0.000000 */;
 }
 
-typedef Gate__ctx_type_1 Gate_getNoteOff_type;
+typedef Gate__ctx_type_2 Gate_getNoteOff_type;
 
-static_inline void Gate_getNoteOff_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_getNoteOff_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline int Gate_getNoteOff(Gate__ctx_type_1 &_ctx){
+static_inline int Gate_getNoteOff(Gate__ctx_type_2 &_ctx){
    return Gate_pop(_ctx.notesOff);
 };
 
-typedef Gate__ctx_type_1 Gate_getNoteOn_type;
+typedef Gate__ctx_type_2 Gate_getNoteOn_type;
 
-static_inline void Gate_getNoteOn_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_getNoteOn_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline int Gate_getNoteOn(Gate__ctx_type_1 &_ctx){
+static_inline int Gate_getNoteOn(Gate__ctx_type_2 &_ctx){
    return Gate_pop(_ctx.notesOn);
 };
 
-typedef Gate__ctx_type_1 Gate_setDuration_type;
+typedef Gate__ctx_type_2 Gate_setDuration_type;
 
-static_inline void Gate_setDuration_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_setDuration_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void Gate_setDuration(Gate__ctx_type_1 &_ctx, fix16_t duration){
+static_inline void Gate_setDuration(Gate__ctx_type_2 &_ctx, fix16_t duration){
    _ctx.gateDuration = fix_clip(duration,0x41 /* 0.001000 */,duration);
 };
 
-typedef Gate__ctx_type_1 Gate_default_type;
+typedef Gate__ctx_type_2 Gate_default_type;
 
-static_inline void Gate_default_init(Gate__ctx_type_1 &_output_){
-   Gate__ctx_type_1_init(_output_);
+static_inline void Gate_default_init(Gate__ctx_type_2 &_output_){
+   Gate__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void Gate_default(Gate__ctx_type_1 &_ctx){
+static_inline void Gate_default(Gate__ctx_type_2 &_ctx){
    Gate_setDuration(_ctx,0x3333 /* 0.200000 */);
 };
 
@@ -1533,7 +1539,7 @@ typedef struct Processor_gate__ctx_type_3 {
    int notes[128];
    int nbActive;
    fix16_t gatesOut[16];
-   Gate__ctx_type_1 bill;
+   Gate__ctx_type_2 bill;
    Util__ctx_type_3 _inst13b;
 } Processor_gate__ctx_type_3;
 
@@ -1546,7 +1552,7 @@ static_inline void Processor_gate_process_init(Processor_gate__ctx_type_3 &_outp
    return ;
 }
 
-void Processor_gate_process(Processor_gate__ctx_type_3 &_ctx, fix16_t time, fix16_t (&triggersCV)[16], fix16_t (&voct)[16], int nbActiveIn);
+void Processor_gate_process(Processor_gate__ctx_type_3 &_ctx, int timeS, fix16_t timeFract, fix16_t (&triggersCV)[16], fix16_t (&voct)[16], int nbActiveIn);
 
 typedef Processor_gate__ctx_type_3 Processor_gate_setDuration_type;
 

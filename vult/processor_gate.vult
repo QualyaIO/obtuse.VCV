@@ -26,11 +26,11 @@ fun edge(x:bool) : bool {
    return ret;
 }
 
-// time: in seconds
+// time: in seconds (integer and fract part)
 // triggersCV: array of raw triggers
 // voct: array of V/Oct input, scales -1..1
 // nbActiveIn: how many active notes to consider for both
-fun process(time: real, triggersCV: array(real, 16), voct: array(real, 16), nbActiveIn: int) {
+fun process(timeS: int, timeFract: real, triggersCV: array(real, 16), voct: array(real, 16), nbActiveIn: int) {
    // which output is associated with each note, from 1 to 16. Will default to 0, i.e. no output associated.
    mem notes : array(int, 128);
    // output note and gate
@@ -41,8 +41,8 @@ fun process(time: real, triggersCV: array(real, 16), voct: array(real, 16), nbAc
    // size of all arrays
    val nbMaxActive = size(gatesOut);
 
-  // pass info to the gate
-  _ = bill:Gate.setTime(time);
+   // pass info to the gate
+   _ = bill:Gate.setTime(timeS, timeFract);
 
   // if corresponding trigger is already high
   mem triggers: array(bool, 16);

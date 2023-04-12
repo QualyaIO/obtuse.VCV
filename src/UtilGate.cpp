@@ -41,9 +41,9 @@ struct UtilGate : Module {
    fix16_t voct_out[16];
    fix16_t gates_out[16];
 
-   // time passing by
-   // FIXME: switch to int/fract as with clock
-   float time = 0.0;
+   // time passing by, seconds and fract part of remainder
+   int timeS = 0;
+   float timeFract = 0.0;
 };
 
 UtilGate::UtilGate() {
@@ -99,9 +99,13 @@ void UtilGate::process(const ProcessArgs &args) {
    }
 
    // update time
-   time += 1./args.sampleRate;
+   timeFract += 1./args.sampleRate;
+   while (timeFract >= 1.0) {
+      timeS += 1;
+      timeFract -= 1.0;
+   }
    // let it run
-   Processor_gate_process(processor, float_to_fix(time), triggs, voct, channels);
+   Processor_gate_process(processor, timeS, float_to_fix(timeFract), triggs, voct, channels);
   // retrieve output
    int channels_out = Processor_gate_getOutputs(processor, gates_out, voct_out);
    i = 0;
