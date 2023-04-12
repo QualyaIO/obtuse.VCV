@@ -5,7 +5,7 @@ Note that we are using fixed float computations here to mimic as close as possib
 
 # How-to
 
-Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately). Then `make`.
+Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately, tested with 2.1.2 and 2.2.1). Then `make`.
 
 To install, place or link the folder in VCV plugins folder, e.g. on Linux `~/.Rack2/plugins`.
 
@@ -17,6 +17,8 @@ Here we use more vult code to wrap botania for VCV, through `processor_*.vult`.
 
 Check original template for more details about programming https://github.com/vult-dsp/RackPlayground
 
+There are prototype (and often buggy) versions of some modules (see `proto_*.vult`), to be used with [VCV Prototype](https://github.com/VCVRack/VCV-Prototype).
+
 # TODO
 
 - switch back to monophonic synth when polyphony cable is 1? (would need some change in botania DSP)
@@ -24,7 +26,7 @@ Check original template for more details about programming https://github.com/vu
 
 # Changelog
 
-## (current)
+## 2.1.0 (2023-04-12)
 
 - bump DSP, improve init
 - adding Trigg module
