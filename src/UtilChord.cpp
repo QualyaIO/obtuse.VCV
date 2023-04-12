@@ -50,9 +50,9 @@ UtilChord::UtilChord() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
    // default to all
-   configParam(UtilChord::SCALE, 0, Processor_chord_getNbScales(processor), 0, "Scale", "");
+   configParam(UtilChord::SCALE, 0, Processor_chord_getNbScales(processor) - 1, 0, "Scale", "");
    // default to augmented
-   configParam(UtilChord::CHORD, 0, Processor_chord_getNbChords(processor), 0, "Main chord", "");
+   configParam(UtilChord::CHORD, 0, Processor_chord_getNbChords(processor) - 1, 0, "Main chord", "");
    configParam(UtilChord::CHORD_SPREAD, 0.0, 1.0, 0.5, "Chord spread", "");
    configParam(UtilChord::INV_SPREAD, 0.0, 1.0, 0.5, "Inversion spread", "");
    configParam(UtilChord::JUMP, 0.0, 1.0, 0.5, "Probability to jump to another note", "");
