@@ -1,6 +1,8 @@
 #include "plugin.hpp"
 #include "engine_utils.h"
 
+// Gate module. Note that inputs could be discarded if there is not enough leg room to process all gates, as internally use MIDI notes
+
 struct UtilGate : Module {
 
    enum ParamIds {
@@ -31,6 +33,17 @@ struct UtilGate : Module {
    void sendParams(bool force=false);
    // ease reading parameters with modulation
    float readParamCV(int PARAM, int CV_IN, int CV_AV);
+
+   // tmp arrays for inputs
+   fix16_t voct[16];
+   fix16_t triggs[16];
+   // tmp arrays for outputs
+   fix16_t voct_out[16];
+   fix16_t gates_out[16];
+
+   // time passing by
+   // FIXME: switch to int/fract as with clock
+   float time = 0.0;
 };
 
 UtilGate::UtilGate() {
@@ -66,28 +79,44 @@ void UtilGate::sendParams(bool force) {
 }
 
 void UtilGate::process(const ProcessArgs &args) {
+   
    // update parameters
    sendParams();
 
    int channels = std::max(inputs[TRIGGER].getChannels(), inputs[VOCT].getChannels());
-   /*
-   int notes[16];
+
    int i = 0;
    // retrieve connected cables
-   for(; i < nbChans; i++) {
+   for(; i < channels; i++) {
       // norm and convert in place
-      notes[i] = Processor_Gate_cvToPitch(float_to_fix(inputs[VOCT].getPolyVoltage(i)/10.0f));
+      voct[i] = float_to_fix(inputs[VOCT].getPolyVoltage(i)/10.0f);
+      triggs[i] = float_to_fix(inputs[TRIGGER].getPolyVoltage(i)/10.0f);
    }
-   // disable remaining notes
-   for(; i < Processor_Gate_getMaxNbNotes(processor); i++) {
-      notes[i] = -1;
+   // nullify remaining
+   for(; i < 16; i++) {
+      voct[i] = float_to_fix(0.0);
+      triggs[i] = float_to_fix(0.0);
    }
-   // send to arp
-   Processor_Gate_setNotes(processor, notes);
-   
-   */
 
-   Processor_gate_process(processor);
+   // update time
+   time += 1./args.sampleRate;
+   // let it run
+   Processor_gate_process(processor, float_to_fix(time), triggs, voct, channels);
+  // retrieve output
+   int channels_out = Processor_gate_getOutputs(processor, gates_out, voct_out);
+   i = 0;
+   // retrieve connected cables
+   for(; i < channels_out; i++) {
+      outputs[VOCT_OUT].setVoltage(fix_to_float(voct_out[i]) * 10.0, i);
+      outputs[GATE_OUT].setVoltage(fix_to_float(gates_out[i]) * 10.0, i);
+   }
+   // nullify remaining, just in case
+   for(; i < 16; i++) {
+      voct[i] = 0.0;
+      triggs[i] = 0.0;
+   }
+   outputs[VOCT_OUT].setChannels(channels_out);
+   outputs[GATE_OUT].setChannels(channels_out);
 
 }
 

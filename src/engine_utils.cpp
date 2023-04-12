@@ -1636,10 +1636,96 @@ int Processor_gate_cvToPitch(fix16_t cv){
 
 void Processor_gate__ctx_type_3_init(Processor_gate__ctx_type_3 &_output_){
    Processor_gate__ctx_type_3 _ctx;
+   fix_init_array(16,0x0 /* 0.000000 */,_ctx.voctOut);
+   bool_init_array(16,false,_ctx.triggers);
+   int_init_array(128,0,_ctx.notes);
+   _ctx.nbActive = 0;
+   fix_init_array(16,0x0 /* 0.000000 */,_ctx.gatesOut);
    Gate__ctx_type_1_init(_ctx.bill);
    Util__ctx_type_3_init(_ctx._inst13b);
    _output_ = _ctx;
    return ;
+}
+
+void Processor_gate_process(Processor_gate__ctx_type_3 &_ctx, fix16_t time, fix16_t (&triggersCV)[16], fix16_t (&voct)[16], int nbActiveIn){
+   int nbMaxActive;
+   nbMaxActive = 16;
+   Gate_setTime(_ctx.bill,time);
+   int i;
+   i = 0;
+   while(i < nbActiveIn){
+      if(bool_not(_ctx.triggers[i]) && (triggersCV[i] >= 0x1999 /* 0.100000 */)){
+         _ctx.triggers[i] = true;
+         Gate_noteOn(_ctx.bill,Processor_gate_cvToPitch(voct[i]),0,0);
+      }
+      else
+      {
+         if(_ctx.triggers[i] && (triggersCV[i] < 0x1999 /* 0.100000 */)){
+            _ctx.triggers[i] = false;
+         }
+      }
+      i = (1 + i);
+   }
+   Gate_process(_ctx.bill);
+   int note;
+   note = Gate_getNoteOff(_ctx.bill);
+   while((note >= 0) && (note < 128)){
+      int out;
+      out = _ctx.notes[note];
+      if(out > 0){
+         _ctx.gatesOut[((-1) + out)] = 0x0 /* 0.000000 */;
+         _ctx.voctOut[((-1) + out)] = Processor_gate_pitchToCv(int_to_fix(note));
+         _ctx.nbActive = int_clip(((-1) + _ctx.nbActive),0,nbMaxActive);
+      }
+      note = Gate_getNoteOff(_ctx.bill);
+   }
+   note = Gate_getNoteOn(_ctx.bill);
+   while((note >= 0) && (note < 128)){
+      if(_ctx.nbActive < nbMaxActive){
+         int outN;
+         outN = 0;
+         uint8_t findN;
+         findN = false;
+         while((outN < 16) && bool_not(findN)){
+            if(_ctx.gatesOut[outN] == 0x0 /* 0.000000 */){
+               findN = true;
+            }
+            outN = (1 + outN);
+         }
+         if(findN){
+            outN = ((-1) + outN);
+            _ctx.notes[note] = (1 + outN);
+            _ctx.gatesOut[outN] = 0x10000 /* 1.000000 */;
+            _ctx.voctOut[outN] = Processor_gate_pitchToCv(int_to_fix(note));
+            _ctx.nbActive = (1 + _ctx.nbActive);
+         }
+      }
+      else
+      {
+         Gate_noteKill(_ctx.bill,note);
+      }
+      note = Gate_getNoteOn(_ctx.bill);
+   }
+}
+
+int Processor_gate_getOutputs(Processor_gate__ctx_type_3 &_ctx, fix16_t (&gatesExt)[16], fix16_t (&voctExt)[16]){
+   int nbActiveOut;
+   nbActiveOut = 0;
+   int i;
+   i = 0;
+   while(i < 16){
+      gatesExt[i] = _ctx.gatesOut[i];
+      if(_ctx.gatesOut[i] > 0x0 /* 0.000000 */){
+         nbActiveOut = (1 + i);
+         voctExt[i] = _ctx.voctOut[i];
+      }
+      else
+      {
+         voctExt[i] = 0x0 /* 0.000000 */;
+      }
+      i = (1 + i);
+   }
+   return nbActiveOut;
 }
 
 int Processor_chord_cvToPitch(fix16_t cv){

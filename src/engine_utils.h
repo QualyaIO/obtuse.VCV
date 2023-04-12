@@ -1528,6 +1528,11 @@ static_inline uint8_t Processor_gate_edge(Processor_gate__ctx_type_2 &_ctx, uint
 }
 
 typedef struct Processor_gate__ctx_type_3 {
+   fix16_t voctOut[16];
+   uint8_t triggers[16];
+   int notes[128];
+   int nbActive;
+   fix16_t gatesOut[16];
    Gate__ctx_type_1 bill;
    Util__ctx_type_3 _inst13b;
 } Processor_gate__ctx_type_3;
@@ -1541,8 +1546,7 @@ static_inline void Processor_gate_process_init(Processor_gate__ctx_type_3 &_outp
    return ;
 }
 
-static_inline void Processor_gate_process(Processor_gate__ctx_type_3 &_ctx){
-}
+void Processor_gate_process(Processor_gate__ctx_type_3 &_ctx, fix16_t time, fix16_t (&triggersCV)[16], fix16_t (&voct)[16], int nbActiveIn);
 
 typedef Processor_gate__ctx_type_3 Processor_gate_setDuration_type;
 
@@ -1557,25 +1561,14 @@ static_inline void Processor_gate_setDuration(Processor_gate__ctx_type_3 &_ctx, 
    }
 };
 
-typedef Processor_gate__ctx_type_3 Processor_gate_setInputs_type;
+typedef Processor_gate__ctx_type_3 Processor_gate_getOutputs_type;
 
-static_inline void Processor_gate_setInputs_init(Processor_gate__ctx_type_3 &_output_){
+static_inline void Processor_gate_getOutputs_init(Processor_gate__ctx_type_3 &_output_){
    Processor_gate__ctx_type_3_init(_output_);
    return ;
 }
 
-static_inline void Processor_gate_setInputs(Processor_gate__ctx_type_3 &_ctx, fix16_t (&triggers)[16], fix16_t (&voct)[16], int nbActive){
-}
-
-typedef Processor_gate__ctx_type_3 Processor_gate_getInputs_type;
-
-static_inline void Processor_gate_getInputs_init(Processor_gate__ctx_type_3 &_output_){
-   Processor_gate__ctx_type_3_init(_output_);
-   return ;
-}
-
-static_inline void Processor_gate_getInputs(Processor_gate__ctx_type_3 &_ctx, fix16_t (&triggers)[16], fix16_t (&voct)[16], int nbActive){
-}
+int Processor_gate_getOutputs(Processor_gate__ctx_type_3 &_ctx, fix16_t (&gatesExt)[16], fix16_t (&voctExt)[16]);
 
 static_inline fix16_t Processor_chord_pitchToCv(fix16_t pitch){
    return fix_mul(0x222 /* 0.008333 */,(-0x3c0000 /* -60.000000 */ + pitch));

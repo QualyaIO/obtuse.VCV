@@ -26,7 +26,93 @@ fun edge(x:bool) : bool {
    return ret;
 }
 
-fun process() {
+// time: in seconds
+// triggersCV: array of raw triggers
+// voct: array of V/Oct input, scales -1..1
+// nbActiveIn: how many active notes to consider for both
+fun process(time: real, triggersCV: array(real, 16), voct: array(real, 16), nbActiveIn: int) {
+   // which output is associated with each note, from 1 to 16. Will default to 0, i.e. no output associated.
+   mem notes : array(int, 128);
+   // output note and gate
+   mem voctOut : array(real, 16);
+   mem gatesOut : array(real, 16);
+   // how many active notes dealt with by us
+   mem nbActive;
+   // size of all arrays
+   val nbMaxActive = size(gatesOut);
+
+  // pass info to the gate
+  _ = bill:Gate.setTime(time);
+
+  // if corresponding trigger is already high
+  mem triggers: array(bool, 16);
+
+  // check each trigger, >= 1v (we are only interested in raising front)
+  val i = 0;
+  while(i < nbActiveIn) {
+    if (not(triggers[i]) && triggersCV[i] >= 0.1) {
+      triggers[i] = true;
+      _ = bill:Gate.noteOn(cvToPitch(voct[i]), 0, 0);
+    }
+    // turn off
+    else if (triggers[i] && triggersCV[i] < 0.1) {
+      triggers[i] = false;
+    }
+    i = i + 1;
+  }
+
+   // here it is, main process
+   _ = bill:Gate.process();
+
+   // deal with note off, turning off output
+   val note = bill:Gate.getNoteOff();
+   while (note >= 0 && note < size(notes)) {
+      // find the associated output, ignore if was not set
+      val out = notes[note];
+      if (out > 0) {
+         // the pitch and its trigger, actual output array is obviously 0-index
+        gatesOut[out-1] = 0.0;
+        voctOut[out-1] = pitchToCv(real(note));
+        // update how many notes we hold
+        nbActive = clip(nbActive - 1, 0, nbMaxActive);
+      }
+      note = bill:Gate.getNoteOff();
+   }
+
+   // deal with note on, turning on output
+   note = bill:Gate.getNoteOn();
+   // ignoring if already too many active notes
+   while (note >= 0 && note < size(notes)) {
+      // consider new note only if we can
+      if (nbActive < nbMaxActive) {
+         // find first free slot, if any
+         val outN = 0;
+         val findN = false;
+         while (outN < size(gatesOut) && not(findN)) {
+            if (gatesOut[outN] == 0.0) {
+               findN = true;
+            }
+            outN = outN + 1;
+         }
+         // we should always find with nbActive, but just in case...
+         if (findN) {
+            // we went one step further
+            outN = outN - 1;
+            // redirect to output (actual output number is 1..6)
+            notes[note] = outN + 1;
+            // the pitch and its trigger
+            gatesOut[outN] = 1.0;
+            voctOut[outN] = pitchToCv(real(note));
+            nbActive = nbActive + 1;
+         }
+      }
+      // signal that we cannot deal with note
+      else {
+        _ = bill:Gate.noteKill(note);
+      }
+      note = bill:Gate.getNoteOn();
+   }
+
 }
 
 and setDuration(param: real, force: bool) {
@@ -35,12 +121,23 @@ and setDuration(param: real, force: bool) {
   }
 }
 
-// triggers: array of triggers
-// voct: array of V/Oct input, scales -1..1
-// nbActive: how many to consider for both
-and setInputs(triggers: array(real, 16), voct: array(real, 16), nbActive: int) {
-}
-
-// retrieve output, same thing
-and getInputs(triggers: array(real, 16), voct: array(real, 16), nbActive: int) {
+// retrieve output, same thing, return number of channels to consider (max index with an active element)
+// unused notes goes back to 0
+// TODO: not that great to have dynamic polyphony?
+and getOutputs(gatesExt: array(real, 16), voctExt: array(real, 16)): int {
+  // copy output and find highest element
+  val nbActiveOut = 0;
+  val i = 0;
+  while (i < size(gatesExt)) {
+      gatesExt[i] = gatesOut[i];
+      if (gatesOut[i] > 0.0) {
+        nbActiveOut = i + 1;
+        voctExt[i] = voctOut[i];
+      }
+      else {
+        voctExt[i] = 0.0;
+      }
+      i = i + 1;
+  }
+  return nbActiveOut;
 }
