@@ -54,7 +54,7 @@ static_inline void Gate_getListSize_init(Gate__ctx_type_1 &_output_){
 }
 
 static_inline int Gate_getListSize(Gate__ctx_type_1 &_ctx){
-   return ((_ctx.e + (- _ctx.b)) % 128);
+   return ((128 + _ctx.e + (- _ctx.b)) % 128);
 };
 
 typedef Gate__ctx_type_1 Gate_getListMaxSize_type;
@@ -86,10 +86,7 @@ static_inline void Gate_push_init(Gate__ctx_type_1 &_output_){
    return ;
 }
 
-static_inline void Gate_push(Gate__ctx_type_1 &_ctx, int v){
-   _ctx.values[_ctx.e] = v;
-   _ctx.e = ((1 + _ctx.e) % 128);
-}
+uint8_t Gate_push(Gate__ctx_type_1 &_ctx, int v);
 
 typedef Gate__ctx_type_1 Gate_pop_type;
 

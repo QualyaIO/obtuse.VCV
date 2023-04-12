@@ -43,6 +43,15 @@ void Gate__ctx_type_1_init(Gate__ctx_type_1 &_output_){
    return ;
 }
 
+uint8_t Gate_push(Gate__ctx_type_1 &_ctx, int v){
+   if(Gate_getListSpace(_ctx) > 0){
+      _ctx.values[_ctx.e] = v;
+      _ctx.e = ((1 + _ctx.e) % 128);
+      return true;
+   }
+   return false;
+}
+
 int Gate_pop(Gate__ctx_type_1 &_ctx){
    int v;
    v = (-1);
@@ -73,7 +82,7 @@ int Gate_delete(Gate__ctx_type_1 &_ctx, int n){
          _ctx.values[((_ctx.b + n) % 128)] = _ctx.values[((1 + _ctx.b + n) % 128)];
          n = (1 + n);
       }
-      _ctx.e = (((-1) + _ctx.e) % 128);
+      _ctx.e = ((127 + _ctx.e) % 128);
    }
    return ret;
 }

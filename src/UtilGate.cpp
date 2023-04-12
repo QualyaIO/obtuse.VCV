@@ -116,12 +116,11 @@ void UtilGate::process(const ProcessArgs &args) {
    }
    // nullify remaining, just in case
    for(; i < 16; i++) {
-      voct[i] = 0.0;
-      triggs[i] = 0.0;
+      outputs[VOCT_OUT].setVoltage(0.0, i);
+      outputs[GATE_OUT].setVoltage(0.0, i);
    }
    outputs[VOCT_OUT].setChannels(channels_out);
    outputs[GATE_OUT].setChannels(channels_out);
-
 }
 
 struct UtilGateWidget : ModuleWidget {

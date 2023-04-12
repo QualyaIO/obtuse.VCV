@@ -25,7 +25,7 @@ fun edge(x:bool) : bool {
    pre = x;
    return ret;
 }
-
+ 
 // time: in seconds (integer and fract part)
 // triggersCV: array of raw triggers
 // voct: array of V/Oct input, scales -1..1
