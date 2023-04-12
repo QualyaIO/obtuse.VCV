@@ -17,4 +17,5 @@ void init(Plugin *p) {
    p->addModel(utilClock);
    p->addModel(utilChord);
    p->addModel(utilArp);
+   p->addModel(utilGate);
 }

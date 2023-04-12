@@ -83,6 +83,12 @@
       "name": "BotaniaArp",
       "description": "I arp things",
       "tags": []
+    },
+    {
+      "slug": "BotaniaGate",
+      "name": "BotaniaGate",
+      "description": "I gate things",
+      "tags": []
     }
   ]
 }

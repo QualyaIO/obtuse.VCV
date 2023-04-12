@@ -1,0 +1,46 @@
+
+// from a midi note to cv -1..1
+fun pitchToCv(pitch) {
+    return (pitch - 60.0) / 120.0;
+}
+
+// from vult utils, convert input voltage normalized from -10..10v to -1..1 to pitch
+// output will be limited to 0..127, corresponding to -5v .. +5.583v
+fun cvToPitch(cv: real) : int {
+   val pitch = cv * 120.0 + 60.0;
+   // round
+   if (pitch % 1.0 >= 0.5) {
+      pitch = floor(pitch + 1.0);
+   } else {
+      pitch = floor(pitch);
+   }
+   pitch = clip(pitch, 0.0, 127.0);
+   return int(pitch);
+}
+
+// from vult examples
+fun edge(x:bool) : bool {
+   mem pre;
+   val ret = x && not(pre);
+   pre = x;
+   return ret;
+}
+
+fun process() {
+}
+
+and setDuration(param: real, force: bool) {
+  if (Util.change(real(param)) || force) {
+    _ = bill:Gate.setDuration(param);
+  }
+}
+
+// triggers: array of triggers
+// voct: array of V/Oct input, scales -1..1
+// nbActive: how many to consider for both
+and setInputs(triggers: array(real, 16), voct: array(real, 16), nbActive: int) {
+}
+
+// retrieve output, same thing
+and getInputs(triggers: array(real, 16), voct: array(real, 16), nbActive: int) {
+}

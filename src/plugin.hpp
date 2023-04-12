@@ -19,6 +19,7 @@ extern Model *utilTrigg;
 extern Model *utilClock;
 extern Model *utilChord;
 extern Model *utilArp;
+extern Model *utilGate;
 
 // ullo pink
 static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);

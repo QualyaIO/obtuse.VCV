@@ -26,6 +26,215 @@ typedef struct _tuple___real_real_real__ {
    fix16_t field_2;
 } _tuple___real_real_real__;
 
+typedef struct Gate__ctx_type_0 {
+   int values[128];
+   int e;
+   int b;
+} Gate__ctx_type_0;
+
+typedef Gate__ctx_type_0 Gate_list_type;
+
+void Gate__ctx_type_0_init(Gate__ctx_type_0 &_output_);
+
+static_inline void Gate_list_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Gate_list(Gate__ctx_type_0 &_ctx){
+}
+
+typedef Gate__ctx_type_0 Gate_getListSize_type;
+
+static_inline void Gate_getListSize_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Gate_getListSize(Gate__ctx_type_0 &_ctx){
+   return ((_ctx.e + (- _ctx.b)) % 128);
+};
+
+typedef Gate__ctx_type_0 Gate_getListMaxSize_type;
+
+static_inline void Gate_getListMaxSize_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Gate_getListMaxSize(Gate__ctx_type_0 &_ctx){
+   return 128;
+};
+
+typedef Gate__ctx_type_0 Gate_getListSpace_type;
+
+static_inline void Gate_getListSpace_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Gate_getListSpace(Gate__ctx_type_0 &_ctx){
+   return (128 + (- Gate_getListSize(_ctx)));
+};
+
+typedef Gate__ctx_type_0 Gate_push_type;
+
+static_inline void Gate_push_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Gate_push(Gate__ctx_type_0 &_ctx, int v){
+   _ctx.values[_ctx.e] = v;
+   _ctx.e = ((1 + _ctx.e) % 128);
+}
+
+typedef Gate__ctx_type_0 Gate_pop_type;
+
+static_inline void Gate_pop_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Gate_pop(Gate__ctx_type_0 &_ctx);
+
+typedef Gate__ctx_type_0 Gate_peek_type;
+
+static_inline void Gate_peek_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Gate_peek(Gate__ctx_type_0 &_ctx, int n);
+
+typedef Gate__ctx_type_0 Gate_delete_type;
+
+static_inline void Gate_delete_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Gate_delete(Gate__ctx_type_0 &_ctx, int n);
+
+typedef Gate__ctx_type_0 Gate_search_type;
+
+static_inline void Gate_search_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Gate_search(Gate__ctx_type_0 &_ctx, int value);
+
+typedef Gate__ctx_type_0 Gate_deleteValue_type;
+
+static_inline void Gate_deleteValue_init(Gate__ctx_type_0 &_output_){
+   Gate__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t Gate_deleteValue(Gate__ctx_type_0 &_ctx, int value){
+   int n;
+   n = Gate_search(_ctx,value);
+   return (Gate_delete(_ctx,n) == value);
+}
+
+typedef struct Gate__ctx_type_1 {
+   fix16_t time;
+   Gate__ctx_type_0 notesOn;
+   Gate__ctx_type_0 notesOff;
+   Gate__ctx_type_0 notesActive;
+   fix16_t notes[128];
+   fix16_t gateDuration;
+} Gate__ctx_type_1;
+
+typedef Gate__ctx_type_1 Gate_process_type;
+
+void Gate__ctx_type_1_init(Gate__ctx_type_1 &_output_);
+
+static_inline void Gate_process_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+void Gate_process(Gate__ctx_type_1 &_ctx);
+
+typedef Gate__ctx_type_1 Gate_setTime_type;
+
+static_inline void Gate_setTime_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline void Gate_setTime(Gate__ctx_type_1 &_ctx, fix16_t newTime){
+   _ctx.time = newTime;
+};
+
+typedef Gate__ctx_type_1 Gate_noteOn_type;
+
+static_inline void Gate_noteOn_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+uint8_t Gate_noteOn(Gate__ctx_type_1 &_ctx, int note, int velocity, int channel);
+
+typedef Gate__ctx_type_1 Gate_noteKill_type;
+
+static_inline void Gate_noteKill_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline void Gate_noteKill(Gate__ctx_type_1 &_ctx, int note){
+   note = int_clip(note,0,127);
+   Gate_deleteValue(_ctx.notesActive,note);
+   _ctx.notes[note] = 0x0 /* 0.000000 */;
+}
+
+typedef Gate__ctx_type_1 Gate_getNoteOff_type;
+
+static_inline void Gate_getNoteOff_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline int Gate_getNoteOff(Gate__ctx_type_1 &_ctx){
+   return Gate_pop(_ctx.notesOff);
+};
+
+typedef Gate__ctx_type_1 Gate_getNoteOn_type;
+
+static_inline void Gate_getNoteOn_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline int Gate_getNoteOn(Gate__ctx_type_1 &_ctx){
+   return Gate_pop(_ctx.notesOn);
+};
+
+typedef Gate__ctx_type_1 Gate_setDuration_type;
+
+static_inline void Gate_setDuration_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline void Gate_setDuration(Gate__ctx_type_1 &_ctx, fix16_t duration){
+   _ctx.gateDuration = fix_clip(duration,0x41 /* 0.001000 */,duration);
+};
+
+typedef Gate__ctx_type_1 Gate_default_type;
+
+static_inline void Gate_default_init(Gate__ctx_type_1 &_output_){
+   Gate__ctx_type_1_init(_output_);
+   return ;
+}
+
+static_inline void Gate_default(Gate__ctx_type_1 &_ctx){
+   Gate_setDuration(_ctx,0x3333 /* 0.200000 */);
+};
+
 static_inline fix16_t Util_noteToFrequency(int note){
    return fix_mul(0x217 /* 0.008176 */,fix_exp(fix_mul(0xec9 /* 0.057762 */,int_to_fix(note))));
 };
@@ -1286,6 +1495,87 @@ static_inline int Processor_clock_getMinGroupSize(){
 static_inline int Processor_clock_getMaxGroupSize(){
    return 128;
 };
+
+static_inline fix16_t Processor_gate_pitchToCv(fix16_t pitch){
+   return fix_mul(0x222 /* 0.008333 */,(-0x3c0000 /* -60.000000 */ + pitch));
+};
+
+int Processor_gate_cvToPitch(fix16_t cv);
+
+typedef struct Processor_gate__ctx_type_2 {
+   uint8_t pre;
+} Processor_gate__ctx_type_2;
+
+typedef Processor_gate__ctx_type_2 Processor_gate_edge_type;
+
+static_inline void Processor_gate__ctx_type_2_init(Processor_gate__ctx_type_2 &_output_){
+   Processor_gate__ctx_type_2 _ctx;
+   _ctx.pre = false;
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Processor_gate_edge_init(Processor_gate__ctx_type_2 &_output_){
+   Processor_gate__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline uint8_t Processor_gate_edge(Processor_gate__ctx_type_2 &_ctx, uint8_t x){
+   uint8_t ret;
+   ret = (x && bool_not(_ctx.pre));
+   _ctx.pre = x;
+   return ret;
+}
+
+typedef struct Processor_gate__ctx_type_3 {
+   Gate__ctx_type_1 bill;
+   Util__ctx_type_3 _inst13b;
+} Processor_gate__ctx_type_3;
+
+typedef Processor_gate__ctx_type_3 Processor_gate_process_type;
+
+void Processor_gate__ctx_type_3_init(Processor_gate__ctx_type_3 &_output_);
+
+static_inline void Processor_gate_process_init(Processor_gate__ctx_type_3 &_output_){
+   Processor_gate__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_gate_process(Processor_gate__ctx_type_3 &_ctx){
+}
+
+typedef Processor_gate__ctx_type_3 Processor_gate_setDuration_type;
+
+static_inline void Processor_gate_setDuration_init(Processor_gate__ctx_type_3 &_output_){
+   Processor_gate__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_gate_setDuration(Processor_gate__ctx_type_3 &_ctx, fix16_t param, uint8_t force){
+   if(Util_change(_ctx._inst13b,param) || force){
+      Gate_setDuration(_ctx.bill,param);
+   }
+};
+
+typedef Processor_gate__ctx_type_3 Processor_gate_setInputs_type;
+
+static_inline void Processor_gate_setInputs_init(Processor_gate__ctx_type_3 &_output_){
+   Processor_gate__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_gate_setInputs(Processor_gate__ctx_type_3 &_ctx, fix16_t (&triggers)[16], fix16_t (&voct)[16], int nbActive){
+}
+
+typedef Processor_gate__ctx_type_3 Processor_gate_getInputs_type;
+
+static_inline void Processor_gate_getInputs_init(Processor_gate__ctx_type_3 &_output_){
+   Processor_gate__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_gate_getInputs(Processor_gate__ctx_type_3 &_ctx, fix16_t (&triggers)[16], fix16_t (&voct)[16], int nbActive){
+}
 
 static_inline fix16_t Processor_chord_pitchToCv(fix16_t pitch){
    return fix_mul(0x222 /* 0.008333 */,(-0x3c0000 /* -60.000000 */ + pitch));
