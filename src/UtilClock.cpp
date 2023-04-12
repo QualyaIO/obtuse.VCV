@@ -48,6 +48,9 @@ struct UtilClock : Module {
    float readParamCV(int PARAM, int CV_IN, int CV_AV);
    // if switch to change order is currently held-down or not
    bool switch_pressed = false;
+   // split in two to overcome fixed float limit. hacky much
+   int timeS = 0.0;
+   float timeFract = 0.0;
 };
 
 UtilClock::UtilClock() {
@@ -117,9 +120,6 @@ void UtilClock::sendParams(bool force) {
 }
 
 void UtilClock::process(const ProcessArgs &args) {
-   // split in two to overcome fixed float limit. hacky much
-   static int timeS = 0.0;
-   static float timeFract = 0.0;
    timeFract += 1./args.sampleRate;
    while (timeFract >= 1.0) {
       timeFract -= 1;
