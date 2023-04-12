@@ -269,6 +269,198 @@ int Processor_trigg_process(Processor_trigg__ctx_type_0 &_ctx, fix16_t clock, fi
    return trigger;
 }
 
+void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0 _ctx;
+   _ctx.step = 0;
+   _ctx.sequenceSize = 0;
+   int_init_array(32,0,_ctx.sequence);
+   int_init_array(32,0,_ctx.playSequence);
+   _ctx.pRandomize = 0x0 /* 0.000000 */;
+   _ctx.pRandomNotes = 0x0 /* 0.000000 */;
+   int_init_array(16,0,_ctx.notes);
+   _ctx.nbNotes = 0;
+   _ctx.mode = 0;
+   _ctx.dirty = false;
+   _output_ = _ctx;
+   return ;
+}
+
+void Arp_reset(Arp__ctx_type_0 &_ctx){
+   if(_ctx.dirty || ((_ctx.pRandomize > 0x0 /* 0.000000 */) && (_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.pRandomize))){
+      int i;
+      i = 0;
+      while(i < _ctx.sequenceSize){
+         if((_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.pRandomNotes)){
+            _ctx.playSequence[i] = (irandom() % _ctx.nbNotes);
+         }
+         else
+         {
+            _ctx.playSequence[i] = _ctx.sequence[i];
+         }
+         i = (1 + i);
+      }
+   }
+   _ctx.step = 0;
+   _ctx.dirty = false;
+}
+
+int Arp_process(Arp__ctx_type_0 &_ctx){
+   int newNote;
+   newNote = _ctx.notes[_ctx.playSequence[_ctx.step]];
+   _ctx.step = (1 + _ctx.step);
+   if(_ctx.step >= _ctx.sequenceSize){
+      Arp_reset(_ctx);
+   }
+   return newNote;
+}
+
+void Arp__updateSequence(Arp__ctx_type_0 &_ctx){
+   if((_ctx.mode == 0) || (_ctx.mode == 1)){
+      _ctx.sequenceSize = _ctx.nbNotes;
+   }
+   else
+   {
+      if((_ctx.mode == 2) || (_ctx.mode == 4)){
+         _ctx.sequenceSize = ((-2) + (_ctx.nbNotes << 1));
+      }
+      else
+      {
+         if((_ctx.mode == 3) || (_ctx.mode == 5)){
+            _ctx.sequenceSize = (_ctx.nbNotes << 1);
+         }
+      }
+   }
+   int i;
+   i = 0;
+   while(i < _ctx.sequenceSize){
+      switch(_ctx.mode) {
+         case 0:
+            _ctx.sequence[i] = i;
+         break;
+         case 1:
+            _ctx.sequence[i] = ((-1) + _ctx.nbNotes + (- i));
+         break;
+         case 2:
+            if(i < _ctx.nbNotes){
+               _ctx.sequence[i] = i;
+            }
+            else
+            {
+               _ctx.sequence[i] = ((-2) + _ctx.nbNotes + (- (i + (- _ctx.nbNotes))));
+            }
+         break;
+         case 3:
+            if(i < _ctx.nbNotes){
+               _ctx.sequence[i] = i;
+            }
+            else
+            {
+               _ctx.sequence[i] = ((-1) + _ctx.nbNotes + (- (i + (- _ctx.nbNotes))));
+            }
+         break;
+         case 4:
+            if(i < _ctx.nbNotes){
+               _ctx.sequence[i] = ((-1) + _ctx.nbNotes + (- i));
+            }
+            else
+            {
+               _ctx.sequence[i] = (1 + i + (- _ctx.nbNotes));
+            }
+         break;
+         case 5:
+            if(i < _ctx.nbNotes){
+               _ctx.sequence[i] = ((-1) + _ctx.nbNotes + (- i));
+            }
+            else
+            {
+               _ctx.sequence[i] = (i + (- _ctx.nbNotes));
+            }
+         break;
+       
+      }
+      i = (1 + i);
+   }
+   _ctx.dirty = true;
+   Arp_reset(_ctx);
+}
+
+void Arp_setNotes(Arp__ctx_type_0 &_ctx, int (&newNotes)[16]){
+   int i;
+   i = 0;
+   int j;
+   j = 0;
+   while(i < 16){
+      if(newNotes[i] > 0){
+         _ctx.notes[j] = int_clip(newNotes[i],0,127);
+         j = (1 + j);
+      }
+      i = (1 + i);
+   }
+   if(j != _ctx.nbNotes){
+      _ctx.nbNotes = j;
+      Arp__updateSequence(_ctx);
+   }
+}
+
+void Arp_setMode(Arp__ctx_type_0 &_ctx, int newMode){
+   newMode = int_clip(newMode,0,5);
+   if(newMode != _ctx.mode){
+      _ctx.mode = newMode;
+      Arp__updateSequence(_ctx);
+   }
+}
+
+void Arp_setPRandomNotes(Arp__ctx_type_0 &_ctx, fix16_t p){
+   p = fix_clip(p,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+   if(_ctx.pRandomNotes != p){
+      _ctx.pRandomNotes = p;
+      _ctx.dirty = true;
+   }
+}
+
+int Processor_arp_cvToPitch(fix16_t cv){
+   fix16_t pitch;
+   pitch = (0x3c0000 /* 60.000000 */ + fix_mul(0x780000 /* 120.000000 */,cv));
+   if((pitch % 0x10000 /* 1.000000 */) >= 0x8000 /* 0.500000 */){
+      pitch = fix_floor((0x10000 /* 1.000000 */ + pitch));
+   }
+   else
+   {
+      pitch = fix_floor(pitch);
+   }
+   pitch = fix_clip(pitch,0x0 /* 0.000000 */,0x7f0000 /* 127.000000 */);
+   return fix_to_int(pitch);
+}
+
+void Processor_arp__ctx_type_3_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3 _ctx;
+   _ctx.note = 0;
+   Arp__ctx_type_0_init(_ctx.arpe);
+   Util__ctx_type_3_init(_ctx._inst73b);
+   Util__ctx_type_3_init(_ctx._inst43b);
+   Util__ctx_type_1_init(_ctx._inst351);
+   Util__ctx_type_1_init(_ctx._inst151);
+   Util__ctx_type_3_init(_ctx._inst13b);
+   _output_ = _ctx;
+   return ;
+}
+
+fix16_t Processor_arp_process(Processor_arp__ctx_type_3 &_ctx, fix16_t trig, fix16_t reset){
+   if(Util_edge(_ctx._inst151,(reset >= 0x1999 /* 0.100000 */))){
+      Arp_reset(_ctx.arpe);
+   }
+   if(Util_edge(_ctx._inst351,(trig >= 0x1999 /* 0.100000 */))){
+      _ctx.note = Arp_process(_ctx.arpe);
+   }
+   if(_ctx.note >= 0){
+      return Processor_arp_pitchToCv(int_to_fix(_ctx.note));
+   }
+   else
+   {
+      return 0x0 /* 0.000000 */;
+   }
+}
+
 void Tonnetz_getScale(int id, uint8_t (&_output_)[12]){
    uint8_t scale[12];
    {

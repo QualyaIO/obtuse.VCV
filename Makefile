@@ -49,7 +49,7 @@ VULT_SYNTH_DRUMMER_ENGINE_OUT = $(wildcard src/engine_synthDrummer.*)
 $(VULT_SYNTH_DRUMMER_ENGINE_OUT): $(VULT_SYNTH_DRUMMER_SRC)
 	$(VULT_CMD) -ccode $(VULT_SYNTH_DRUMMER_SRC) -i botania/vult -i botania/vult/synth_drummer -i botania/vult/buffer_medium -o src/engine_synthDrummer -output-prefix synthDrummer_ -real fixed 
 
-VULT_UTILS_SRC = vult/processor_trigg.vult vult/processor_clock.vult vult/processor_chord.vult 
+VULT_UTILS_SRC = vult/processor_trigg.vult vult/processor_clock.vult vult/processor_chord.vult vult/processor_arp.vult 
 VULT_UTILS_ENGINE_OUT = $(wildcard src/engine_utils.*)
 $(VULT_UTILS_ENGINE_OUT): $(VULT_UTILS_SRC)
 	$(VULT_CMD) -ccode $(VULT_UTILS_SRC) -i botania/vult -o src/engine_utils -real fixed 

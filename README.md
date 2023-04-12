@@ -30,6 +30,7 @@ Check original template for more details about programming https://github.com/vu
 - adding Trigg module
 - adding Clock module
 - adding Chord module
+- adding Arp module
 - protoypes for new modules (arp, gate)
 
 ## 2.0.0 (2023-02-04)

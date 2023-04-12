@@ -460,6 +460,254 @@ static_inline void Processor_trigg_setSamplerate(Processor_trigg__ctx_type_0 &_c
    }
 };
 
+typedef struct Arp__ctx_type_0 {
+   int step;
+   int sequenceSize;
+   int sequence[32];
+   int playSequence[32];
+   fix16_t pRandomize;
+   fix16_t pRandomNotes;
+   int notes[16];
+   int nbNotes;
+   int mode;
+   uint8_t dirty;
+} Arp__ctx_type_0;
+
+typedef Arp__ctx_type_0 Arp_reset_type;
+
+void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_);
+
+static_inline void Arp_reset_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Arp_reset(Arp__ctx_type_0 &_ctx);
+
+typedef Arp__ctx_type_0 Arp_process_type;
+
+static_inline void Arp_process_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Arp_process(Arp__ctx_type_0 &_ctx);
+
+typedef Arp__ctx_type_0 Arp__updateSequence_type;
+
+static_inline void Arp__updateSequence_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Arp__updateSequence(Arp__ctx_type_0 &_ctx);
+
+typedef Arp__ctx_type_0 Arp_setNotes_type;
+
+static_inline void Arp_setNotes_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Arp_setNotes(Arp__ctx_type_0 &_ctx, int (&newNotes)[16]);
+
+typedef Arp__ctx_type_0 Arp_setMode_type;
+
+static_inline void Arp_setMode_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Arp_setMode(Arp__ctx_type_0 &_ctx, int newMode);
+
+typedef Arp__ctx_type_0 Arp_setPRandomNotes_type;
+
+static_inline void Arp_setPRandomNotes_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Arp_setPRandomNotes(Arp__ctx_type_0 &_ctx, fix16_t p);
+
+typedef Arp__ctx_type_0 Arp_setPRandomize_type;
+
+static_inline void Arp_setPRandomize_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Arp_setPRandomize(Arp__ctx_type_0 &_ctx, fix16_t p){
+   _ctx.pRandomize = fix_clip(p,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+};
+
+typedef Arp__ctx_type_0 Arp_getNbModes_type;
+
+static_inline void Arp_getNbModes_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Arp_getNbModes(Arp__ctx_type_0 &_ctx){
+   return 6;
+};
+
+typedef Arp__ctx_type_0 Arp_getNbNotes_type;
+
+static_inline void Arp_getNbNotes_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Arp_getNbNotes(Arp__ctx_type_0 &_ctx){
+   return _ctx.nbNotes;
+};
+
+typedef Arp__ctx_type_0 Arp_getMaxNbNotes_type;
+
+static_inline void Arp_getMaxNbNotes_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Arp_getMaxNbNotes(Arp__ctx_type_0 &_ctx){
+   return 16;
+};
+
+typedef Arp__ctx_type_0 Arp_getSequenceSize_type;
+
+static_inline void Arp_getSequenceSize_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Arp_getSequenceSize(Arp__ctx_type_0 &_ctx){
+   return _ctx.sequenceSize;
+};
+
+static_inline fix16_t Processor_arp_pitchToCv(fix16_t pitch){
+   return fix_mul(0x222 /* 0.008333 */,(-0x3c0000 /* -60.000000 */ + pitch));
+};
+
+int Processor_arp_cvToPitch(fix16_t cv);
+
+typedef struct Processor_arp__ctx_type_2 {
+   uint8_t pre;
+} Processor_arp__ctx_type_2;
+
+typedef Processor_arp__ctx_type_2 Processor_arp_edge_type;
+
+static_inline void Processor_arp__ctx_type_2_init(Processor_arp__ctx_type_2 &_output_){
+   Processor_arp__ctx_type_2 _ctx;
+   _ctx.pre = false;
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Processor_arp_edge_init(Processor_arp__ctx_type_2 &_output_){
+   Processor_arp__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline uint8_t Processor_arp_edge(Processor_arp__ctx_type_2 &_ctx, uint8_t x){
+   uint8_t ret;
+   ret = (x && bool_not(_ctx.pre));
+   _ctx.pre = x;
+   return ret;
+}
+
+typedef struct Processor_arp__ctx_type_3 {
+   int note;
+   Arp__ctx_type_0 arpe;
+   Util__ctx_type_3 _inst73b;
+   Util__ctx_type_3 _inst43b;
+   Util__ctx_type_1 _inst351;
+   Util__ctx_type_1 _inst151;
+   Util__ctx_type_3 _inst13b;
+} Processor_arp__ctx_type_3;
+
+typedef Processor_arp__ctx_type_3 Processor_arp_process_type;
+
+void Processor_arp__ctx_type_3_init(Processor_arp__ctx_type_3 &_output_);
+
+static_inline void Processor_arp_process_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+fix16_t Processor_arp_process(Processor_arp__ctx_type_3 &_ctx, fix16_t trig, fix16_t reset);
+
+typedef Processor_arp__ctx_type_3 Processor_arp_setMode_type;
+
+static_inline void Processor_arp_setMode_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_arp_setMode(Processor_arp__ctx_type_3 &_ctx, int param, uint8_t force){
+   if(Util_change(_ctx._inst13b,int_to_fix(param)) || force){
+      Arp_setMode(_ctx.arpe,param);
+   }
+};
+
+typedef Processor_arp__ctx_type_3 Processor_arp_setPRandomNotes_type;
+
+static_inline void Processor_arp_setPRandomNotes_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_arp_setPRandomNotes(Processor_arp__ctx_type_3 &_ctx, fix16_t param, uint8_t force){
+   if(Util_change(_ctx._inst43b,param) || force){
+      Arp_setPRandomNotes(_ctx.arpe,param);
+   }
+};
+
+typedef Processor_arp__ctx_type_3 Processor_arp_setPRandomize_type;
+
+static_inline void Processor_arp_setPRandomize_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_arp_setPRandomize(Processor_arp__ctx_type_3 &_ctx, fix16_t param, uint8_t force){
+   if(Util_change(_ctx._inst73b,param) || force){
+      Arp_setPRandomize(_ctx.arpe,param);
+   }
+};
+
+typedef Processor_arp__ctx_type_3 Processor_arp_setNotes_type;
+
+static_inline void Processor_arp_setNotes_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_arp_setNotes(Processor_arp__ctx_type_3 &_ctx, int (&newNotes)[16]){
+   Arp_setNotes(_ctx.arpe,newNotes);
+};
+
+typedef Processor_arp__ctx_type_3 Processor_arp_getNbModes_type;
+
+static_inline void Processor_arp_getNbModes_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline int Processor_arp_getNbModes(Processor_arp__ctx_type_3 &_ctx){
+   return Arp_getNbModes(_ctx.arpe);
+};
+
+typedef Processor_arp__ctx_type_3 Processor_arp_getMaxNbNotes_type;
+
+static_inline void Processor_arp_getMaxNbNotes_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline int Processor_arp_getMaxNbNotes(Processor_arp__ctx_type_3 &_ctx){
+   return Arp_getMaxNbNotes(_ctx.arpe);
+};
+
 static_inline fix16_t Tonnetz_logBase_raw_c0(int index){
    return Tonnetz_logBase_c0[index];
 };

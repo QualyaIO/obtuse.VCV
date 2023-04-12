@@ -77,6 +77,12 @@
       "name": "BotaniaChord",
       "description": "I generate chords things",
       "tags": []
+    },
+    {
+      "slug": "BotaniaArp",
+      "name": "BotaniaArp",
+      "description": "I arp things",
+      "tags": []
     }
   ]
 }

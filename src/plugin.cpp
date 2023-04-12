@@ -16,4 +16,5 @@ void init(Plugin *p) {
    p->addModel(utilTrigg);
    p->addModel(utilClock);
    p->addModel(utilChord);
+   p->addModel(utilArp);
 }
