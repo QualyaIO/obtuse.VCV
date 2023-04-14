@@ -23,6 +23,8 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 - switch back to monophonic synth when polyphony cable is 1? (would need some change in botania DSP)
 - setting highest delay on effect, depending on the sample rate, will fail due to overflow with fixed float. Clamp beforehand.
+- chord: select a fix shift
+- chord: knob for root note
 
 # Changelog
 
