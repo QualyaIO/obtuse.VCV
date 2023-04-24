@@ -25,6 +25,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - setting highest delay on effect, depending on the sample rate, will fail due to overflow with fixed float. Clamp beforehand.
 - chord: select a fix shift
 - chord: knob for root note
+- comb, allpass, reverb: fix arifacts upon launching scene that is playing
 
 # Changelog
 
