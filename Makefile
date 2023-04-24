@@ -40,14 +40,14 @@ $(VULT_SYNTH_FM_ENGINE_OUT): $(VULT_SYNTH_FM_SRC)
 	$(VULT_CMD) -ccode $(VULT_SYNTH_FM_SRC) -i botania/vult -i botania/vult/synth_FM -i botania/vult/buffer_medium -o src/engine_synthFM -output-prefix synthFM_ -real fixed
 
 VULT_SYNTH_SAMPLER_SRC = vult/synth_sampler/processor.vult 
-VULT_SYNTH_SAMPLER_ENGINE_OUT = $(wildcard src/engine_synthSampler.*)
+VULT_SYNTH_SAMPLER_ENGINE_OUT = $(wildcard src/engine_synthSampler*)
 $(VULT_SYNTH_SAMPLER_ENGINE_OUT): $(VULT_SYNTH_SAMPLER_SRC)
-	$(VULT_CMD) -ccode $(VULT_SYNTH_SAMPLER_SRC) -i botania/vult -i botania/vult/synth_sampler -i botania/vult/buffer_medium -o src/engine_synthSampler -output-prefix synthSampler_ -real fixed 
+	./make_vult_sampler.sh $(VULT_CMD) $(VULT_SYNTH_SAMPLER_SRC)
 
 VULT_SYNTH_DRUMMER_SRC = vult/synth_drummer/processor.vult 
-VULT_SYNTH_DRUMMER_ENGINE_OUT = $(wildcard src/engine_synthDrummer.*)
+VULT_SYNTH_DRUMMER_ENGINE_OUT = $(wildcard src/engine_synthDrummer*)
 $(VULT_SYNTH_DRUMMER_ENGINE_OUT): $(VULT_SYNTH_DRUMMER_SRC)
-	$(VULT_CMD) -ccode $(VULT_SYNTH_DRUMMER_SRC) -i botania/vult -i botania/vult/synth_drummer -i botania/vult/buffer_medium -o src/engine_synthDrummer -output-prefix synthDrummer_ -real fixed 
+	./make_vult_drummer.sh $(VULT_CMD) $(VULT_SYNTH_DRUMMER_SRC)
 
 VULT_UTILS_SRC = vult/processor_trigg.vult vult/processor_clock.vult vult/processor_chord.vult vult/processor_arp.vult vult/processor_gate.vult 
 VULT_UTILS_ENGINE_OUT = $(wildcard src/engine_utils.*)

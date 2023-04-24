@@ -5,7 +5,7 @@ Note that we are using fixed float computations here to mimic as close as possib
 
 # How-to
 
-Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately, tested with 2.1.2 and 2.2.1). Then `make`.
+Define `RACK_DIR` and ponit to Rack SDK folder (to be downloaded separately, tested with 2.1.2 and 2.2.1). Then `make`. Required bash >= 4.
 
 To install, place or link the folder in VCV plugins folder, e.g. on Linux `~/.Rack2/plugins`.
 
@@ -27,6 +27,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - chord: knob for root note
 
 # Changelog
+
+## 2.2.0 (current)
+
+- bump DSP, adding new samples and drum kits
 
 ## 2.1.0 (2023-04-12)
 

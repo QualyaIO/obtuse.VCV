@@ -72,8 +72,4 @@ and setSamplerate(newFs:real) {
 and default() @[init] {
    _ = voice:Voice.default();
    _ = setSamplerate(44.1);
-   // parameters for ocarina
-   _ = voice:Voice.synthSetLoop(true);
-   _ = voice:Voice.synthSetLoopStart(5073);
-   _ = voice:Voice.synthSetLoopEnd(5992);
 }
