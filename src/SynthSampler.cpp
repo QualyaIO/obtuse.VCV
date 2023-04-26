@@ -28,8 +28,8 @@
 
 // handle the various sampler
 struct MetaSampler {
-
-   // all varients of the processor
+   
+   // all variants of the processor
    synthSampler_Processor_process_type processorOcarina;
    synthSamplerCello_Processor_process_type processorCello;
    synthSamplerClarinet_Processor_process_type processorClarinet;
@@ -59,7 +59,6 @@ struct MetaSampler {
 
    int selectedSample = -1;
 
-   MetaSampler();
    // to sync with the actual number of samples...
    static int getNbSamples() { return 26;};
    static std::string getSampleName(int sample) {
@@ -133,11 +132,8 @@ private:
    void initProc();
 };
 
-MetaSampler::MetaSampler() {
-}
-
 void MetaSampler::switchTo(int sample) {
-   sample = clamp(sample, 0, getNbSamples());
+   sample = clamp(sample, 0, getNbSamples()-1);
    if (sample != selectedSample) {
       selectedSample = sample;
       initProc();
@@ -581,7 +577,6 @@ struct SynthSampler : Module {
 SynthSampler::SynthSampler() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-   //configParam(SynthSampler::SAMPLE, 0, MetaSampler::getNbSamples(), 0, "BPM", " BPM");
    configParam<SampleQuantity>(SynthSampler::SAMPLE, 0, MetaSampler::getNbSamples()-1, 0, "Sample", "");
    paramQuantities[SAMPLE]->snapEnabled = true;
    
