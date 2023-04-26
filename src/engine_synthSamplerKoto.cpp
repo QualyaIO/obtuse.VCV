@@ -648,19 +648,22 @@ int synthSamplerKoto_Processor_cvToPitch(fix16_t cv){
    return fix_to_int(pitch);
 }
 
-void synthSamplerKoto_Processor__ctx_type_1_init(synthSamplerKoto_Processor__ctx_type_1 &_output_){
-   synthSamplerKoto_Processor__ctx_type_1 _ctx;
+void synthSamplerKoto_Processor__ctx_type_2_init(synthSamplerKoto_Processor__ctx_type_2 &_output_){
+   synthSamplerKoto_Processor__ctx_type_2 _ctx;
    synthSamplerKoto_Voice__ctx_type_0_init(_ctx.voice);
    int_init_array(16,0,_ctx.last_pitches);
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
+   synthSamplerKoto_Util__ctx_type_3_init(_ctx._inst193b);
+   synthSamplerKoto_Util__ctx_type_3_init(_ctx._inst163b);
+   synthSamplerKoto_Util__ctx_type_3_init(_ctx._inst133b);
    synthSamplerKoto_Processor_default(_ctx);
    _output_ = _ctx;
    return ;
 }
 
-void synthSamplerKoto_Processor_setNote(synthSamplerKoto_Processor__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
+void synthSamplerKoto_Processor_setNote(synthSamplerKoto_Processor__ctx_type_2 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
    fix16_t velocity;
    velocity = fix_mul(0x7f0000 /* 127.000000 */,fix_clip(vel,0x0 /* 0.000000 */,0x10000 /* 1.000000 */));
    if(velocity == 0x0 /* 0.000000 */){
@@ -683,7 +686,7 @@ void synthSamplerKoto_Processor_setNote(synthSamplerKoto_Processor__ctx_type_1 &
    }
 }
 
-void synthSamplerKoto_Processor_nbCables(synthSamplerKoto_Processor__ctx_type_1 &_ctx, int nbcables){
+void synthSamplerKoto_Processor_nbCables(synthSamplerKoto_Processor__ctx_type_2 &_ctx, int nbcables){
    if(nbcables != _ctx.last_nbcables){
       _ctx.last_nbcables = nbcables;
       int c;

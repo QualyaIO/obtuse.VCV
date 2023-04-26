@@ -345,6 +345,39 @@ static_inline void synthSamplerShootingStar_Sampler_setLoopEnd(synthSamplerShoot
    synthSamplerShootingStar_Sampler_updateCrossFade(_ctx);
 }
 
+typedef synthSamplerShootingStar_Sampler__ctx_type_0 synthSamplerShootingStar_Sampler_getLoop_type;
+
+static_inline void synthSamplerShootingStar_Sampler_getLoop_init(synthSamplerShootingStar_Sampler__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerShootingStar_Sampler_getLoop(synthSamplerShootingStar_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopy;
+};
+
+typedef synthSamplerShootingStar_Sampler__ctx_type_0 synthSamplerShootingStar_Sampler_getLoopStart_type;
+
+static_inline void synthSamplerShootingStar_Sampler_getLoopStart_init(synthSamplerShootingStar_Sampler__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Sampler_getLoopStart(synthSamplerShootingStar_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopS;
+};
+
+typedef synthSamplerShootingStar_Sampler__ctx_type_0 synthSamplerShootingStar_Sampler_getLoopEnd_type;
+
+static_inline void synthSamplerShootingStar_Sampler_getLoopEnd_init(synthSamplerShootingStar_Sampler__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Sampler_getLoopEnd(synthSamplerShootingStar_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopE;
+};
+
 typedef synthSamplerShootingStar_Sampler__ctx_type_0 synthSamplerShootingStar_Sampler_getSampleSize_type;
 
 static_inline void synthSamplerShootingStar_Sampler_getSampleSize_init(synthSamplerShootingStar_Sampler__ctx_type_0 &_output_){
@@ -587,6 +620,39 @@ static_inline void synthSamplerShootingStar_Poly_synthSetLoopEnd(synthSamplerSho
    synthSamplerShootingStar_Sampler_setLoopEnd(_ctx.voice2,value);
    synthSamplerShootingStar_Sampler_setLoopEnd(_ctx.voice3,value);
 }
+
+typedef synthSamplerShootingStar_Poly__ctx_type_0 synthSamplerShootingStar_Poly_synthGetLoop_type;
+
+static_inline void synthSamplerShootingStar_Poly_synthGetLoop_init(synthSamplerShootingStar_Poly__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerShootingStar_Poly_synthGetLoop(synthSamplerShootingStar_Poly__ctx_type_0 &_ctx){
+   return synthSamplerShootingStar_Sampler_getLoop(_ctx.voice0);
+};
+
+typedef synthSamplerShootingStar_Poly__ctx_type_0 synthSamplerShootingStar_Poly_synthGetLoopStart_type;
+
+static_inline void synthSamplerShootingStar_Poly_synthGetLoopStart_init(synthSamplerShootingStar_Poly__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Poly_synthGetLoopStart(synthSamplerShootingStar_Poly__ctx_type_0 &_ctx){
+   return synthSamplerShootingStar_Sampler_getLoopStart(_ctx.voice0);
+};
+
+typedef synthSamplerShootingStar_Poly__ctx_type_0 synthSamplerShootingStar_Poly_synthGetLoopEnd_type;
+
+static_inline void synthSamplerShootingStar_Poly_synthGetLoopEnd_init(synthSamplerShootingStar_Poly__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Poly_synthGetLoopEnd(synthSamplerShootingStar_Poly__ctx_type_0 &_ctx){
+   return synthSamplerShootingStar_Sampler_getLoopEnd(_ctx.voice0);
+};
 
 typedef synthSamplerShootingStar_Poly__ctx_type_0 synthSamplerShootingStar_Poly_synthGetSize_type;
 
@@ -903,6 +969,39 @@ static_inline void synthSamplerShootingStar_Voice_synthSetLoopEnd(synthSamplerSh
    synthSamplerShootingStar_Poly_synthSetLoopEnd(_ctx.poly,value);
 };
 
+typedef synthSamplerShootingStar_Voice__ctx_type_0 synthSamplerShootingStar_Voice_synthGetLoop_type;
+
+static_inline void synthSamplerShootingStar_Voice_synthGetLoop_init(synthSamplerShootingStar_Voice__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerShootingStar_Voice_synthGetLoop(synthSamplerShootingStar_Voice__ctx_type_0 &_ctx){
+   return synthSamplerShootingStar_Poly_synthGetLoop(_ctx.poly);
+};
+
+typedef synthSamplerShootingStar_Voice__ctx_type_0 synthSamplerShootingStar_Voice_synthGetLoopStart_type;
+
+static_inline void synthSamplerShootingStar_Voice_synthGetLoopStart_init(synthSamplerShootingStar_Voice__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Voice_synthGetLoopStart(synthSamplerShootingStar_Voice__ctx_type_0 &_ctx){
+   return synthSamplerShootingStar_Poly_synthGetLoopStart(_ctx.poly);
+};
+
+typedef synthSamplerShootingStar_Voice__ctx_type_0 synthSamplerShootingStar_Voice_synthGetLoopEnd_type;
+
+static_inline void synthSamplerShootingStar_Voice_synthGetLoopEnd_init(synthSamplerShootingStar_Voice__ctx_type_0 &_output_){
+   synthSamplerShootingStar_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Voice_synthGetLoopEnd(synthSamplerShootingStar_Voice__ctx_type_0 &_ctx){
+   return synthSamplerShootingStar_Poly_synthGetLoopEnd(_ctx.poly);
+};
+
 typedef synthSamplerShootingStar_Voice__ctx_type_0 synthSamplerShootingStar_Voice_synthGetSize_type;
 
 static_inline void synthSamplerShootingStar_Voice_synthGetSize_init(synthSamplerShootingStar_Voice__ctx_type_0 &_output_){
@@ -1089,67 +1188,152 @@ static_inline void synthSamplerShootingStar_Voice_dummy(synthSamplerShootingStar
 
 int synthSamplerShootingStar_Processor_cvToPitch(fix16_t cv);
 
-typedef struct synthSamplerShootingStar_Processor__ctx_type_1 {
+static_inline fix16_t synthSamplerShootingStar_Processor_bool2real(uint8_t b){
+   if(b){
+      return 0x10000 /* 1.000000 */;
+   }
+   else
+   {
+      return 0x0 /* 0.000000 */;
+   }
+};
+
+typedef struct synthSamplerShootingStar_Processor__ctx_type_2 {
    synthSamplerShootingStar_Voice__ctx_type_0 voice;
    int last_pitches[16];
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-} synthSamplerShootingStar_Processor__ctx_type_1;
+   synthSamplerShootingStar_Util__ctx_type_3 _inst193b;
+   synthSamplerShootingStar_Util__ctx_type_3 _inst163b;
+   synthSamplerShootingStar_Util__ctx_type_3 _inst133b;
+} synthSamplerShootingStar_Processor__ctx_type_2;
 
-typedef synthSamplerShootingStar_Processor__ctx_type_1 synthSamplerShootingStar_Processor_process_type;
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_process_type;
 
-void synthSamplerShootingStar_Processor__ctx_type_1_init(synthSamplerShootingStar_Processor__ctx_type_1 &_output_);
+void synthSamplerShootingStar_Processor__ctx_type_2_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_);
 
-static_inline void synthSamplerShootingStar_Processor_process_init(synthSamplerShootingStar_Processor__ctx_type_1 &_output_){
-   synthSamplerShootingStar_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerShootingStar_Processor_process_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline fix16_t synthSamplerShootingStar_Processor_process(synthSamplerShootingStar_Processor__ctx_type_1 &_ctx){
+static_inline fix16_t synthSamplerShootingStar_Processor_process(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx){
    return synthSamplerShootingStar_Voice_process(_ctx.voice);
 };
 
-typedef synthSamplerShootingStar_Processor__ctx_type_1 synthSamplerShootingStar_Processor_setNote_type;
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_setNote_type;
 
-static_inline void synthSamplerShootingStar_Processor_setNote_init(synthSamplerShootingStar_Processor__ctx_type_1 &_output_){
-   synthSamplerShootingStar_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerShootingStar_Processor_setNote_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-void synthSamplerShootingStar_Processor_setNote(synthSamplerShootingStar_Processor__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
+void synthSamplerShootingStar_Processor_setNote(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
 
-typedef synthSamplerShootingStar_Processor__ctx_type_1 synthSamplerShootingStar_Processor_nbCables_type;
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_nbCables_type;
 
-static_inline void synthSamplerShootingStar_Processor_nbCables_init(synthSamplerShootingStar_Processor__ctx_type_1 &_output_){
-   synthSamplerShootingStar_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerShootingStar_Processor_nbCables_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-void synthSamplerShootingStar_Processor_nbCables(synthSamplerShootingStar_Processor__ctx_type_1 &_ctx, int nbcables);
+void synthSamplerShootingStar_Processor_nbCables(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx, int nbcables);
 
-typedef synthSamplerShootingStar_Processor__ctx_type_1 synthSamplerShootingStar_Processor_setSamplerate_type;
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_setSamplerate_type;
 
-static_inline void synthSamplerShootingStar_Processor_setSamplerate_init(synthSamplerShootingStar_Processor__ctx_type_1 &_output_){
-   synthSamplerShootingStar_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerShootingStar_Processor_setSamplerate_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void synthSamplerShootingStar_Processor_setSamplerate(synthSamplerShootingStar_Processor__ctx_type_1 &_ctx, fix16_t newFs){
+static_inline void synthSamplerShootingStar_Processor_setSamplerate(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx, fix16_t newFs){
    if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
       _ctx.fs = newFs;
       synthSamplerShootingStar_Voice_setSamplerate(_ctx.voice,_ctx.fs);
    }
 };
 
-typedef synthSamplerShootingStar_Processor__ctx_type_1 synthSamplerShootingStar_Processor_default_type;
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_setLoop_type;
 
-static_inline void synthSamplerShootingStar_Processor_default_init(synthSamplerShootingStar_Processor__ctx_type_1 &_output_){
-   synthSamplerShootingStar_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerShootingStar_Processor_setLoop_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void synthSamplerShootingStar_Processor_default(synthSamplerShootingStar_Processor__ctx_type_1 &_ctx){
+static_inline void synthSamplerShootingStar_Processor_setLoop(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
+   if(synthSamplerShootingStar_Util_change(_ctx._inst133b,synthSamplerShootingStar_Processor_bool2real(param)) || force){
+      synthSamplerShootingStar_Voice_synthSetLoop(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_setLoopStart_type;
+
+static_inline void synthSamplerShootingStar_Processor_setLoopStart_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerShootingStar_Processor_setLoopStart(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(synthSamplerShootingStar_Util_change(_ctx._inst163b,int_to_fix(param)) || force){
+      synthSamplerShootingStar_Voice_synthSetLoopStart(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_setLoopEnd_type;
+
+static_inline void synthSamplerShootingStar_Processor_setLoopEnd_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerShootingStar_Processor_setLoopEnd(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(synthSamplerShootingStar_Util_change(_ctx._inst193b,int_to_fix(param)) || force){
+      synthSamplerShootingStar_Voice_synthSetLoopEnd(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_getLoop_type;
+
+static_inline void synthSamplerShootingStar_Processor_getLoop_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerShootingStar_Processor_getLoop(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx){
+   return synthSamplerShootingStar_Voice_synthGetLoop(_ctx.voice);
+};
+
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_getLoopStart_type;
+
+static_inline void synthSamplerShootingStar_Processor_getLoopStart_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Processor_getLoopStart(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx){
+   return synthSamplerShootingStar_Voice_synthGetLoopStart(_ctx.voice);
+};
+
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_getLoopEnd_type;
+
+static_inline void synthSamplerShootingStar_Processor_getLoopEnd_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerShootingStar_Processor_getLoopEnd(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx){
+   return synthSamplerShootingStar_Voice_synthGetLoopEnd(_ctx.voice);
+};
+
+typedef synthSamplerShootingStar_Processor__ctx_type_2 synthSamplerShootingStar_Processor_default_type;
+
+static_inline void synthSamplerShootingStar_Processor_default_init(synthSamplerShootingStar_Processor__ctx_type_2 &_output_){
+   synthSamplerShootingStar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerShootingStar_Processor_default(synthSamplerShootingStar_Processor__ctx_type_2 &_ctx){
    synthSamplerShootingStar_Voice_default(_ctx.voice);
    synthSamplerShootingStar_Processor_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }

@@ -648,19 +648,22 @@ int synthSamplerBoesendorferGrandPiano_Processor_cvToPitch(fix16_t cv){
    return fix_to_int(pitch);
 }
 
-void synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_){
-   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 _ctx;
+void synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 _ctx;
    synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0_init(_ctx.voice);
    int_init_array(16,0,_ctx.last_pitches);
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_3_init(_ctx._inst193b);
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_3_init(_ctx._inst163b);
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_3_init(_ctx._inst133b);
    synthSamplerBoesendorferGrandPiano_Processor_default(_ctx);
    _output_ = _ctx;
    return ;
 }
 
-void synthSamplerBoesendorferGrandPiano_Processor_setNote(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
+void synthSamplerBoesendorferGrandPiano_Processor_setNote(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable){
    fix16_t velocity;
    velocity = fix_mul(0x7f0000 /* 127.000000 */,fix_clip(vel,0x0 /* 0.000000 */,0x10000 /* 1.000000 */));
    if(velocity == 0x0 /* 0.000000 */){
@@ -683,7 +686,7 @@ void synthSamplerBoesendorferGrandPiano_Processor_setNote(synthSamplerBoesendorf
    }
 }
 
-void synthSamplerBoesendorferGrandPiano_Processor_nbCables(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx, int nbcables){
+void synthSamplerBoesendorferGrandPiano_Processor_nbCables(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, int nbcables){
    if(nbcables != _ctx.last_nbcables){
       _ctx.last_nbcables = nbcables;
       int c;

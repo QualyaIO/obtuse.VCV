@@ -345,6 +345,39 @@ static_inline void synthSamplerBoesendorferGrandPiano_Sampler_setLoopEnd(synthSa
    synthSamplerBoesendorferGrandPiano_Sampler_updateCrossFade(_ctx);
 }
 
+typedef synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 synthSamplerBoesendorferGrandPiano_Sampler_getLoop_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Sampler_getLoop_init(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerBoesendorferGrandPiano_Sampler_getLoop(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopy;
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 synthSamplerBoesendorferGrandPiano_Sampler_getLoopStart_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Sampler_getLoopStart_init(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Sampler_getLoopStart(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopS;
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 synthSamplerBoesendorferGrandPiano_Sampler_getLoopEnd_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Sampler_getLoopEnd_init(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Sampler_getLoopEnd(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopE;
+};
+
 typedef synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 synthSamplerBoesendorferGrandPiano_Sampler_getSampleSize_type;
 
 static_inline void synthSamplerBoesendorferGrandPiano_Sampler_getSampleSize_init(synthSamplerBoesendorferGrandPiano_Sampler__ctx_type_0 &_output_){
@@ -587,6 +620,39 @@ static_inline void synthSamplerBoesendorferGrandPiano_Poly_synthSetLoopEnd(synth
    synthSamplerBoesendorferGrandPiano_Sampler_setLoopEnd(_ctx.voice2,value);
    synthSamplerBoesendorferGrandPiano_Sampler_setLoopEnd(_ctx.voice3,value);
 }
+
+typedef synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 synthSamplerBoesendorferGrandPiano_Poly_synthGetLoop_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Poly_synthGetLoop_init(synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerBoesendorferGrandPiano_Poly_synthGetLoop(synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Sampler_getLoop(_ctx.voice0);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopStart_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopStart_init(synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopStart(synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Sampler_getLoopStart(_ctx.voice0);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopEnd_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopEnd_init(synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopEnd(synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Sampler_getLoopEnd(_ctx.voice0);
+};
 
 typedef synthSamplerBoesendorferGrandPiano_Poly__ctx_type_0 synthSamplerBoesendorferGrandPiano_Poly_synthGetSize_type;
 
@@ -903,6 +969,39 @@ static_inline void synthSamplerBoesendorferGrandPiano_Voice_synthSetLoopEnd(synt
    synthSamplerBoesendorferGrandPiano_Poly_synthSetLoopEnd(_ctx.poly,value);
 };
 
+typedef synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 synthSamplerBoesendorferGrandPiano_Voice_synthGetLoop_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Voice_synthGetLoop_init(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerBoesendorferGrandPiano_Voice_synthGetLoop(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Poly_synthGetLoop(_ctx.poly);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopStart_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopStart_init(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopStart(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopStart(_ctx.poly);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopEnd_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopEnd_init(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_output_){
+   synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopEnd(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Poly_synthGetLoopEnd(_ctx.poly);
+};
+
 typedef synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 synthSamplerBoesendorferGrandPiano_Voice_synthGetSize_type;
 
 static_inline void synthSamplerBoesendorferGrandPiano_Voice_synthGetSize_init(synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 &_output_){
@@ -1089,67 +1188,152 @@ static_inline void synthSamplerBoesendorferGrandPiano_Voice_dummy(synthSamplerBo
 
 int synthSamplerBoesendorferGrandPiano_Processor_cvToPitch(fix16_t cv);
 
-typedef struct synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 {
+static_inline fix16_t synthSamplerBoesendorferGrandPiano_Processor_bool2real(uint8_t b){
+   if(b){
+      return 0x10000 /* 1.000000 */;
+   }
+   else
+   {
+      return 0x0 /* 0.000000 */;
+   }
+};
+
+typedef struct synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 {
    synthSamplerBoesendorferGrandPiano_Voice__ctx_type_0 voice;
    int last_pitches[16];
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-} synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_3 _inst193b;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_3 _inst163b;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_3 _inst133b;
+} synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2;
 
-typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 synthSamplerBoesendorferGrandPiano_Processor_process_type;
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_process_type;
 
-void synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_);
+void synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_);
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_process_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_){
-   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_process_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline fix16_t synthSamplerBoesendorferGrandPiano_Processor_process(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx){
+static_inline fix16_t synthSamplerBoesendorferGrandPiano_Processor_process(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx){
    return synthSamplerBoesendorferGrandPiano_Voice_process(_ctx.voice);
 };
 
-typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 synthSamplerBoesendorferGrandPiano_Processor_setNote_type;
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_setNote_type;
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_setNote_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_){
-   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setNote_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-void synthSamplerBoesendorferGrandPiano_Processor_setNote(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
+void synthSamplerBoesendorferGrandPiano_Processor_setNote(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
 
-typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 synthSamplerBoesendorferGrandPiano_Processor_nbCables_type;
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_nbCables_type;
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_nbCables_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_){
-   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_nbCables_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-void synthSamplerBoesendorferGrandPiano_Processor_nbCables(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx, int nbcables);
+void synthSamplerBoesendorferGrandPiano_Processor_nbCables(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, int nbcables);
 
-typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 synthSamplerBoesendorferGrandPiano_Processor_setSamplerate_type;
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_setSamplerate_type;
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_setSamplerate_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_){
-   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setSamplerate_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_setSamplerate(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx, fix16_t newFs){
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setSamplerate(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, fix16_t newFs){
    if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
       _ctx.fs = newFs;
       synthSamplerBoesendorferGrandPiano_Voice_setSamplerate(_ctx.voice,_ctx.fs);
    }
 };
 
-typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 synthSamplerBoesendorferGrandPiano_Processor_default_type;
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_setLoop_type;
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_default_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_output_){
-   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoop_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void synthSamplerBoesendorferGrandPiano_Processor_default(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_1 &_ctx){
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoop(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
+   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst133b,synthSamplerBoesendorferGrandPiano_Processor_bool2real(param)) || force){
+      synthSamplerBoesendorferGrandPiano_Voice_synthSetLoop(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_setLoopStart_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopStart_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopStart(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst163b,int_to_fix(param)) || force){
+      synthSamplerBoesendorferGrandPiano_Voice_synthSetLoopStart(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_setLoopEnd_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopEnd_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopEnd(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst193b,int_to_fix(param)) || force){
+      synthSamplerBoesendorferGrandPiano_Voice_synthSetLoopEnd(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_getLoop_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_getLoop_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerBoesendorferGrandPiano_Processor_getLoop(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Voice_synthGetLoop(_ctx.voice);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_getLoopStart_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_getLoopStart_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Processor_getLoopStart(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopStart(_ctx.voice);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_getLoopEnd_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_getLoopEnd_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Processor_getLoopEnd(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopEnd(_ctx.voice);
+};
+
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_default_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_default_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_default(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx){
    synthSamplerBoesendorferGrandPiano_Voice_default(_ctx.voice);
    synthSamplerBoesendorferGrandPiano_Processor_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }

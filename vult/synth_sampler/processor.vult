@@ -13,6 +13,16 @@ fun cvToPitch(cv) : int {
    return int(pitch);
 }
 
+// no cast like that already?
+fun bool2real(b: bool): real {
+  if (b) {
+    return 1.0;
+  }
+  else {
+    return 0.0;
+  }
+}
+
 fun process() {
    return voice:Voice.process();
 }
@@ -68,6 +78,30 @@ and setSamplerate(newFs:real) {
       fs = newFs;
       _ = voice:Voice.setSamplerate(fs);
    }
+}
+and setLoop(param: bool, force: bool) {
+   if (Util.change(bool2real(param)) || force) {
+      _ = voice:Voice.synthSetLoop(param);
+  }
+}
+and setLoopStart(param: int, force: bool) {
+   if (Util.change(real(param)) || force) {
+      _ = voice:Voice.synthSetLoopStart(param);
+  }
+}
+and setLoopEnd(param: int, force: bool) {
+   if (Util.change(real(param)) || force) {
+      _ = voice:Voice.synthSetLoopEnd(param);
+  }
+}
+and getLoop(): bool {
+   return voice:Voice.synthGetLoop();
+}
+and getLoopStart(): int {
+   return voice:Voice.synthGetLoopStart();
+}
+and getLoopEnd(): int {
+   return voice:Voice.synthGetLoopEnd();
 }
 and default() @[init] {
    _ = voice:Voice.default();

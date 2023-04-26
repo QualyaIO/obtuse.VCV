@@ -345,6 +345,39 @@ static_inline void synthSamplerTimeWarp_Sampler_setLoopEnd(synthSamplerTimeWarp_
    synthSamplerTimeWarp_Sampler_updateCrossFade(_ctx);
 }
 
+typedef synthSamplerTimeWarp_Sampler__ctx_type_0 synthSamplerTimeWarp_Sampler_getLoop_type;
+
+static_inline void synthSamplerTimeWarp_Sampler_getLoop_init(synthSamplerTimeWarp_Sampler__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerTimeWarp_Sampler_getLoop(synthSamplerTimeWarp_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopy;
+};
+
+typedef synthSamplerTimeWarp_Sampler__ctx_type_0 synthSamplerTimeWarp_Sampler_getLoopStart_type;
+
+static_inline void synthSamplerTimeWarp_Sampler_getLoopStart_init(synthSamplerTimeWarp_Sampler__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Sampler_getLoopStart(synthSamplerTimeWarp_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopS;
+};
+
+typedef synthSamplerTimeWarp_Sampler__ctx_type_0 synthSamplerTimeWarp_Sampler_getLoopEnd_type;
+
+static_inline void synthSamplerTimeWarp_Sampler_getLoopEnd_init(synthSamplerTimeWarp_Sampler__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Sampler__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Sampler_getLoopEnd(synthSamplerTimeWarp_Sampler__ctx_type_0 &_ctx){
+   return _ctx.loopE;
+};
+
 typedef synthSamplerTimeWarp_Sampler__ctx_type_0 synthSamplerTimeWarp_Sampler_getSampleSize_type;
 
 static_inline void synthSamplerTimeWarp_Sampler_getSampleSize_init(synthSamplerTimeWarp_Sampler__ctx_type_0 &_output_){
@@ -587,6 +620,39 @@ static_inline void synthSamplerTimeWarp_Poly_synthSetLoopEnd(synthSamplerTimeWar
    synthSamplerTimeWarp_Sampler_setLoopEnd(_ctx.voice2,value);
    synthSamplerTimeWarp_Sampler_setLoopEnd(_ctx.voice3,value);
 }
+
+typedef synthSamplerTimeWarp_Poly__ctx_type_0 synthSamplerTimeWarp_Poly_synthGetLoop_type;
+
+static_inline void synthSamplerTimeWarp_Poly_synthGetLoop_init(synthSamplerTimeWarp_Poly__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerTimeWarp_Poly_synthGetLoop(synthSamplerTimeWarp_Poly__ctx_type_0 &_ctx){
+   return synthSamplerTimeWarp_Sampler_getLoop(_ctx.voice0);
+};
+
+typedef synthSamplerTimeWarp_Poly__ctx_type_0 synthSamplerTimeWarp_Poly_synthGetLoopStart_type;
+
+static_inline void synthSamplerTimeWarp_Poly_synthGetLoopStart_init(synthSamplerTimeWarp_Poly__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Poly_synthGetLoopStart(synthSamplerTimeWarp_Poly__ctx_type_0 &_ctx){
+   return synthSamplerTimeWarp_Sampler_getLoopStart(_ctx.voice0);
+};
+
+typedef synthSamplerTimeWarp_Poly__ctx_type_0 synthSamplerTimeWarp_Poly_synthGetLoopEnd_type;
+
+static_inline void synthSamplerTimeWarp_Poly_synthGetLoopEnd_init(synthSamplerTimeWarp_Poly__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Poly_synthGetLoopEnd(synthSamplerTimeWarp_Poly__ctx_type_0 &_ctx){
+   return synthSamplerTimeWarp_Sampler_getLoopEnd(_ctx.voice0);
+};
 
 typedef synthSamplerTimeWarp_Poly__ctx_type_0 synthSamplerTimeWarp_Poly_synthGetSize_type;
 
@@ -903,6 +969,39 @@ static_inline void synthSamplerTimeWarp_Voice_synthSetLoopEnd(synthSamplerTimeWa
    synthSamplerTimeWarp_Poly_synthSetLoopEnd(_ctx.poly,value);
 };
 
+typedef synthSamplerTimeWarp_Voice__ctx_type_0 synthSamplerTimeWarp_Voice_synthGetLoop_type;
+
+static_inline void synthSamplerTimeWarp_Voice_synthGetLoop_init(synthSamplerTimeWarp_Voice__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerTimeWarp_Voice_synthGetLoop(synthSamplerTimeWarp_Voice__ctx_type_0 &_ctx){
+   return synthSamplerTimeWarp_Poly_synthGetLoop(_ctx.poly);
+};
+
+typedef synthSamplerTimeWarp_Voice__ctx_type_0 synthSamplerTimeWarp_Voice_synthGetLoopStart_type;
+
+static_inline void synthSamplerTimeWarp_Voice_synthGetLoopStart_init(synthSamplerTimeWarp_Voice__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Voice_synthGetLoopStart(synthSamplerTimeWarp_Voice__ctx_type_0 &_ctx){
+   return synthSamplerTimeWarp_Poly_synthGetLoopStart(_ctx.poly);
+};
+
+typedef synthSamplerTimeWarp_Voice__ctx_type_0 synthSamplerTimeWarp_Voice_synthGetLoopEnd_type;
+
+static_inline void synthSamplerTimeWarp_Voice_synthGetLoopEnd_init(synthSamplerTimeWarp_Voice__ctx_type_0 &_output_){
+   synthSamplerTimeWarp_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Voice_synthGetLoopEnd(synthSamplerTimeWarp_Voice__ctx_type_0 &_ctx){
+   return synthSamplerTimeWarp_Poly_synthGetLoopEnd(_ctx.poly);
+};
+
 typedef synthSamplerTimeWarp_Voice__ctx_type_0 synthSamplerTimeWarp_Voice_synthGetSize_type;
 
 static_inline void synthSamplerTimeWarp_Voice_synthGetSize_init(synthSamplerTimeWarp_Voice__ctx_type_0 &_output_){
@@ -1089,67 +1188,152 @@ static_inline void synthSamplerTimeWarp_Voice_dummy(synthSamplerTimeWarp_Voice__
 
 int synthSamplerTimeWarp_Processor_cvToPitch(fix16_t cv);
 
-typedef struct synthSamplerTimeWarp_Processor__ctx_type_1 {
+static_inline fix16_t synthSamplerTimeWarp_Processor_bool2real(uint8_t b){
+   if(b){
+      return 0x10000 /* 1.000000 */;
+   }
+   else
+   {
+      return 0x0 /* 0.000000 */;
+   }
+};
+
+typedef struct synthSamplerTimeWarp_Processor__ctx_type_2 {
    synthSamplerTimeWarp_Voice__ctx_type_0 voice;
    int last_pitches[16];
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-} synthSamplerTimeWarp_Processor__ctx_type_1;
+   synthSamplerTimeWarp_Util__ctx_type_3 _inst193b;
+   synthSamplerTimeWarp_Util__ctx_type_3 _inst163b;
+   synthSamplerTimeWarp_Util__ctx_type_3 _inst133b;
+} synthSamplerTimeWarp_Processor__ctx_type_2;
 
-typedef synthSamplerTimeWarp_Processor__ctx_type_1 synthSamplerTimeWarp_Processor_process_type;
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_process_type;
 
-void synthSamplerTimeWarp_Processor__ctx_type_1_init(synthSamplerTimeWarp_Processor__ctx_type_1 &_output_);
+void synthSamplerTimeWarp_Processor__ctx_type_2_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_);
 
-static_inline void synthSamplerTimeWarp_Processor_process_init(synthSamplerTimeWarp_Processor__ctx_type_1 &_output_){
-   synthSamplerTimeWarp_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerTimeWarp_Processor_process_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline fix16_t synthSamplerTimeWarp_Processor_process(synthSamplerTimeWarp_Processor__ctx_type_1 &_ctx){
+static_inline fix16_t synthSamplerTimeWarp_Processor_process(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx){
    return synthSamplerTimeWarp_Voice_process(_ctx.voice);
 };
 
-typedef synthSamplerTimeWarp_Processor__ctx_type_1 synthSamplerTimeWarp_Processor_setNote_type;
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_setNote_type;
 
-static_inline void synthSamplerTimeWarp_Processor_setNote_init(synthSamplerTimeWarp_Processor__ctx_type_1 &_output_){
-   synthSamplerTimeWarp_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerTimeWarp_Processor_setNote_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-void synthSamplerTimeWarp_Processor_setNote(synthSamplerTimeWarp_Processor__ctx_type_1 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
+void synthSamplerTimeWarp_Processor_setNote(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, fix16_t gate, fix16_t voct, fix16_t vel, int cable);
 
-typedef synthSamplerTimeWarp_Processor__ctx_type_1 synthSamplerTimeWarp_Processor_nbCables_type;
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_nbCables_type;
 
-static_inline void synthSamplerTimeWarp_Processor_nbCables_init(synthSamplerTimeWarp_Processor__ctx_type_1 &_output_){
-   synthSamplerTimeWarp_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerTimeWarp_Processor_nbCables_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-void synthSamplerTimeWarp_Processor_nbCables(synthSamplerTimeWarp_Processor__ctx_type_1 &_ctx, int nbcables);
+void synthSamplerTimeWarp_Processor_nbCables(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, int nbcables);
 
-typedef synthSamplerTimeWarp_Processor__ctx_type_1 synthSamplerTimeWarp_Processor_setSamplerate_type;
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_setSamplerate_type;
 
-static_inline void synthSamplerTimeWarp_Processor_setSamplerate_init(synthSamplerTimeWarp_Processor__ctx_type_1 &_output_){
-   synthSamplerTimeWarp_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerTimeWarp_Processor_setSamplerate_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void synthSamplerTimeWarp_Processor_setSamplerate(synthSamplerTimeWarp_Processor__ctx_type_1 &_ctx, fix16_t newFs){
+static_inline void synthSamplerTimeWarp_Processor_setSamplerate(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, fix16_t newFs){
    if((newFs > 0x0 /* 0.000000 */) && (newFs != _ctx.fs)){
       _ctx.fs = newFs;
       synthSamplerTimeWarp_Voice_setSamplerate(_ctx.voice,_ctx.fs);
    }
 };
 
-typedef synthSamplerTimeWarp_Processor__ctx_type_1 synthSamplerTimeWarp_Processor_default_type;
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_setLoop_type;
 
-static_inline void synthSamplerTimeWarp_Processor_default_init(synthSamplerTimeWarp_Processor__ctx_type_1 &_output_){
-   synthSamplerTimeWarp_Processor__ctx_type_1_init(_output_);
+static_inline void synthSamplerTimeWarp_Processor_setLoop_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline void synthSamplerTimeWarp_Processor_default(synthSamplerTimeWarp_Processor__ctx_type_1 &_ctx){
+static_inline void synthSamplerTimeWarp_Processor_setLoop(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
+   if(synthSamplerTimeWarp_Util_change(_ctx._inst133b,synthSamplerTimeWarp_Processor_bool2real(param)) || force){
+      synthSamplerTimeWarp_Voice_synthSetLoop(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_setLoopStart_type;
+
+static_inline void synthSamplerTimeWarp_Processor_setLoopStart_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerTimeWarp_Processor_setLoopStart(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(synthSamplerTimeWarp_Util_change(_ctx._inst163b,int_to_fix(param)) || force){
+      synthSamplerTimeWarp_Voice_synthSetLoopStart(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_setLoopEnd_type;
+
+static_inline void synthSamplerTimeWarp_Processor_setLoopEnd_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerTimeWarp_Processor_setLoopEnd(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(synthSamplerTimeWarp_Util_change(_ctx._inst193b,int_to_fix(param)) || force){
+      synthSamplerTimeWarp_Voice_synthSetLoopEnd(_ctx.voice,param);
+   }
+};
+
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_getLoop_type;
+
+static_inline void synthSamplerTimeWarp_Processor_getLoop_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline uint8_t synthSamplerTimeWarp_Processor_getLoop(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx){
+   return synthSamplerTimeWarp_Voice_synthGetLoop(_ctx.voice);
+};
+
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_getLoopStart_type;
+
+static_inline void synthSamplerTimeWarp_Processor_getLoopStart_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Processor_getLoopStart(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx){
+   return synthSamplerTimeWarp_Voice_synthGetLoopStart(_ctx.voice);
+};
+
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_getLoopEnd_type;
+
+static_inline void synthSamplerTimeWarp_Processor_getLoopEnd_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Processor_getLoopEnd(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx){
+   return synthSamplerTimeWarp_Voice_synthGetLoopEnd(_ctx.voice);
+};
+
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_default_type;
+
+static_inline void synthSamplerTimeWarp_Processor_default_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerTimeWarp_Processor_default(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx){
    synthSamplerTimeWarp_Voice_default(_ctx.voice);
    synthSamplerTimeWarp_Processor_setSamplerate(_ctx,0x2c1999 /* 44.100000 */);
 }
