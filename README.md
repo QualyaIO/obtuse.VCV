@@ -30,9 +30,11 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
-## 2.2.0 (current)
+## 2.2.0 (2023-04-26)
 
 - bump DSP, adding new samples and drum kits
+- sampler: select sample, option to set loop manually
+- drummer: select kit
 
 ## 2.1.0 (2023-04-12)
 
