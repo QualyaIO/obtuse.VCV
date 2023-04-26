@@ -1,7 +1,8 @@
 
 #include "MetaSampler.hpp"
 
-void MetaSampler::switchTo(int sample) {
+bool MetaSampler::switchTo(int sample) {
+  bool switched = false;
   if (sample < 0) {
     sample = 0;
   } else if (sample > getNbSamples()-1) {
@@ -10,7 +11,9 @@ void MetaSampler::switchTo(int sample) {
   if (sample != selectedSample) {
       selectedSample = sample;
       initProc();
+      switched = true;
    }
+  return switched;
 }
 
 void MetaSampler::setSamplerate(float sr) {
@@ -177,6 +180,432 @@ void MetaSampler::nbCables(int cables) {
    case 0:
    default:
       synthSampler_Processor_nbCables(processorOcarina, cables);
+      break;
+   }
+}
+
+bool MetaSampler::getLoop() {
+   switch(selectedSample) {
+   case 1:
+     return synthSamplerCello_Processor_getLoop(processorCello);
+   case 2:
+     return synthSamplerClarinet_Processor_getLoop(processorClarinet);
+   case 3:
+     return synthSamplerPiano_Processor_getLoop(processorPiano);
+   case 4:
+     return synthSamplerAmbientLead_Processor_getLoop(processorAmbientLead);
+   case 5:
+     return synthSamplerAuthenticStrings_Processor_getLoop(processorAuthenticStrings);
+   case 6:
+     return synthSamplerBoesendorferGrandPiano_Processor_getLoop(processorBoesendorferGrandPiano);
+   case 7:
+     return synthSamplerCelesta_Processor_getLoop(processorCelesta);
+   case 8:
+     return synthSamplerClarinets_Processor_getLoop(processorClarinets);
+   case 9:
+     return synthSamplerClassicSuitcaseMk1_Processor_getLoop(processorClassicSuitcaseMk1);
+   case 10:
+     return synthSamplerCosmos_Processor_getLoop(processorCosmos);
+   case 11:
+     return synthSamplerDreamVoice_Processor_getLoop(processorDreamVoice);
+   case 12:
+     return synthSamplerDrivenSynthLead_Processor_getLoop(processorDrivenSynthLead);
+   case 13:
+     return synthSamplerGlassMarimbaSoft_Processor_getLoop(processorGlassMarimbaSoft);
+   case 14:
+     return synthSamplerIndianSitar_Processor_getLoop(processorIndianSitar);
+   case 15:
+     return synthSamplerJapaneseShakuhachiFlute_Processor_getLoop(processorJapaneseShakuhachiFlute);
+   case 16:
+     return synthSamplerKoto_Processor_getLoop(processorKoto);
+   case 17:
+     return synthSamplerMagnificentDrone_Processor_getLoop(processorMagnificentDrone);
+   case 18:
+     return synthSamplerMysticVibes_Processor_getLoop(processorMysticVibes);
+   case 19:
+     return synthSamplerPowerFifths_Processor_getLoop(processorPowerFifths);
+   case 20:
+     return synthSamplerPulsingPatterns_Processor_getLoop(processorPulsingPatterns);
+   case 21:
+     return synthSamplerShootingStar_Processor_getLoop(processorShootingStar);
+   case 22:
+     return synthSamplerTimeWarp_Processor_getLoop(processorTimeWarp);
+   case 23:
+     return synthSamplerTranquility_Processor_getLoop(processorTranquility);
+   case 24:
+     return synthSamplerVocalCluster_Processor_getLoop(processorVocalCluster);
+   case 25:
+     return synthSamplerZenGarden_Processor_getLoop(processorZenGarden);
+   case 0:
+   default:
+     return synthSampler_Processor_getLoop(processorOcarina);
+   }
+}
+
+int MetaSampler::getLoopStart() {
+   switch(selectedSample) {
+   case 1:
+     return synthSamplerCello_Processor_getLoopStart(processorCello);
+   case 2:
+     return synthSamplerClarinet_Processor_getLoopStart(processorClarinet);
+   case 3:
+     return synthSamplerPiano_Processor_getLoopStart(processorPiano);
+   case 4:
+     return synthSamplerAmbientLead_Processor_getLoopStart(processorAmbientLead);
+   case 5:
+     return synthSamplerAuthenticStrings_Processor_getLoopStart(processorAuthenticStrings);
+   case 6:
+     return synthSamplerBoesendorferGrandPiano_Processor_getLoopStart(processorBoesendorferGrandPiano);
+   case 7:
+     return synthSamplerCelesta_Processor_getLoopStart(processorCelesta);
+   case 8:
+     return synthSamplerClarinets_Processor_getLoopStart(processorClarinets);
+   case 9:
+     return synthSamplerClassicSuitcaseMk1_Processor_getLoopStart(processorClassicSuitcaseMk1);
+   case 10:
+     return synthSamplerCosmos_Processor_getLoopStart(processorCosmos);
+   case 11:
+     return synthSamplerDreamVoice_Processor_getLoopStart(processorDreamVoice);
+   case 12:
+     return synthSamplerDrivenSynthLead_Processor_getLoopStart(processorDrivenSynthLead);
+   case 13:
+     return synthSamplerGlassMarimbaSoft_Processor_getLoopStart(processorGlassMarimbaSoft);
+   case 14:
+     return synthSamplerIndianSitar_Processor_getLoopStart(processorIndianSitar);
+   case 15:
+     return synthSamplerJapaneseShakuhachiFlute_Processor_getLoopStart(processorJapaneseShakuhachiFlute);
+   case 16:
+     return synthSamplerKoto_Processor_getLoopStart(processorKoto);
+   case 17:
+     return synthSamplerMagnificentDrone_Processor_getLoopStart(processorMagnificentDrone);
+   case 18:
+     return synthSamplerMysticVibes_Processor_getLoopStart(processorMysticVibes);
+   case 19:
+     return synthSamplerPowerFifths_Processor_getLoopStart(processorPowerFifths);
+   case 20:
+     return synthSamplerPulsingPatterns_Processor_getLoopStart(processorPulsingPatterns);
+   case 21:
+     return synthSamplerShootingStar_Processor_getLoopStart(processorShootingStar);
+   case 22:
+     return synthSamplerTimeWarp_Processor_getLoopStart(processorTimeWarp);
+   case 23:
+     return synthSamplerTranquility_Processor_getLoopStart(processorTranquility);
+   case 24:
+     return synthSamplerVocalCluster_Processor_getLoopStart(processorVocalCluster);
+   case 25:
+     return synthSamplerZenGarden_Processor_getLoopStart(processorZenGarden);
+   case 0:
+   default:
+     return synthSampler_Processor_getLoopStart(processorOcarina);
+   }
+}
+
+int MetaSampler::getLoopEnd() {
+   switch(selectedSample) {
+   case 1:
+     return synthSamplerCello_Processor_getLoopEnd(processorCello);
+   case 2:
+     return synthSamplerClarinet_Processor_getLoopEnd(processorClarinet);
+   case 3:
+     return synthSamplerPiano_Processor_getLoopEnd(processorPiano);
+   case 4:
+     return synthSamplerAmbientLead_Processor_getLoopEnd(processorAmbientLead);
+   case 5:
+     return synthSamplerAuthenticStrings_Processor_getLoopEnd(processorAuthenticStrings);
+   case 6:
+     return synthSamplerBoesendorferGrandPiano_Processor_getLoopEnd(processorBoesendorferGrandPiano);
+   case 7:
+     return synthSamplerCelesta_Processor_getLoopEnd(processorCelesta);
+   case 8:
+     return synthSamplerClarinets_Processor_getLoopEnd(processorClarinets);
+   case 9:
+     return synthSamplerClassicSuitcaseMk1_Processor_getLoopEnd(processorClassicSuitcaseMk1);
+   case 10:
+     return synthSamplerCosmos_Processor_getLoopEnd(processorCosmos);
+   case 11:
+     return synthSamplerDreamVoice_Processor_getLoopEnd(processorDreamVoice);
+   case 12:
+     return synthSamplerDrivenSynthLead_Processor_getLoopEnd(processorDrivenSynthLead);
+   case 13:
+     return synthSamplerGlassMarimbaSoft_Processor_getLoopEnd(processorGlassMarimbaSoft);
+   case 14:
+     return synthSamplerIndianSitar_Processor_getLoopEnd(processorIndianSitar);
+   case 15:
+     return synthSamplerJapaneseShakuhachiFlute_Processor_getLoopEnd(processorJapaneseShakuhachiFlute);
+   case 16:
+     return synthSamplerKoto_Processor_getLoopEnd(processorKoto);
+   case 17:
+     return synthSamplerMagnificentDrone_Processor_getLoopEnd(processorMagnificentDrone);
+   case 18:
+     return synthSamplerMysticVibes_Processor_getLoopEnd(processorMysticVibes);
+   case 19:
+     return synthSamplerPowerFifths_Processor_getLoopEnd(processorPowerFifths);
+   case 20:
+     return synthSamplerPulsingPatterns_Processor_getLoopEnd(processorPulsingPatterns);
+   case 21:
+     return synthSamplerShootingStar_Processor_getLoopEnd(processorShootingStar);
+   case 22:
+     return synthSamplerTimeWarp_Processor_getLoopEnd(processorTimeWarp);
+   case 23:
+     return synthSamplerTranquility_Processor_getLoopEnd(processorTranquility);
+   case 24:
+     return synthSamplerVocalCluster_Processor_getLoopEnd(processorVocalCluster);
+   case 25:
+     return synthSamplerZenGarden_Processor_getLoopEnd(processorZenGarden);
+   case 0:
+   default:
+     return synthSampler_Processor_getLoopEnd(processorOcarina);
+   }
+}
+
+void MetaSampler::setLoop(bool param, bool force) {
+   switch(selectedSample) {
+   case 1:
+     synthSamplerCello_Processor_setLoop(processorCello, param, force);
+     break;
+   case 2:
+     synthSamplerClarinet_Processor_setLoop(processorClarinet, param, force);
+      break;
+   case 3:
+     synthSamplerPiano_Processor_setLoop(processorPiano, param, force);
+      break;
+   case 4:
+     synthSamplerAmbientLead_Processor_setLoop(processorAmbientLead, param, force);
+      break;
+   case 5:
+     synthSamplerAuthenticStrings_Processor_setLoop(processorAuthenticStrings, param, force);
+      break;
+   case 6:
+     synthSamplerBoesendorferGrandPiano_Processor_setLoop(processorBoesendorferGrandPiano, param, force);
+      break;
+   case 7:
+     synthSamplerCelesta_Processor_setLoop(processorCelesta, param, force);
+      break;
+   case 8:
+     synthSamplerClarinets_Processor_setLoop(processorClarinets, param, force);
+      break;
+   case 9:
+     synthSamplerClassicSuitcaseMk1_Processor_setLoop(processorClassicSuitcaseMk1, param, force);
+      break;
+   case 10:
+     synthSamplerCosmos_Processor_setLoop(processorCosmos, param, force);
+      break;
+   case 11:
+     synthSamplerDreamVoice_Processor_setLoop(processorDreamVoice, param, force);
+      break;
+   case 12:
+     synthSamplerDrivenSynthLead_Processor_setLoop(processorDrivenSynthLead, param, force);
+      break;
+   case 13:
+     synthSamplerGlassMarimbaSoft_Processor_setLoop(processorGlassMarimbaSoft, param, force);
+      break;
+   case 14:
+     synthSamplerIndianSitar_Processor_setLoop(processorIndianSitar, param, force);
+      break;
+   case 15:
+     synthSamplerJapaneseShakuhachiFlute_Processor_setLoop(processorJapaneseShakuhachiFlute, param, force);
+      break;
+   case 16:
+     synthSamplerKoto_Processor_setLoop(processorKoto, param, force);
+      break;
+   case 17:
+     synthSamplerMagnificentDrone_Processor_setLoop(processorMagnificentDrone, param, force);
+      break;
+   case 18:
+     synthSamplerMysticVibes_Processor_setLoop(processorMysticVibes, param, force);
+      break;
+   case 19:
+     synthSamplerPowerFifths_Processor_setLoop(processorPowerFifths, param, force);
+      break;
+   case 20:
+     synthSamplerPulsingPatterns_Processor_setLoop(processorPulsingPatterns, param, force);
+      break;
+   case 21:
+     synthSamplerShootingStar_Processor_setLoop(processorShootingStar, param, force);
+      break;
+   case 22:
+     synthSamplerTimeWarp_Processor_setLoop(processorTimeWarp, param, force);
+      break;
+   case 23:
+     synthSamplerTranquility_Processor_setLoop(processorTranquility, param, force);
+      break;
+   case 24:
+     synthSamplerVocalCluster_Processor_setLoop(processorVocalCluster, param, force);
+      break;
+   case 25:
+     synthSamplerZenGarden_Processor_setLoop(processorZenGarden, param, force);
+      break;
+   case 0:
+   default:
+     synthSampler_Processor_setLoop(processorOcarina, param, force);
+      break;
+   }
+}
+
+void MetaSampler::setLoopStart(int param, bool force) {
+   switch(selectedSample) {
+   case 1:
+     synthSamplerCello_Processor_setLoopStart(processorCello, param, force);
+      break;
+   case 2:
+     synthSamplerClarinet_Processor_setLoopStart(processorClarinet, param, force);
+      break;
+   case 3:
+     synthSamplerPiano_Processor_setLoopStart(processorPiano, param, force);
+      break;
+   case 4:
+     synthSamplerAmbientLead_Processor_setLoopStart(processorAmbientLead, param, force);
+      break;
+   case 5:
+     synthSamplerAuthenticStrings_Processor_setLoopStart(processorAuthenticStrings, param, force);
+      break;
+   case 6:
+     synthSamplerBoesendorferGrandPiano_Processor_setLoopStart(processorBoesendorferGrandPiano, param, force);
+      break;
+   case 7:
+     synthSamplerCelesta_Processor_setLoopStart(processorCelesta, param, force);
+      break;
+   case 8:
+     synthSamplerClarinets_Processor_setLoopStart(processorClarinets, param, force);
+      break;
+   case 9:
+     synthSamplerClassicSuitcaseMk1_Processor_setLoopStart(processorClassicSuitcaseMk1, param, force);
+      break;
+   case 10:
+     synthSamplerCosmos_Processor_setLoopStart(processorCosmos, param, force);
+      break;
+   case 11:
+     synthSamplerDreamVoice_Processor_setLoopStart(processorDreamVoice, param, force);
+      break;
+   case 12:
+     synthSamplerDrivenSynthLead_Processor_setLoopStart(processorDrivenSynthLead, param, force);
+      break;
+   case 13:
+     synthSamplerGlassMarimbaSoft_Processor_setLoopStart(processorGlassMarimbaSoft, param, force);
+      break;
+   case 14:
+     synthSamplerIndianSitar_Processor_setLoopStart(processorIndianSitar, param, force);
+      break;
+   case 15:
+     synthSamplerJapaneseShakuhachiFlute_Processor_setLoopStart(processorJapaneseShakuhachiFlute, param, force);
+      break;
+   case 16:
+     synthSamplerKoto_Processor_setLoopStart(processorKoto, param, force);
+      break;
+   case 17:
+     synthSamplerMagnificentDrone_Processor_setLoopStart(processorMagnificentDrone, param, force);
+      break;
+   case 18:
+     synthSamplerMysticVibes_Processor_setLoopStart(processorMysticVibes, param, force);
+      break;
+   case 19:
+     synthSamplerPowerFifths_Processor_setLoopStart(processorPowerFifths, param, force);
+      break;
+   case 20:
+     synthSamplerPulsingPatterns_Processor_setLoopStart(processorPulsingPatterns, param, force);
+      break;
+   case 21:
+     synthSamplerShootingStar_Processor_setLoopStart(processorShootingStar, param, force);
+      break;
+   case 22:
+     synthSamplerTimeWarp_Processor_setLoopStart(processorTimeWarp, param, force);
+      break;
+   case 23:
+     synthSamplerTranquility_Processor_setLoopStart(processorTranquility, param, force);
+      break;
+   case 24:
+     synthSamplerVocalCluster_Processor_setLoopStart(processorVocalCluster, param, force);
+      break;
+   case 25:
+     synthSamplerZenGarden_Processor_setLoopStart(processorZenGarden, param, force);
+      break;
+   case 0:
+   default:
+     synthSampler_Processor_setLoopStart(processorOcarina, param, force);
+      break;
+   }
+}
+
+void MetaSampler::setLoopEnd(int param, bool force) {
+   switch(selectedSample) {
+   case 1:
+     synthSamplerCello_Processor_setLoopEnd(processorCello, param, force);
+      break;
+   case 2:
+     synthSamplerClarinet_Processor_setLoopEnd(processorClarinet, param, force);
+      break;
+   case 3:
+     synthSamplerPiano_Processor_setLoopEnd(processorPiano, param, force);
+      break;
+   case 4:
+     synthSamplerAmbientLead_Processor_setLoopEnd(processorAmbientLead, param, force);
+      break;
+   case 5:
+     synthSamplerAuthenticStrings_Processor_setLoopEnd(processorAuthenticStrings, param, force);
+      break;
+   case 6:
+     synthSamplerBoesendorferGrandPiano_Processor_setLoopEnd(processorBoesendorferGrandPiano, param, force);
+      break;
+   case 7:
+     synthSamplerCelesta_Processor_setLoopEnd(processorCelesta, param, force);
+      break;
+   case 8:
+     synthSamplerClarinets_Processor_setLoopEnd(processorClarinets, param, force);
+      break;
+   case 9:
+     synthSamplerClassicSuitcaseMk1_Processor_setLoopEnd(processorClassicSuitcaseMk1, param, force);
+      break;
+   case 10:
+     synthSamplerCosmos_Processor_setLoopEnd(processorCosmos, param, force);
+      break;
+   case 11:
+     synthSamplerDreamVoice_Processor_setLoopEnd(processorDreamVoice, param, force);
+      break;
+   case 12:
+     synthSamplerDrivenSynthLead_Processor_setLoopEnd(processorDrivenSynthLead, param, force);
+      break;
+   case 13:
+     synthSamplerGlassMarimbaSoft_Processor_setLoopEnd(processorGlassMarimbaSoft, param, force);
+      break;
+   case 14:
+     synthSamplerIndianSitar_Processor_setLoopEnd(processorIndianSitar, param, force);
+      break;
+   case 15:
+     synthSamplerJapaneseShakuhachiFlute_Processor_setLoopEnd(processorJapaneseShakuhachiFlute, param, force);
+      break;
+   case 16:
+     synthSamplerKoto_Processor_setLoopEnd(processorKoto, param, force);
+      break;
+   case 17:
+     synthSamplerMagnificentDrone_Processor_setLoopEnd(processorMagnificentDrone, param, force);
+      break;
+   case 18:
+     synthSamplerMysticVibes_Processor_setLoopEnd(processorMysticVibes, param, force);
+      break;
+   case 19:
+     synthSamplerPowerFifths_Processor_setLoopEnd(processorPowerFifths, param, force);
+      break;
+   case 20:
+     synthSamplerPulsingPatterns_Processor_setLoopEnd(processorPulsingPatterns, param, force);
+      break;
+   case 21:
+     synthSamplerShootingStar_Processor_setLoopEnd(processorShootingStar, param, force);
+      break;
+   case 22:
+     synthSamplerTimeWarp_Processor_setLoopEnd(processorTimeWarp, param, force);
+      break;
+   case 23:
+     synthSamplerTranquility_Processor_setLoopEnd(processorTranquility, param, force);
+      break;
+   case 24:
+     synthSamplerVocalCluster_Processor_setLoopEnd(processorVocalCluster, param, force);
+      break;
+   case 25:
+     synthSamplerZenGarden_Processor_setLoopEnd(processorZenGarden, param, force);
+      break;
+   case 0:
+   default:
+     synthSampler_Processor_setLoopEnd(processorOcarina, param, force);
       break;
    }
 }

@@ -35,6 +35,8 @@ struct MetaSampler {
    
    // to sync with the actual number of samples...
    static int getNbSamples() { return 26;};
+   // to sync with biggest wave file
+   static int getMaxLoopSize() { return 100000;};
    static std::string getSampleName(int sample) {
       switch(sample) {
       case 1:
@@ -93,12 +95,18 @@ struct MetaSampler {
       }
    };
 
-   // will (re)init corresponding processor upon change
-   void switchTo(int sample);
+   // will (re)init corresponding processor upon change. return true if actually swiched
+   bool switchTo(int sample);
    // wrapping functions
    void setSamplerate(float sr);
    void nbCables(int cables);
    void setNote(float gate, float voct, float vel, int c);
+   bool getLoop();
+   int getLoopStart();
+   int getLoopEnd();
+   void setLoop(bool loop, bool force = false);
+   void setLoopStart(int loopS, bool force = false);
+   void setLoopEnd(int loopE, bool folse = false);
    float process();
 
 private:

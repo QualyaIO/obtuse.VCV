@@ -38,7 +38,7 @@ struct SynthSampler : Module {
 
    SynthSampler();
    // pass all parameters to engine. force: engine will pass params even if not changed, use upon init
-   void sendParams(bool force=false);
+   void syncParams(bool force=false);
    void process(const ProcessArgs &args) override;
 };
 
@@ -47,26 +47,49 @@ SynthSampler::SynthSampler() {
 
    configParam<SampleQuantity>(SynthSampler::SAMPLE, 0, MetaSampler::getNbSamples()-1, 0, "Sample", "");
    paramQuantities[SAMPLE]->snapEnabled = true;
+
+   configParam(SynthSampler::LOOP_START, 0, MetaSampler::getMaxLoopSize(), 0, "Loop start", " sample");
+   paramQuantities[LOOP_START]->snapEnabled = true;
+   configParam(SynthSampler::LOOP_END, 0, MetaSampler::getMaxLoopSize(), 0, "Loop end", " sample");
+   paramQuantities[LOOP_END]->snapEnabled = true;
    
-   sendParams(true);
+   configSwitch(SynthSampler::LOOP_TOGGLE, 0, 1, 0, "Loop", {"Disable looping", "Enable looping"});
+   configSwitch(SynthSampler::OVERRIDE_TOGGLE, 0, 1, 0, "Loop override", {"Fetch default loop state upon change", "Override default loop state"});
+
+   syncParams(true);
 }
 
-void SynthSampler::sendParams(bool force) {
-   // update light for loop toggle
+void SynthSampler::syncParams(bool force) {
    bool loop_press = params[LOOP_TOGGLE].getValue() > 0.0;
-   lights[LOOP_LIGHT].setBrightnessSmooth(loop_press, 10.0f);
-   // same for override
    bool override_press = params[OVERRIDE_TOGGLE].getValue() > 0.0;
-   lights[OVERRIDE_LIGHT].setBrightnessSmooth(override_press, 10.0f);
 
    // sync current processor
-   sampler.switchTo(int(params[SAMPLE].getValue()));
+   if (sampler.switchTo(int(params[SAMPLE].getValue()))) {
+      // we did switch, force current state to sampler if override is set, otherwise force sampler default state to VCV
+      if (override_press) {
+         sampler.setLoop(loop_press, true);
+         sampler.setLoopStart(int(params[LOOP_START].getValue()), true);
+         sampler.setLoopEnd(int(params[LOOP_END].getValue()), true);
+      } else {
+         params[LOOP_TOGGLE].setValue(sampler.getLoop());
+         params[LOOP_START].setValue(sampler.getLoopStart());
+         params[LOOP_END].setValue(sampler.getLoopEnd());
+      }
+   } else {
+         sampler.setLoop(loop_press, force);
+         sampler.setLoopStart(int(params[LOOP_START].getValue()), force);
+         sampler.setLoopEnd(int(params[LOOP_END].getValue()), force);
+   }
+
+   // update lights
+   lights[LOOP_LIGHT].setBrightnessSmooth(loop_press, 10.0f);
+   lights[OVERRIDE_LIGHT].setBrightnessSmooth(override_press, 10.0f);
 }
 
 void SynthSampler::process(const ProcessArgs &args) {
    // update parameters
    sampler.setSamplerate(args.sampleRate/1000.0);
-   sendParams();
+   syncParams();
 
    // retrieve current max number of channels for gate and v/oct
    int channels =
