@@ -26,6 +26,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - chord: select a fix shift
 - chord: knob for root note
 - comb, allpass, reverb: fix arifacts upon launching scene that is playing
+- sampler: better way to enforce loop size
 
 # Changelog
 

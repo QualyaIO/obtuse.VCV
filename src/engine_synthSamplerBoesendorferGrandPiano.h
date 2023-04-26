@@ -1326,6 +1326,17 @@ static_inline int synthSamplerBoesendorferGrandPiano_Processor_getLoopEnd(synthS
    return synthSamplerBoesendorferGrandPiano_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_getSize_type;
+
+static_inline void synthSamplerBoesendorferGrandPiano_Processor_getSize_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerBoesendorferGrandPiano_Processor_getSize(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx){
+   return synthSamplerBoesendorferGrandPiano_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_default_type;
 
 static_inline void synthSamplerBoesendorferGrandPiano_Processor_default_init(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_output_){

@@ -1326,6 +1326,17 @@ static_inline int synthSamplerGlassMarimbaSoft_Processor_getLoopEnd(synthSampler
    return synthSamplerGlassMarimbaSoft_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 synthSamplerGlassMarimbaSoft_Processor_getSize_type;
+
+static_inline void synthSamplerGlassMarimbaSoft_Processor_getSize_init(synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 &_output_){
+   synthSamplerGlassMarimbaSoft_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerGlassMarimbaSoft_Processor_getSize(synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 &_ctx){
+   return synthSamplerGlassMarimbaSoft_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 synthSamplerGlassMarimbaSoft_Processor_default_type;
 
 static_inline void synthSamplerGlassMarimbaSoft_Processor_default_init(synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 &_output_){

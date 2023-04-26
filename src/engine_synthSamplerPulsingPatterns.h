@@ -1326,6 +1326,17 @@ static_inline int synthSamplerPulsingPatterns_Processor_getLoopEnd(synthSamplerP
    return synthSamplerPulsingPatterns_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerPulsingPatterns_Processor__ctx_type_2 synthSamplerPulsingPatterns_Processor_getSize_type;
+
+static_inline void synthSamplerPulsingPatterns_Processor_getSize_init(synthSamplerPulsingPatterns_Processor__ctx_type_2 &_output_){
+   synthSamplerPulsingPatterns_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerPulsingPatterns_Processor_getSize(synthSamplerPulsingPatterns_Processor__ctx_type_2 &_ctx){
+   return synthSamplerPulsingPatterns_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerPulsingPatterns_Processor__ctx_type_2 synthSamplerPulsingPatterns_Processor_default_type;
 
 static_inline void synthSamplerPulsingPatterns_Processor_default_init(synthSamplerPulsingPatterns_Processor__ctx_type_2 &_output_){

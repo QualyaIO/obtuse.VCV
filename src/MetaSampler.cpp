@@ -184,6 +184,64 @@ void MetaSampler::nbCables(int cables) {
    }
 }
 
+int MetaSampler::getSize() {
+   switch(selectedSample) {
+   case 1:
+     return synthSamplerCello_Processor_getSize(processorCello);
+   case 2:
+     return synthSamplerClarinet_Processor_getSize(processorClarinet);
+   case 3:
+     return synthSamplerPiano_Processor_getSize(processorPiano);
+   case 4:
+     return synthSamplerAmbientLead_Processor_getSize(processorAmbientLead);
+   case 5:
+     return synthSamplerAuthenticStrings_Processor_getSize(processorAuthenticStrings);
+   case 6:
+     return synthSamplerBoesendorferGrandPiano_Processor_getSize(processorBoesendorferGrandPiano);
+   case 7:
+     return synthSamplerCelesta_Processor_getSize(processorCelesta);
+   case 8:
+     return synthSamplerClarinets_Processor_getSize(processorClarinets);
+   case 9:
+     return synthSamplerClassicSuitcaseMk1_Processor_getSize(processorClassicSuitcaseMk1);
+   case 10:
+     return synthSamplerCosmos_Processor_getSize(processorCosmos);
+   case 11:
+     return synthSamplerDreamVoice_Processor_getSize(processorDreamVoice);
+   case 12:
+     return synthSamplerDrivenSynthLead_Processor_getSize(processorDrivenSynthLead);
+   case 13:
+     return synthSamplerGlassMarimbaSoft_Processor_getSize(processorGlassMarimbaSoft);
+   case 14:
+     return synthSamplerIndianSitar_Processor_getSize(processorIndianSitar);
+   case 15:
+     return synthSamplerJapaneseShakuhachiFlute_Processor_getSize(processorJapaneseShakuhachiFlute);
+   case 16:
+     return synthSamplerKoto_Processor_getSize(processorKoto);
+   case 17:
+     return synthSamplerMagnificentDrone_Processor_getSize(processorMagnificentDrone);
+   case 18:
+     return synthSamplerMysticVibes_Processor_getSize(processorMysticVibes);
+   case 19:
+     return synthSamplerPowerFifths_Processor_getSize(processorPowerFifths);
+   case 20:
+     return synthSamplerPulsingPatterns_Processor_getSize(processorPulsingPatterns);
+   case 21:
+     return synthSamplerShootingStar_Processor_getSize(processorShootingStar);
+   case 22:
+     return synthSamplerTimeWarp_Processor_getSize(processorTimeWarp);
+   case 23:
+     return synthSamplerTranquility_Processor_getSize(processorTranquility);
+   case 24:
+     return synthSamplerVocalCluster_Processor_getSize(processorVocalCluster);
+   case 25:
+     return synthSamplerZenGarden_Processor_getSize(processorZenGarden);
+   case 0:
+   default:
+     return synthSampler_Processor_getSize(processorOcarina);
+   }
+}
+
 bool MetaSampler::getLoop() {
    switch(selectedSample) {
    case 1:

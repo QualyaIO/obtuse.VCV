@@ -1326,6 +1326,17 @@ static_inline int synthSamplerClassicSuitcaseMk1_Processor_getLoopEnd(synthSampl
    return synthSamplerClassicSuitcaseMk1_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerClassicSuitcaseMk1_Processor__ctx_type_2 synthSamplerClassicSuitcaseMk1_Processor_getSize_type;
+
+static_inline void synthSamplerClassicSuitcaseMk1_Processor_getSize_init(synthSamplerClassicSuitcaseMk1_Processor__ctx_type_2 &_output_){
+   synthSamplerClassicSuitcaseMk1_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerClassicSuitcaseMk1_Processor_getSize(synthSamplerClassicSuitcaseMk1_Processor__ctx_type_2 &_ctx){
+   return synthSamplerClassicSuitcaseMk1_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerClassicSuitcaseMk1_Processor__ctx_type_2 synthSamplerClassicSuitcaseMk1_Processor_default_type;
 
 static_inline void synthSamplerClassicSuitcaseMk1_Processor_default_init(synthSamplerClassicSuitcaseMk1_Processor__ctx_type_2 &_output_){

@@ -103,6 +103,9 @@ and getLoopStart(): int {
 and getLoopEnd(): int {
    return voice:Voice.synthGetLoopEnd();
 }
+and getSize(): int {
+   return voice:Voice.synthGetSize();
+}
 and default() @[init] {
    _ = voice:Voice.default();
    _ = setSamplerate(44.1);

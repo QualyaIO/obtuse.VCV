@@ -1326,6 +1326,17 @@ static_inline int synthSamplerCello_Processor_getLoopEnd(synthSamplerCello_Proce
    return synthSamplerCello_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerCello_Processor__ctx_type_2 synthSamplerCello_Processor_getSize_type;
+
+static_inline void synthSamplerCello_Processor_getSize_init(synthSamplerCello_Processor__ctx_type_2 &_output_){
+   synthSamplerCello_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerCello_Processor_getSize(synthSamplerCello_Processor__ctx_type_2 &_ctx){
+   return synthSamplerCello_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerCello_Processor__ctx_type_2 synthSamplerCello_Processor_default_type;
 
 static_inline void synthSamplerCello_Processor_default_init(synthSamplerCello_Processor__ctx_type_2 &_output_){

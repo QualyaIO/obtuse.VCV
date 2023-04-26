@@ -1326,6 +1326,17 @@ static_inline int synthSamplerTimeWarp_Processor_getLoopEnd(synthSamplerTimeWarp
    return synthSamplerTimeWarp_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_getSize_type;
+
+static_inline void synthSamplerTimeWarp_Processor_getSize_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){
+   synthSamplerTimeWarp_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerTimeWarp_Processor_getSize(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx){
+   return synthSamplerTimeWarp_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_default_type;
 
 static_inline void synthSamplerTimeWarp_Processor_default_init(synthSamplerTimeWarp_Processor__ctx_type_2 &_output_){

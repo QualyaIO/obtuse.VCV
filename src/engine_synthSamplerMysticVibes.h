@@ -1326,6 +1326,17 @@ static_inline int synthSamplerMysticVibes_Processor_getLoopEnd(synthSamplerMysti
    return synthSamplerMysticVibes_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerMysticVibes_Processor__ctx_type_2 synthSamplerMysticVibes_Processor_getSize_type;
+
+static_inline void synthSamplerMysticVibes_Processor_getSize_init(synthSamplerMysticVibes_Processor__ctx_type_2 &_output_){
+   synthSamplerMysticVibes_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerMysticVibes_Processor_getSize(synthSamplerMysticVibes_Processor__ctx_type_2 &_ctx){
+   return synthSamplerMysticVibes_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerMysticVibes_Processor__ctx_type_2 synthSamplerMysticVibes_Processor_default_type;
 
 static_inline void synthSamplerMysticVibes_Processor_default_init(synthSamplerMysticVibes_Processor__ctx_type_2 &_output_){

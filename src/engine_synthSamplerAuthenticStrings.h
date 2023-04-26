@@ -1326,6 +1326,17 @@ static_inline int synthSamplerAuthenticStrings_Processor_getLoopEnd(synthSampler
    return synthSamplerAuthenticStrings_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerAuthenticStrings_Processor__ctx_type_2 synthSamplerAuthenticStrings_Processor_getSize_type;
+
+static_inline void synthSamplerAuthenticStrings_Processor_getSize_init(synthSamplerAuthenticStrings_Processor__ctx_type_2 &_output_){
+   synthSamplerAuthenticStrings_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerAuthenticStrings_Processor_getSize(synthSamplerAuthenticStrings_Processor__ctx_type_2 &_ctx){
+   return synthSamplerAuthenticStrings_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerAuthenticStrings_Processor__ctx_type_2 synthSamplerAuthenticStrings_Processor_default_type;
 
 static_inline void synthSamplerAuthenticStrings_Processor_default_init(synthSamplerAuthenticStrings_Processor__ctx_type_2 &_output_){

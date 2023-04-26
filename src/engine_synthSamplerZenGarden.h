@@ -1326,6 +1326,17 @@ static_inline int synthSamplerZenGarden_Processor_getLoopEnd(synthSamplerZenGard
    return synthSamplerZenGarden_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerZenGarden_Processor__ctx_type_2 synthSamplerZenGarden_Processor_getSize_type;
+
+static_inline void synthSamplerZenGarden_Processor_getSize_init(synthSamplerZenGarden_Processor__ctx_type_2 &_output_){
+   synthSamplerZenGarden_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerZenGarden_Processor_getSize(synthSamplerZenGarden_Processor__ctx_type_2 &_ctx){
+   return synthSamplerZenGarden_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerZenGarden_Processor__ctx_type_2 synthSamplerZenGarden_Processor_default_type;
 
 static_inline void synthSamplerZenGarden_Processor_default_init(synthSamplerZenGarden_Processor__ctx_type_2 &_output_){

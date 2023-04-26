@@ -1326,6 +1326,17 @@ static_inline int synthSamplerCelesta_Processor_getLoopEnd(synthSamplerCelesta_P
    return synthSamplerCelesta_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerCelesta_Processor__ctx_type_2 synthSamplerCelesta_Processor_getSize_type;
+
+static_inline void synthSamplerCelesta_Processor_getSize_init(synthSamplerCelesta_Processor__ctx_type_2 &_output_){
+   synthSamplerCelesta_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerCelesta_Processor_getSize(synthSamplerCelesta_Processor__ctx_type_2 &_ctx){
+   return synthSamplerCelesta_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerCelesta_Processor__ctx_type_2 synthSamplerCelesta_Processor_default_type;
 
 static_inline void synthSamplerCelesta_Processor_default_init(synthSamplerCelesta_Processor__ctx_type_2 &_output_){

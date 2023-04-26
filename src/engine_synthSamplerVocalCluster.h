@@ -1326,6 +1326,17 @@ static_inline int synthSamplerVocalCluster_Processor_getLoopEnd(synthSamplerVoca
    return synthSamplerVocalCluster_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerVocalCluster_Processor__ctx_type_2 synthSamplerVocalCluster_Processor_getSize_type;
+
+static_inline void synthSamplerVocalCluster_Processor_getSize_init(synthSamplerVocalCluster_Processor__ctx_type_2 &_output_){
+   synthSamplerVocalCluster_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerVocalCluster_Processor_getSize(synthSamplerVocalCluster_Processor__ctx_type_2 &_ctx){
+   return synthSamplerVocalCluster_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerVocalCluster_Processor__ctx_type_2 synthSamplerVocalCluster_Processor_default_type;
 
 static_inline void synthSamplerVocalCluster_Processor_default_init(synthSamplerVocalCluster_Processor__ctx_type_2 &_output_){

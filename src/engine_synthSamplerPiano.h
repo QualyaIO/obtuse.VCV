@@ -1326,6 +1326,17 @@ static_inline int synthSamplerPiano_Processor_getLoopEnd(synthSamplerPiano_Proce
    return synthSamplerPiano_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerPiano_Processor__ctx_type_2 synthSamplerPiano_Processor_getSize_type;
+
+static_inline void synthSamplerPiano_Processor_getSize_init(synthSamplerPiano_Processor__ctx_type_2 &_output_){
+   synthSamplerPiano_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerPiano_Processor_getSize(synthSamplerPiano_Processor__ctx_type_2 &_ctx){
+   return synthSamplerPiano_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerPiano_Processor__ctx_type_2 synthSamplerPiano_Processor_default_type;
 
 static_inline void synthSamplerPiano_Processor_default_init(synthSamplerPiano_Processor__ctx_type_2 &_output_){

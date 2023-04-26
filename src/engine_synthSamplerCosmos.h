@@ -1326,6 +1326,17 @@ static_inline int synthSamplerCosmos_Processor_getLoopEnd(synthSamplerCosmos_Pro
    return synthSamplerCosmos_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerCosmos_Processor__ctx_type_2 synthSamplerCosmos_Processor_getSize_type;
+
+static_inline void synthSamplerCosmos_Processor_getSize_init(synthSamplerCosmos_Processor__ctx_type_2 &_output_){
+   synthSamplerCosmos_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerCosmos_Processor_getSize(synthSamplerCosmos_Processor__ctx_type_2 &_ctx){
+   return synthSamplerCosmos_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerCosmos_Processor__ctx_type_2 synthSamplerCosmos_Processor_default_type;
 
 static_inline void synthSamplerCosmos_Processor_default_init(synthSamplerCosmos_Processor__ctx_type_2 &_output_){

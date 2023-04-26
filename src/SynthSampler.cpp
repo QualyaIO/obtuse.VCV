@@ -81,6 +81,16 @@ void SynthSampler::syncParams(bool force) {
          sampler.setLoopEnd(int(params[LOOP_END].getValue()), force);
    }
 
+   // enforcing range of loop within size
+   // FIXME: getting too close to the end will disable crossfading and then loop altogether
+   // TODO: also enforce start pos compared to end?
+   if (params[LOOP_END].getValue() > sampler.getSize()) {
+      params[LOOP_END].setValue(sampler.getSize());
+   }
+   if (params[LOOP_START].getValue() > sampler.getSize()) {
+      params[LOOP_START].setValue(sampler.getSize());
+   }
+
    // update lights
    lights[LOOP_LIGHT].setBrightnessSmooth(loop_press, 10.0f);
    lights[OVERRIDE_LIGHT].setBrightnessSmooth(override_press, 10.0f);

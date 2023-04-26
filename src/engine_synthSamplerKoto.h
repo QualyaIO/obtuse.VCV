@@ -1326,6 +1326,17 @@ static_inline int synthSamplerKoto_Processor_getLoopEnd(synthSamplerKoto_Process
    return synthSamplerKoto_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerKoto_Processor__ctx_type_2 synthSamplerKoto_Processor_getSize_type;
+
+static_inline void synthSamplerKoto_Processor_getSize_init(synthSamplerKoto_Processor__ctx_type_2 &_output_){
+   synthSamplerKoto_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerKoto_Processor_getSize(synthSamplerKoto_Processor__ctx_type_2 &_ctx){
+   return synthSamplerKoto_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerKoto_Processor__ctx_type_2 synthSamplerKoto_Processor_default_type;
 
 static_inline void synthSamplerKoto_Processor_default_init(synthSamplerKoto_Processor__ctx_type_2 &_output_){

@@ -1326,6 +1326,17 @@ static_inline int synthSamplerMagnificentDrone_Processor_getLoopEnd(synthSampler
    return synthSamplerMagnificentDrone_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerMagnificentDrone_Processor__ctx_type_2 synthSamplerMagnificentDrone_Processor_getSize_type;
+
+static_inline void synthSamplerMagnificentDrone_Processor_getSize_init(synthSamplerMagnificentDrone_Processor__ctx_type_2 &_output_){
+   synthSamplerMagnificentDrone_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerMagnificentDrone_Processor_getSize(synthSamplerMagnificentDrone_Processor__ctx_type_2 &_ctx){
+   return synthSamplerMagnificentDrone_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerMagnificentDrone_Processor__ctx_type_2 synthSamplerMagnificentDrone_Processor_default_type;
 
 static_inline void synthSamplerMagnificentDrone_Processor_default_init(synthSamplerMagnificentDrone_Processor__ctx_type_2 &_output_){

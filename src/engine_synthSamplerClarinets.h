@@ -1326,6 +1326,17 @@ static_inline int synthSamplerClarinets_Processor_getLoopEnd(synthSamplerClarine
    return synthSamplerClarinets_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerClarinets_Processor__ctx_type_2 synthSamplerClarinets_Processor_getSize_type;
+
+static_inline void synthSamplerClarinets_Processor_getSize_init(synthSamplerClarinets_Processor__ctx_type_2 &_output_){
+   synthSamplerClarinets_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerClarinets_Processor_getSize(synthSamplerClarinets_Processor__ctx_type_2 &_ctx){
+   return synthSamplerClarinets_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerClarinets_Processor__ctx_type_2 synthSamplerClarinets_Processor_default_type;
 
 static_inline void synthSamplerClarinets_Processor_default_init(synthSamplerClarinets_Processor__ctx_type_2 &_output_){

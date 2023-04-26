@@ -1326,6 +1326,17 @@ static_inline int synthSamplerJapaneseShakuhachiFlute_Processor_getLoopEnd(synth
    return synthSamplerJapaneseShakuhachiFlute_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2 synthSamplerJapaneseShakuhachiFlute_Processor_getSize_type;
+
+static_inline void synthSamplerJapaneseShakuhachiFlute_Processor_getSize_init(synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2 &_output_){
+   synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerJapaneseShakuhachiFlute_Processor_getSize(synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2 &_ctx){
+   return synthSamplerJapaneseShakuhachiFlute_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2 synthSamplerJapaneseShakuhachiFlute_Processor_default_type;
 
 static_inline void synthSamplerJapaneseShakuhachiFlute_Processor_default_init(synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2 &_output_){

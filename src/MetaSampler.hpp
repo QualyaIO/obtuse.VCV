@@ -104,6 +104,7 @@ struct MetaSampler {
    bool getLoop();
    int getLoopStart();
    int getLoopEnd();
+   int getSize();
    void setLoop(bool loop, bool force = false);
    void setLoopStart(int loopS, bool force = false);
    void setLoopEnd(int loopE, bool folse = false);

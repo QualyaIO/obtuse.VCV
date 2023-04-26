@@ -1326,6 +1326,17 @@ static_inline int synthSamplerIndianSitar_Processor_getLoopEnd(synthSamplerIndia
    return synthSamplerIndianSitar_Voice_synthGetLoopEnd(_ctx.voice);
 };
 
+typedef synthSamplerIndianSitar_Processor__ctx_type_2 synthSamplerIndianSitar_Processor_getSize_type;
+
+static_inline void synthSamplerIndianSitar_Processor_getSize_init(synthSamplerIndianSitar_Processor__ctx_type_2 &_output_){
+   synthSamplerIndianSitar_Processor__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline int synthSamplerIndianSitar_Processor_getSize(synthSamplerIndianSitar_Processor__ctx_type_2 &_ctx){
+   return synthSamplerIndianSitar_Voice_synthGetSize(_ctx.voice);
+};
+
 typedef synthSamplerIndianSitar_Processor__ctx_type_2 synthSamplerIndianSitar_Processor_default_type;
 
 static_inline void synthSamplerIndianSitar_Processor_default_init(synthSamplerIndianSitar_Processor__ctx_type_2 &_output_){
