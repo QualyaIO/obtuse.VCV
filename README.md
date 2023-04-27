@@ -30,9 +30,9 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
-## 2.2.1 (current)
+## 2.2.1 (2023-04-27)
 
-- bump DSP, fix chord shift
+- bump DSP, fix chord shift and trigg, init correctly buffers to avoid artifacts upon launch
 
 ## 2.2.0 (2023-04-26)
 

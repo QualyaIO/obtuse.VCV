@@ -108,8 +108,7 @@ static_inline fix16_t Util_velocityToLevel(int velocity){
 static_inline void Buffer_buffer(fix16_t (&oBuff)[256]){
 }
 
-static_inline void Buffer_buffer_large(fix16_t (&oBuff)[2048]){
-}
+void Buffer_buffer_large(fix16_t (&oBuff)[2048]);
 
 typedef struct SVF__ctx_type_0 {
    fix16_t z2;
