@@ -225,7 +225,9 @@ int Trigg_process(Trigg__ctx_type_0 &_ctx){
 void Trigg__recompute(Trigg__ctx_type_0 &_ctx){
    fix16_t mod;
    mod = 0x0 /* 0.000000 */;
-   mod = fix_div(0x10000 /* 1.000000 */,_ctx.density);
+   if(_ctx.density > 0x0 /* 0.000000 */){
+      mod = fix_div(0x10000 /* 1.000000 */,_ctx.density);
+   }
    fix16_t max_p;
    max_p = 0x10000 /* 1.000000 */;
    fix16_t min_p;
@@ -1235,7 +1237,11 @@ void Tonnetz_process(Tonnetz__ctx_type_8 &_ctx){
          while((i < 11) && (_ctx.shifts[i] != _ctx.shift) && (_ctx.shifts[i] != 0)){
             i = (1 + i);
          }
-         _ctx.shifts[((-1) + i)] = _ctx.shift;
+         if(i >= 11){
+            i = 10;
+         }
+         _ctx.shifts[i] = _ctx.shift;
+         i = (1 + i);
          while(i < 11){
             _ctx.shifts[i] = 0;
             i = (1 + i);

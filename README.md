@@ -30,6 +30,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## 2.2.1 (current)
+
+- bump DSP, fix chord shift
+
 ## 2.2.0 (2023-04-26)
 
 - bump DSP, adding new samples and drum kits
