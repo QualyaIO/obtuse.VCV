@@ -1417,6 +1417,7 @@ typedef struct Processor_clock__ctx_type_2 {
    Processor_clock__ctx_type_0 _inst3d8;
    Processor_clock__ctx_type_0 _inst2d8;
    Processor_clock__ctx_type_0 _inst1d8;
+   Util__ctx_type_3 _inst163b;
    Util__ctx_type_3 _inst13b;
    Util__ctx_type_3 _inst133b;
    Util__ctx_type_3 _inst103b;
@@ -1501,6 +1502,19 @@ static_inline void Processor_clock_setBPM(Processor_clock__ctx_type_2 &_ctx, fix
    }
 };
 
+typedef Processor_clock__ctx_type_2 Processor_clock_setNbTicks_type;
+
+static_inline void Processor_clock_setNbTicks_init(Processor_clock__ctx_type_2 &_output_){
+   Processor_clock__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void Processor_clock_setNbTicks(Processor_clock__ctx_type_2 &_ctx, int param, uint8_t force){
+   if(Util_change(_ctx._inst43b,int_to_fix(param)) || force){
+      Clock_setNbTicks(_ctx.cloclo,param);
+   }
+};
+
 typedef Processor_clock__ctx_type_2 Processor_clock_setSwing_type;
 
 static_inline void Processor_clock_setSwing_init(Processor_clock__ctx_type_2 &_output_){
@@ -1509,7 +1523,7 @@ static_inline void Processor_clock_setSwing_init(Processor_clock__ctx_type_2 &_o
 }
 
 static_inline void Processor_clock_setSwing(Processor_clock__ctx_type_2 &_ctx, fix16_t param, uint8_t force){
-   if(Util_change(_ctx._inst43b,param) || force){
+   if(Util_change(_ctx._inst73b,param) || force){
       Clock_setSwing(_ctx.cloclo,param);
    }
 };
@@ -1522,7 +1536,7 @@ static_inline void Processor_clock_setGroupSize_init(Processor_clock__ctx_type_2
 }
 
 static_inline void Processor_clock_setGroupSize(Processor_clock__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(Util_change(_ctx._inst73b,int_to_fix(param)) || force){
+   if(Util_change(_ctx._inst103b,int_to_fix(param)) || force){
       Clock_setGroupSize(_ctx.cloclo,param);
    }
 };
@@ -1535,7 +1549,7 @@ static_inline void Processor_clock_setGroupRatio_init(Processor_clock__ctx_type_
 }
 
 static_inline void Processor_clock_setGroupRatio(Processor_clock__ctx_type_2 &_ctx, fix16_t param, uint8_t force){
-   if(Util_change(_ctx._inst103b,param) || force){
+   if(Util_change(_ctx._inst133b,param) || force){
       Clock_setGroupRatio(_ctx.cloclo,param);
    }
 };
@@ -1548,7 +1562,7 @@ static_inline void Processor_clock_setOrderMix_init(Processor_clock__ctx_type_2 
 }
 
 static_inline void Processor_clock_setOrderMix(Processor_clock__ctx_type_2 &_ctx, fix16_t param, uint8_t force){
-   if(Util_change(_ctx._inst133b,Processor_clock_bool2real((param > 0x8000 /* 0.500000 */))) || force){
+   if(Util_change(_ctx._inst163b,Processor_clock_bool2real((param > 0x8000 /* 0.500000 */))) || force){
       Clock_setOrderMix(_ctx.cloclo,(param > 0x8000 /* 0.500000 */));
    }
 };
@@ -1559,6 +1573,14 @@ static_inline fix16_t Processor_clock_getMinBPM(){
 
 static_inline fix16_t Processor_clock_getMaxBPM(){
    return 0x75300000 /* 30000.000000 */;
+};
+
+static_inline int Processor_clock_getMinTicks(){
+   return 1;
+};
+
+static_inline int Processor_clock_getMaxTicks(){
+   return 1024;
 };
 
 static_inline int Processor_clock_getMinGroupSize(){

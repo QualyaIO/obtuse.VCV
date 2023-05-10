@@ -1631,7 +1631,7 @@ int Clock_getTicks(Clock__ctx_type_7 &_ctx){
    fix16_t diffS;
    diffS = (_ctx.timeFract + int_to_fix((_ctx.timeS + (- _ctx.lastBeatS))) + (- _ctx.lastBeatFract));
    if(_ctx.ibi > 0x0 /* 0.000000 */){
-      return int_clip(fix_to_int(fix_mul(int_to_fix(_ctx.ticks),fix_div(diffS,_ctx.ibi))),0,1024);
+      return int_clip(fix_to_int(fix_mul(int_to_fix(_ctx.ticks),fix_div(diffS,_ctx.ibi))),0,_ctx.ticks);
    }
    return 0;
 }
@@ -1642,7 +1642,7 @@ int Clock_getNbNewTicks(Clock__ctx_type_7 &_ctx){
    int newTicks;
    newTicks = (curTicks + (- _ctx.lastTicks));
    if(newTicks < 0){
-      newTicks = (newTicks % 1024);
+      newTicks = (newTicks % _ctx.ticks);
    }
    _ctx.lastTicks = curTicks;
    return newTicks;
@@ -1693,6 +1693,7 @@ void Processor_clock__ctx_type_2_init(Processor_clock__ctx_type_2 &_output_){
    Processor_clock__ctx_type_0_init(_ctx._inst3d8);
    Processor_clock__ctx_type_0_init(_ctx._inst2d8);
    Processor_clock__ctx_type_0_init(_ctx._inst1d8);
+   Util__ctx_type_3_init(_ctx._inst163b);
    Util__ctx_type_3_init(_ctx._inst13b);
    Util__ctx_type_3_init(_ctx._inst133b);
    Util__ctx_type_3_init(_ctx._inst103b);

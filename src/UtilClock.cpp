@@ -16,6 +16,7 @@ struct UtilClock : Module {
       RATIO,
       RATIO_AV,
       SWITCH,
+      TICKS,
       NUM_PARAMS
    };
    enum InputIds {
@@ -58,6 +59,7 @@ UtilClock::UtilClock() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
    configParam(UtilClock::BPM, fix_to_float(Processor_clock_getMinBPM()), fix_to_float(Processor_clock_getMaxBPM()), 120.0, "BPM", " BPM");
+   configParam(UtilClock::TICKS, Processor_clock_getMinTicks(), Processor_clock_getMaxTicks(), 24.0, "Ticks", " PPQN");
    configParam(UtilClock::SWING, 0.0, 1.0, 0.5, "Swing", "");
 
    configParam(UtilClock::SIZE, Processor_clock_getMinGroupSize(), Processor_clock_getMaxGroupSize(), 4, "Group size", " beats");
@@ -91,6 +93,7 @@ float UtilClock::readParamCV(int PARAM, int CV_IN, int CV_AV) {
 void UtilClock::sendParams(bool force) {
    // rounding all parameters
    Processor_clock_setBPM(processor, float_to_fix(readParamCV(BPM, BPM_IN, BPM_AV)), force);
+   Processor_clock_setNbTicks(processor, int(params[TICKS].getValue() + 0.5), force);
    Processor_clock_setSwing(processor, float_to_fix(readParamCV(SWING, SWING_IN, SWING_AV)), force);
    Processor_clock_setGroupSize(processor, int(readParamCV(SIZE, SIZE_IN, SIZE_AV) + 0.5), force);
    Processor_clock_setGroupRatio(processor, float_to_fix(readParamCV(RATIO, RATIO_IN, RATIO_AV)), force);
@@ -167,7 +170,7 @@ struct UtilClockWidget : ModuleWidget {
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, swing_y)), module, UtilClock::SWING_IN));
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, size_y)), module, UtilClock::SIZE_IN));
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, ratio_y)), module, UtilClock::RATIO_IN));
-           
+      
       float outs_main_y = 128.5-34.776;
       float outs_left_x = 7.620;
       float outs_right_x = 33.022;
@@ -183,6 +186,10 @@ struct UtilClockWidget : ModuleWidget {
       addParam(createLightParamCentered<VCVLightBezel<>>(mm2px(Vec(26.377, order_y)), module, UtilClock::SWITCH, UtilClock::SWITCH_LIGHT));
       // light to indicate current order
       addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(32.305, order_y)), module, UtilClock::ORDER_LIGHT));
+
+      // knob for ticks
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(26.377, 128.5 - 53.704)), module,  UtilClock::TICKS));
+           
 
    }
 };

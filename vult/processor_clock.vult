@@ -58,6 +58,12 @@ and setBPM(param: real, force: bool) {
   }
 }
 
+and setNbTicks(param: int, force: bool) {
+  if (Util.change(real(param)) || force) {
+    _ = cloclo:Clock.setNbTicks(param);
+  }
+}
+
 and setSwing(param: real, force: bool) {
   if (Util.change(param) || force) {
     _ = cloclo:Clock.setSwing(param);
@@ -88,6 +94,14 @@ fun getMinBPM(): real {
 }
 fun getMaxBPM(): real {
   return Clock.getMaxBPM();
+}
+
+
+fun getMinTicks(): int {
+  return Clock.getMinTicks();
+}
+fun getMaxTicks(): int {
+  return Clock.getMaxTicks();
 }
 
 fun getMinGroupSize(): int {
