@@ -30,6 +30,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## 2.2.2 (2023-05-10)
+
+- clock: adding an output for ticks
+
 ## 2.2.1 (2023-04-27)
 
 - bump DSP, fix chord shift and trigg, init correctly buffers to avoid artifacts upon launch
