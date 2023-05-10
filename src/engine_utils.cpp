@@ -1499,6 +1499,7 @@ void Clock__ctx_type_7_init(Clock__ctx_type_7 &_output_){
    _ctx.orderMix = false;
    _ctx.lastTimeS = 0;
    _ctx.lastTimeFract = 0x0 /* 0.000000 */;
+   _ctx.lastTicks = 0;
    _ctx.lastBeatS = 0;
    _ctx.lastBeatFract = 0x0 /* 0.000000 */;
    _ctx.init = false;
@@ -1635,6 +1636,18 @@ int Clock_getTicks(Clock__ctx_type_7 &_ctx){
    return 0;
 }
 
+int Clock_getNbNewTicks(Clock__ctx_type_7 &_ctx){
+   int curTicks;
+   curTicks = Clock_getTicks(_ctx);
+   int newTicks;
+   newTicks = (curTicks + (- _ctx.lastTicks));
+   if(newTicks < 0){
+      newTicks = (newTicks % 1024);
+   }
+   _ctx.lastTicks = curTicks;
+   return newTicks;
+}
+
 void Clock_default(Clock__ctx_type_7 &_ctx){
    Clock_setBPM(_ctx,0x780000 /* 120.000000 */);
    Clock_setNbTicks(_ctx,24);
@@ -1695,7 +1708,7 @@ void Processor_clock_process(Processor_clock__ctx_type_2 &_ctx, int timeS, fix16
    fix16_t out5;
    Clock_setTime(_ctx.cloclo,timeS,timeFract);
    int ticks;
-   ticks = Clock_getTicks(_ctx.cloclo);
+   ticks = Clock_getNbNewTicks(_ctx.cloclo);
    out5 = Processor_clock_bool2real(Processor_clock_gate1ms(_ctx._inst1d8,(ticks > 0),(timeFract + int_to_fix(timeS))));
    int beat;
    beat = Clock_process(_ctx.cloclo);

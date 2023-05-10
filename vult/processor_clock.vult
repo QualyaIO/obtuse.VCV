@@ -37,8 +37,9 @@ fun process(timeS: int, timeFract: real) {
 
   _ = cloclo:Clock.setTime(timeS, timeFract);
 
-  // retrieve ticks first, only interested if we have at least one, we might just loose some trigger at some point
-  val ticks = cloclo:Clock.getTicks();
+  // retrieve ticks first, only interested if we have at least one, we might just loose some trigger at some point if there is too much delay
+  // NOTE: gate 1ms will quickly be too long there is too many ticks or BPM
+  val ticks = cloclo:Clock.getNbNewTicks();
   out5 = bool2real(gate1ms(ticks > 0, real(timeS) + timeFract));
 
   // retrieve current beat
