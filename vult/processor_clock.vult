@@ -1,6 +1,7 @@
 
 
 // creating 1ms gate from trigger and current time
+// FIXME: might loose accuracy without fixed real when clock is big enough?
 fun gate1ms(trig: bool, time: real): bool {
   mem lastTrigg;
   mem gate;
@@ -29,17 +30,25 @@ fun bool2real(b: bool): real {
 // out2: trigger first beat
 // out3: trigger first sub-group
 // out4: trigger second sub-group
+// out5: trigger for ticks
 fun process(timeS: int, timeFract: real) {
   // saving current state
-  val out1, out2, out3, out4;
+  val out1, out2, out3, out4, out5;
 
-  val beat = cloclo:Clock.process(timeS, timeFract);
+  _ = cloclo:Clock.setTime(timeS, timeFract);
+
+  // retrieve ticks first, only interested if we have at least one, we might just loose some trigger at some point
+  val ticks = cloclo:Clock.getTicks();
+  out5 = bool2real(gate1ms(ticks > 0, real(timeS) + timeFract));
+
+  // retrieve current beat
+  val beat = cloclo:Clock.process();
   out1 = bool2real(gate1ms(beat > 0, real(timeS) + timeFract));
   out2 = bool2real(gate1ms(beat == 1, real(timeS) + timeFract));
   out3 = bool2real(gate1ms(beat == 1 || beat == 2, real(timeS) + timeFract));
   out4 = bool2real(gate1ms(beat == 3, real(timeS) + timeFract));
 
-  return out1, out2, out3, out4;
+  return out1, out2, out3, out4, out5;
 }
 
 and setBPM(param: real, force: bool) {

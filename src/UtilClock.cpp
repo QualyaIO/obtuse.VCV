@@ -30,6 +30,7 @@ struct UtilClock : Module {
       NEW,
       GROUP1,
       GROUP2,
+      TICK,
       NUM_OUTPUTS
    };
    enum LightIds {
@@ -134,6 +135,7 @@ void UtilClock::process(const ProcessArgs &args) {
    outputs[NEW].setVoltage(fix_to_float(Processor_clock_process_ret_1(processor)) * 5.0);
    outputs[GROUP1].setVoltage(fix_to_float(Processor_clock_process_ret_2(processor)) * 5.0);
    outputs[GROUP2].setVoltage(fix_to_float(Processor_clock_process_ret_3(processor)) * 5.0);
+   outputs[TICK].setVoltage(fix_to_float(Processor_clock_process_ret_4(processor)) * 5.0);
 }
 
 struct UtilClockWidget : ModuleWidget {
@@ -166,11 +168,15 @@ struct UtilClockWidget : ModuleWidget {
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, size_y)), module, UtilClock::SIZE_IN));
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(av_in_x, ratio_y)), module, UtilClock::RATIO_IN));
            
-      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(20.322, 128.5-34.776)), module, UtilClock::CLOCK));
+      float outs_main_y = 128.5-34.776;
+      float outs_left_x = 7.620;
+      float outs_right_x = 33.022;
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(outs_left_x, outs_main_y)), module, UtilClock::CLOCK));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(outs_right_x, outs_main_y)), module, UtilClock::TICK));
       float outs_y = 128.5-18.901;
-      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.620, outs_y)), module, UtilClock::NEW));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(outs_left_x, outs_y)), module, UtilClock::NEW));
       addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(20.322, outs_y)), module, UtilClock::GROUP1));
-      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(33.022, outs_y)), module, UtilClock::GROUP2));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(outs_right_x, outs_y)), module, UtilClock::GROUP2));
       
       // switch to order
       float order_y = 128.5-90.665;
