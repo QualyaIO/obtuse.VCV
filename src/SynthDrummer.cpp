@@ -41,6 +41,7 @@ struct MetaDrummer {
    void setSamplerate(float sr);
    void nbCables(int cables);
    void setNote(float gate, float voct, float vel, int c);
+   void setPitchBend(float semitones);
    float process();
 
 private:
@@ -97,6 +98,29 @@ void MetaDrummer::nbCables(int cables) {
       break;
    }
 }
+
+
+void MetaDrummer::setPitchBend(float semitones) {
+   switch(selectedKit) {
+   case 1:
+      synthDrummerBbox_Processor_setPitchBend(processorBbox, float_to_fix(semitones));
+      break;
+   case 2:
+      synthDrummerFoleyType_Processor_setPitchBend(processorFoleyType, float_to_fix(semitones));
+      break;
+   case 3:
+      synthDrummerNes_Processor_setPitchBend(processorNes, float_to_fix(semitones));
+      break;
+   case 4:
+      synthDrummerTamaRockstar_Processor_setPitchBend(processorTamaRockstar, float_to_fix(semitones));
+      break;
+   case 0:
+   default:
+      synthDrummer_Processor_setPitchBend(processor808, float_to_fix(semitones));
+      break;
+   }
+}
+
 
 void MetaDrummer::setNote(float gate, float voct, float vel, int c) {
    switch(selectedKit) {
@@ -174,6 +198,7 @@ struct SynthDrummer : Module {
       VOCT,
       GATE,
       VEL,
+      BEND,
       NUM_INPUTS
    };
    enum OutputIds {
@@ -224,6 +249,9 @@ void SynthDrummer::process(const ProcessArgs &args) {
       drummer.setNote(gate, voct, vel, c);
    }
 
+   // pitch bend, -5: -2 seminotes, +5: +2 semitones
+   drummer.setPitchBend(inputs[BEND].getVoltage() / 2.5f);
+
    // out is audio, set to audio range (-5..5)
    outputs[OUT].setVoltage(drummer.process() * 5.0f);
 }
@@ -235,12 +263,15 @@ struct SynthDrummerWidget : ModuleWidget {
       setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/SynthDrummer.svg")));
 
       float port_x = 5.082;
-      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(port_x, 128.5-75.606)), module, SynthDrummer::KIT));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-62.320)), module, SynthDrummer::VOCT));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-48.835)), module, SynthDrummer::GATE));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-35.207)), module, SynthDrummer::VEL));
+      addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(port_x, 128.5-78.258)), module, SynthDrummer::KIT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-66.330)), module, SynthDrummer::VOCT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-55.190)), module, SynthDrummer::GATE));
 
-      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-20.626)), module, SynthDrummer::OUT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-43.745)), module, SynthDrummer::VEL));
+
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-32.310)), module, SynthDrummer::BEND));
+
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(port_x, 128.5-19.564)), module, SynthDrummer::OUT));
 
    }
 };

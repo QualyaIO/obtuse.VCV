@@ -243,25 +243,31 @@ static_inline fix16_t Util_noteToFrequency(int note){
    return fix_mul(0x217 /* 0.008176 */,fix_exp(fix_mul(0xec9 /* 0.057762 */,int_to_fix(note))));
 };
 
-typedef struct Util__ctx_type_1 {
+static_inline fix16_t Util_tonesToCoeff(fix16_t semitones){
+   fix16_t log_base;
+   log_base = 0xb172 /* 0.693147 */;
+   return fix_exp(fix_mul(fix_mul(0x1555 /* 0.083333 */,log_base),semitones));
+}
+
+typedef struct Util__ctx_type_2 {
    uint8_t pre;
-} Util__ctx_type_1;
+} Util__ctx_type_2;
 
-typedef Util__ctx_type_1 Util_edge_type;
+typedef Util__ctx_type_2 Util_edge_type;
 
-static_inline void Util__ctx_type_1_init(Util__ctx_type_1 &_output_){
-   Util__ctx_type_1 _ctx;
+static_inline void Util__ctx_type_2_init(Util__ctx_type_2 &_output_){
+   Util__ctx_type_2 _ctx;
    _ctx.pre = false;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void Util_edge_init(Util__ctx_type_1 &_output_){
-   Util__ctx_type_1_init(_output_);
+static_inline void Util_edge_init(Util__ctx_type_2 &_output_){
+   Util__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline uint8_t Util_edge(Util__ctx_type_1 &_ctx, uint8_t x){
+static_inline uint8_t Util_edge(Util__ctx_type_2 &_ctx, uint8_t x){
    uint8_t ret;
    ret = (x && bool_not(_ctx.pre));
    _ctx.pre = x;
@@ -284,50 +290,50 @@ static_inline fix16_t Util_cubic_clipper(fix16_t x){
    }
 };
 
-typedef struct Util__ctx_type_3 {
+typedef struct Util__ctx_type_4 {
    fix16_t pre_x;
-} Util__ctx_type_3;
+} Util__ctx_type_4;
 
-typedef Util__ctx_type_3 Util_change_type;
+typedef Util__ctx_type_4 Util_change_type;
 
-static_inline void Util__ctx_type_3_init(Util__ctx_type_3 &_output_){
-   Util__ctx_type_3 _ctx;
+static_inline void Util__ctx_type_4_init(Util__ctx_type_4 &_output_){
+   Util__ctx_type_4 _ctx;
    _ctx.pre_x = 0x0 /* 0.000000 */;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void Util_change_init(Util__ctx_type_3 &_output_){
-   Util__ctx_type_3_init(_output_);
+static_inline void Util_change_init(Util__ctx_type_4 &_output_){
+   Util__ctx_type_4_init(_output_);
    return ;
 }
 
-static_inline uint8_t Util_change(Util__ctx_type_3 &_ctx, fix16_t x){
+static_inline uint8_t Util_change(Util__ctx_type_4 &_ctx, fix16_t x){
    uint8_t v;
    v = (_ctx.pre_x != x);
    _ctx.pre_x = x;
    return v;
 }
 
-typedef struct Util__ctx_type_4 {
+typedef struct Util__ctx_type_5 {
    fix16_t x;
-} Util__ctx_type_4;
+} Util__ctx_type_5;
 
-typedef Util__ctx_type_4 Util_smooth_type;
+typedef Util__ctx_type_5 Util_smooth_type;
 
-static_inline void Util__ctx_type_4_init(Util__ctx_type_4 &_output_){
-   Util__ctx_type_4 _ctx;
+static_inline void Util__ctx_type_5_init(Util__ctx_type_5 &_output_){
+   Util__ctx_type_5 _ctx;
    _ctx.x = 0x0 /* 0.000000 */;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void Util_smooth_init(Util__ctx_type_4 &_output_){
-   Util__ctx_type_4_init(_output_);
+static_inline void Util_smooth_init(Util__ctx_type_5 &_output_){
+   Util__ctx_type_5_init(_output_);
    return ;
 }
 
-static_inline fix16_t Util_smooth(Util__ctx_type_4 &_ctx, fix16_t input, fix16_t coeff){
+static_inline fix16_t Util_smooth(Util__ctx_type_5 &_ctx, fix16_t input, fix16_t coeff){
    _ctx.x = (_ctx.x + fix_mul(coeff,(input + (- _ctx.x))));
    return _ctx.x;
 }
@@ -532,16 +538,16 @@ typedef struct Processor_trigg__ctx_type_0 {
    Trigg__ctx_type_0 trigg;
    int tail;
    fix16_t fs;
-   Util__ctx_type_3 _inst73b;
-   Util__ctx_type_1 _inst551;
-   Util__ctx_type_3 _inst43b;
-   Util__ctx_type_1 _inst351;
-   Util__ctx_type_3 _inst223b;
-   Util__ctx_type_3 _inst193b;
-   Util__ctx_type_3 _inst163b;
-   Util__ctx_type_3 _inst13b;
-   Util__ctx_type_3 _inst133b;
-   Util__ctx_type_3 _inst103b;
+   Util__ctx_type_4 _inst73b;
+   Util__ctx_type_2 _inst551;
+   Util__ctx_type_4 _inst43b;
+   Util__ctx_type_2 _inst351;
+   Util__ctx_type_4 _inst223b;
+   Util__ctx_type_4 _inst193b;
+   Util__ctx_type_4 _inst163b;
+   Util__ctx_type_4 _inst13b;
+   Util__ctx_type_4 _inst133b;
+   Util__ctx_type_4 _inst103b;
 } Processor_trigg__ctx_type_0;
 
 typedef Processor_trigg__ctx_type_0 Processor_trigg_process_type;
@@ -831,11 +837,11 @@ static_inline uint8_t Processor_arp_edge(Processor_arp__ctx_type_2 &_ctx, uint8_
 typedef struct Processor_arp__ctx_type_3 {
    int note;
    Arp__ctx_type_0 arpe;
-   Util__ctx_type_3 _inst73b;
-   Util__ctx_type_3 _inst43b;
-   Util__ctx_type_1 _inst351;
-   Util__ctx_type_1 _inst151;
-   Util__ctx_type_3 _inst13b;
+   Util__ctx_type_4 _inst73b;
+   Util__ctx_type_4 _inst43b;
+   Util__ctx_type_2 _inst351;
+   Util__ctx_type_2 _inst151;
+   Util__ctx_type_4 _inst13b;
 } Processor_arp__ctx_type_3;
 
 typedef Processor_arp__ctx_type_3 Processor_arp_process_type;
@@ -1214,7 +1220,7 @@ static_inline int Clock_getMinTicks(){
 };
 
 static_inline int Clock_getMaxTicks(){
-   return 1024;
+   return 4096;
 };
 
 int Clock_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract);
@@ -1226,6 +1232,7 @@ typedef struct Clock__ctx_type_7 {
    fix16_t swing;
    int subSize;
    int pos;
+   int pendingTicks;
    uint8_t orderMix;
    int lastTimeS;
    fix16_t lastTimeFract;
@@ -1281,15 +1288,6 @@ static_inline void Clock__recompute_init(Clock__ctx_type_7 &_output_){
 
 void Clock__recompute(Clock__ctx_type_7 &_ctx);
 
-typedef Clock__ctx_type_7 Clock_setBPM_type;
-
-static_inline void Clock_setBPM_init(Clock__ctx_type_7 &_output_){
-   Clock__ctx_type_7_init(_output_);
-   return ;
-}
-
-void Clock_setBPM(Clock__ctx_type_7 &_ctx, fix16_t newBPM);
-
 typedef Clock__ctx_type_7 Clock_setGroupSize_type;
 
 static_inline void Clock_setGroupSize_init(Clock__ctx_type_7 &_output_){
@@ -1328,17 +1326,6 @@ static_inline void Clock_setOrderMix(Clock__ctx_type_7 &_ctx, uint8_t flag){
    _ctx.orderMix = flag;
 };
 
-typedef Clock__ctx_type_7 Clock_setNbTicks_type;
-
-static_inline void Clock_setNbTicks_init(Clock__ctx_type_7 &_output_){
-   Clock__ctx_type_7_init(_output_);
-   return ;
-}
-
-static_inline void Clock_setNbTicks(Clock__ctx_type_7 &_ctx, int newTicks){
-   _ctx.ticks = int_clip(newTicks,1,1024);
-};
-
 typedef Clock__ctx_type_7 Clock_getNbTicks_type;
 
 static_inline void Clock_getNbTicks_init(Clock__ctx_type_7 &_output_){
@@ -1367,6 +1354,24 @@ static_inline void Clock_getNbNewTicks_init(Clock__ctx_type_7 &_output_){
 }
 
 int Clock_getNbNewTicks(Clock__ctx_type_7 &_ctx);
+
+typedef Clock__ctx_type_7 Clock_setNbTicks_type;
+
+static_inline void Clock_setNbTicks_init(Clock__ctx_type_7 &_output_){
+   Clock__ctx_type_7_init(_output_);
+   return ;
+}
+
+void Clock_setNbTicks(Clock__ctx_type_7 &_ctx, int newTicks);
+
+typedef Clock__ctx_type_7 Clock_setBPM_type;
+
+static_inline void Clock_setBPM_init(Clock__ctx_type_7 &_output_){
+   Clock__ctx_type_7_init(_output_);
+   return ;
+}
+
+void Clock_setBPM(Clock__ctx_type_7 &_ctx, fix16_t newBPM);
 
 typedef Clock__ctx_type_7 Clock_default_type;
 
@@ -1410,17 +1415,17 @@ typedef struct Processor_clock__ctx_type_2 {
    fix16_t process_ret_1;
    fix16_t process_ret_0;
    Clock__ctx_type_7 cloclo;
-   Util__ctx_type_3 _inst73b;
+   Util__ctx_type_4 _inst73b;
    Processor_clock__ctx_type_0 _inst5d8;
    Processor_clock__ctx_type_0 _inst4d8;
-   Util__ctx_type_3 _inst43b;
+   Util__ctx_type_4 _inst43b;
    Processor_clock__ctx_type_0 _inst3d8;
    Processor_clock__ctx_type_0 _inst2d8;
    Processor_clock__ctx_type_0 _inst1d8;
-   Util__ctx_type_3 _inst163b;
-   Util__ctx_type_3 _inst13b;
-   Util__ctx_type_3 _inst133b;
-   Util__ctx_type_3 _inst103b;
+   Util__ctx_type_4 _inst163b;
+   Util__ctx_type_4 _inst13b;
+   Util__ctx_type_4 _inst133b;
+   Util__ctx_type_4 _inst103b;
 } Processor_clock__ctx_type_2;
 
 typedef Processor_clock__ctx_type_2 Processor_clock_process_type;
@@ -1580,7 +1585,7 @@ static_inline int Processor_clock_getMinTicks(){
 };
 
 static_inline int Processor_clock_getMaxTicks(){
-   return 1024;
+   return 4096;
 };
 
 static_inline int Processor_clock_getMinGroupSize(){
@@ -1629,7 +1634,7 @@ typedef struct Processor_gate__ctx_type_3 {
    int nbActive;
    fix16_t gatesOut[16];
    Gate__ctx_type_2 bill;
-   Util__ctx_type_3 _inst13b;
+   Util__ctx_type_4 _inst13b;
 } Processor_gate__ctx_type_3;
 
 typedef Processor_gate__ctx_type_3 Processor_gate_process_type;
@@ -1679,14 +1684,14 @@ typedef struct Processor_chord__ctx_type_2 {
    int n3;
    int n2;
    int n1;
-   Util__ctx_type_3 _inst73b;
-   Util__ctx_type_3 _inst43b;
-   Util__ctx_type_1 _inst351;
-   Util__ctx_type_3 _inst163b;
-   Util__ctx_type_1 _inst151;
-   Util__ctx_type_3 _inst13b;
-   Util__ctx_type_3 _inst133b;
-   Util__ctx_type_3 _inst103b;
+   Util__ctx_type_4 _inst73b;
+   Util__ctx_type_4 _inst43b;
+   Util__ctx_type_2 _inst351;
+   Util__ctx_type_4 _inst163b;
+   Util__ctx_type_2 _inst151;
+   Util__ctx_type_4 _inst13b;
+   Util__ctx_type_4 _inst133b;
+   Util__ctx_type_4 _inst103b;
 } Processor_chord__ctx_type_2;
 
 typedef Processor_chord__ctx_type_2 Processor_chord_process_type;

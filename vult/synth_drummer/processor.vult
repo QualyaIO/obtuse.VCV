@@ -47,6 +47,9 @@ and setNote(gate:real, voct:real, vel: real, cable:int) {
       last_pitches[cable] = -1;
    }
 }
+and setPitchBend(semitones: real) {
+   _ = voice:Voice.synthPitchBend(semitones);
+}
 // pass information about max number of connected cables. Will reset all extra notes upon change to avoid stuck notes
 and nbCables(nbcables: int) {
    mem last_nbcables;

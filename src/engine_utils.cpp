@@ -395,16 +395,16 @@ void Processor_trigg__ctx_type_0_init(Processor_trigg__ctx_type_0 &_output_){
    Trigg__ctx_type_0_init(_ctx.trigg);
    _ctx.tail = 0;
    _ctx.fs = 0x0 /* 0.000000 */;
-   Util__ctx_type_3_init(_ctx._inst73b);
-   Util__ctx_type_1_init(_ctx._inst551);
-   Util__ctx_type_3_init(_ctx._inst43b);
-   Util__ctx_type_1_init(_ctx._inst351);
-   Util__ctx_type_3_init(_ctx._inst223b);
-   Util__ctx_type_3_init(_ctx._inst193b);
-   Util__ctx_type_3_init(_ctx._inst163b);
-   Util__ctx_type_3_init(_ctx._inst13b);
-   Util__ctx_type_3_init(_ctx._inst133b);
-   Util__ctx_type_3_init(_ctx._inst103b);
+   Util__ctx_type_4_init(_ctx._inst73b);
+   Util__ctx_type_2_init(_ctx._inst551);
+   Util__ctx_type_4_init(_ctx._inst43b);
+   Util__ctx_type_2_init(_ctx._inst351);
+   Util__ctx_type_4_init(_ctx._inst223b);
+   Util__ctx_type_4_init(_ctx._inst193b);
+   Util__ctx_type_4_init(_ctx._inst163b);
+   Util__ctx_type_4_init(_ctx._inst13b);
+   Util__ctx_type_4_init(_ctx._inst133b);
+   Util__ctx_type_4_init(_ctx._inst103b);
    _output_ = _ctx;
    return ;
 }
@@ -601,11 +601,11 @@ void Processor_arp__ctx_type_3_init(Processor_arp__ctx_type_3 &_output_){
    Processor_arp__ctx_type_3 _ctx;
    _ctx.note = 0;
    Arp__ctx_type_0_init(_ctx.arpe);
-   Util__ctx_type_3_init(_ctx._inst73b);
-   Util__ctx_type_3_init(_ctx._inst43b);
-   Util__ctx_type_1_init(_ctx._inst351);
-   Util__ctx_type_1_init(_ctx._inst151);
-   Util__ctx_type_3_init(_ctx._inst13b);
+   Util__ctx_type_4_init(_ctx._inst73b);
+   Util__ctx_type_4_init(_ctx._inst43b);
+   Util__ctx_type_2_init(_ctx._inst351);
+   Util__ctx_type_2_init(_ctx._inst151);
+   Util__ctx_type_4_init(_ctx._inst13b);
    _output_ = _ctx;
    return ;
 }
@@ -1496,6 +1496,7 @@ void Clock__ctx_type_7_init(Clock__ctx_type_7 &_output_){
    _ctx.swing = 0x0 /* 0.000000 */;
    _ctx.subSize = 0;
    _ctx.pos = 0;
+   _ctx.pendingTicks = 0;
    _ctx.orderMix = false;
    _ctx.lastTimeS = 0;
    _ctx.lastTimeFract = 0x0 /* 0.000000 */;
@@ -1591,14 +1592,6 @@ void Clock__recompute(Clock__ctx_type_7 &_ctx){
    }
 }
 
-void Clock_setBPM(Clock__ctx_type_7 &_ctx, fix16_t newBPM){
-   newBPM = fix_clip(newBPM,0x4189 /* 0.256000 */,0x75300000 /* 30000.000000 */);
-   if(newBPM != _ctx.bpm){
-      _ctx.bpm = newBPM;
-      Clock__recompute(_ctx);
-   }
-}
-
 void Clock_setGroupSize(Clock__ctx_type_7 &_ctx, int newGroupSize){
    newGroupSize = int_clip(newGroupSize,2,128);
    if(newGroupSize != _ctx.groupSize){
@@ -1640,12 +1633,32 @@ int Clock_getNbNewTicks(Clock__ctx_type_7 &_ctx){
    int curTicks;
    curTicks = Clock_getTicks(_ctx);
    int newTicks;
-   newTicks = (curTicks + (- _ctx.lastTicks));
-   if(newTicks < 0){
-      newTicks = (newTicks % _ctx.ticks);
+   newTicks = (_ctx.pendingTicks + curTicks + (- _ctx.lastTicks));
+   _ctx.pendingTicks = 0;
+   while(newTicks < 0){
+      newTicks = (_ctx.ticks + newTicks);
    }
    _ctx.lastTicks = curTicks;
    return newTicks;
+}
+
+void Clock_setNbTicks(Clock__ctx_type_7 &_ctx, int newTicks){
+   newTicks = int_clip(newTicks,1,4096);
+   if(newTicks != _ctx.ticks){
+      _ctx.pendingTicks = (_ctx.pendingTicks + Clock_getNbNewTicks(_ctx));
+      _ctx.ticks = newTicks;
+      _ctx.lastTicks = Clock_getTicks(_ctx);
+   }
+}
+
+void Clock_setBPM(Clock__ctx_type_7 &_ctx, fix16_t newBPM){
+   newBPM = fix_clip(newBPM,0x4189 /* 0.256000 */,0x75300000 /* 30000.000000 */);
+   if(newBPM != _ctx.bpm){
+      _ctx.pendingTicks = (_ctx.pendingTicks + Clock_getNbNewTicks(_ctx));
+      _ctx.bpm = newBPM;
+      Clock__recompute(_ctx);
+      _ctx.lastTicks = Clock_getTicks(_ctx);
+   }
 }
 
 void Clock_default(Clock__ctx_type_7 &_ctx){
@@ -1686,17 +1699,17 @@ void Processor_clock__ctx_type_2_init(Processor_clock__ctx_type_2 &_output_){
    _ctx.process_ret_1 = 0x0 /* 0.000000 */;
    _ctx.process_ret_0 = 0x0 /* 0.000000 */;
    Clock__ctx_type_7_init(_ctx.cloclo);
-   Util__ctx_type_3_init(_ctx._inst73b);
+   Util__ctx_type_4_init(_ctx._inst73b);
    Processor_clock__ctx_type_0_init(_ctx._inst5d8);
    Processor_clock__ctx_type_0_init(_ctx._inst4d8);
-   Util__ctx_type_3_init(_ctx._inst43b);
+   Util__ctx_type_4_init(_ctx._inst43b);
    Processor_clock__ctx_type_0_init(_ctx._inst3d8);
    Processor_clock__ctx_type_0_init(_ctx._inst2d8);
    Processor_clock__ctx_type_0_init(_ctx._inst1d8);
-   Util__ctx_type_3_init(_ctx._inst163b);
-   Util__ctx_type_3_init(_ctx._inst13b);
-   Util__ctx_type_3_init(_ctx._inst133b);
-   Util__ctx_type_3_init(_ctx._inst103b);
+   Util__ctx_type_4_init(_ctx._inst163b);
+   Util__ctx_type_4_init(_ctx._inst13b);
+   Util__ctx_type_4_init(_ctx._inst133b);
+   Util__ctx_type_4_init(_ctx._inst103b);
    _output_ = _ctx;
    return ;
 }
@@ -1747,7 +1760,7 @@ void Processor_gate__ctx_type_3_init(Processor_gate__ctx_type_3 &_output_){
    _ctx.nbActive = 0;
    fix_init_array(16,0x0 /* 0.000000 */,_ctx.gatesOut);
    Gate__ctx_type_2_init(_ctx.bill);
-   Util__ctx_type_3_init(_ctx._inst13b);
+   Util__ctx_type_4_init(_ctx._inst13b);
    _output_ = _ctx;
    return ;
 }
@@ -1856,14 +1869,14 @@ void Processor_chord__ctx_type_2_init(Processor_chord__ctx_type_2 &_output_){
    _ctx.n3 = 0;
    _ctx.n2 = 0;
    _ctx.n1 = 0;
-   Util__ctx_type_3_init(_ctx._inst73b);
-   Util__ctx_type_3_init(_ctx._inst43b);
-   Util__ctx_type_1_init(_ctx._inst351);
-   Util__ctx_type_3_init(_ctx._inst163b);
-   Util__ctx_type_1_init(_ctx._inst151);
-   Util__ctx_type_3_init(_ctx._inst13b);
-   Util__ctx_type_3_init(_ctx._inst133b);
-   Util__ctx_type_3_init(_ctx._inst103b);
+   Util__ctx_type_4_init(_ctx._inst73b);
+   Util__ctx_type_4_init(_ctx._inst43b);
+   Util__ctx_type_2_init(_ctx._inst351);
+   Util__ctx_type_4_init(_ctx._inst163b);
+   Util__ctx_type_2_init(_ctx._inst151);
+   Util__ctx_type_4_init(_ctx._inst13b);
+   Util__ctx_type_4_init(_ctx._inst133b);
+   Util__ctx_type_4_init(_ctx._inst103b);
    _output_ = _ctx;
    return ;
 }

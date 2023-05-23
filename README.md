@@ -30,6 +30,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## 2.3.0 (2023-05-23)
+
+- drummer: add pitch bend"
+
 ## 2.2.2 (2023-05-10)
 
 - clock: adding an output for ticks
