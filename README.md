@@ -35,6 +35,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - bump DSP, some fixes, adding pitch bend and retrigger
 - drummer: add pitch bend
 - FM: add pitch bend and retrigger
+- sampler: add pitch bend and retrigger
 
 ## 2.2.2 (2023-05-10)
 

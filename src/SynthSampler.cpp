@@ -22,6 +22,8 @@ struct SynthSampler : Module {
       VOCT,
       GATE,
       VEL,
+      RETRIGGER,
+      BEND,
       NUM_INPUTS
    };
    enum OutputIds {
@@ -113,8 +115,12 @@ void SynthSampler::process(const ProcessArgs &args) {
       float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
       float vel = inputs[VEL].getPolyVoltage(c) / 10.0f;
-      sampler.setNote(gate, voct, vel, c);
+      float ret = inputs[RETRIGGER].getPolyVoltage(c) / 10.0f;
+      sampler.setNote(gate, voct, vel, ret, c);
    }
+
+   // pitch bend, -5: -2 seminotes, +5: +2 semitones
+   sampler.setPitchBend(inputs[BEND].getVoltage() / 2.5f);
 
    // out is audio, set to audio range (-5..5)
    outputs[OUT].setVoltage(sampler.process() * 5.0f);
@@ -131,8 +137,8 @@ struct SynthSamplerWidget : ModuleWidget {
 
       float port_1_x = 5.435;
       float port_2_x = 14.885;
-      float knobs_y = 128.5-59.486;
-      float buttons_y = 128.5-69.287;
+      float knobs_y = 128.5-64.486;
+      float buttons_y = 128.5-74.287;
 
       // this time we got a a latch light button
       addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<GreenLight>>>(mm2px(Vec(port_1_x, buttons_y)), module, SynthSampler::LOOP_TOGGLE, SynthSampler::LOOP_LIGHT));
@@ -141,14 +147,17 @@ struct SynthSamplerWidget : ModuleWidget {
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(port_1_x, knobs_y)), module, SynthSampler::LOOP_START));
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(port_2_x, knobs_y)), module, SynthSampler::LOOP_END));
 
-      float port_a_y = 128.5-33.845;
-      float port_b_y = 128.5-18.745;
+      float port_a_y = 128.5-43.899;
+      float port_b_y = 128.5-30.843;
+      float port_c_y = 128.5-18.216;
       
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_1_x, port_a_y)), module, SynthSampler::VOCT));
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_2_x, port_a_y)), module, SynthSampler::GATE));
       addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_1_x, port_b_y)), module, SynthSampler::VEL));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_2_x, port_b_y)), module, SynthSampler::RETRIGGER));
 
-      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(port_2_x, port_b_y)), module, SynthSampler::OUT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(port_1_x, port_c_y)), module, SynthSampler::BEND));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(port_2_x, port_c_y)), module, SynthSampler::OUT));
    }
 };
 

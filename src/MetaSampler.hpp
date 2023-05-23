@@ -100,7 +100,7 @@ struct MetaSampler {
    // wrapping functions
    void setSamplerate(float sr);
    void nbCables(int cables);
-   void setNote(float gate, float voct, float vel, int c);
+   void setNote(float gate, float voct, float vel, float ret, int c);
    bool getLoop();
    int getLoopStart();
    int getLoopEnd();
@@ -108,6 +108,7 @@ struct MetaSampler {
    void setLoop(bool loop, bool force = false);
    void setLoopStart(int loopS, bool force = false);
    void setLoopEnd(int loopE, bool folse = false);
+   void setPitchBend(float semitones);
    float process();
 
 private:

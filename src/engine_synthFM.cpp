@@ -1252,18 +1252,18 @@ void synthFM_Processor__ctx_type_2_init(synthFM_Processor__ctx_type_2 &_output_)
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
-   synthFM_Processor__ctx_type_0_init(_ctx._inst5336);
-   synthFM_Processor__ctx_type_0_init(_ctx._inst5036);
-   synthFM_Util__ctx_type_4_init(_ctx._inst473b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst443b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst393b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst363b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst333b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst303b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst273b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst243b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst213b);
-   synthFM_Util__ctx_type_4_init(_ctx._inst183b);
+   synthFM_Processor__ctx_type_0_init(_ctx._inst5236);
+   synthFM_Processor__ctx_type_0_init(_ctx._inst4936);
+   synthFM_Util__ctx_type_4_init(_ctx._inst463b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst433b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst383b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst353b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst323b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst293b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst263b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst233b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst203b);
+   synthFM_Util__ctx_type_4_init(_ctx._inst173b);
    synthFM_Processor_default(_ctx);
    _output_ = _ctx;
    return ;
@@ -1298,14 +1298,9 @@ void synthFM_Processor_setNote(synthFM_Processor__ctx_type_2 &_ctx, fix16_t gate
    }
    else
    {
-      if(gate < 0x1999 /* 0.100000 */){
+      if(retrigger < 0x1999 /* 0.100000 */){
          _ctx.last_retrigger[cable] = false;
       }
-   }
-   if(bool_not(_ctx.last_gates[cable]) && (gate >= 0x1999 /* 0.100000 */)){
-      _ctx.last_gates[cable] = true;
-      _ctx.last_pitches[cable] = synthFM_Processor_cvToPitch(voct);
-      synthFM_Voice_noteOn(_ctx.voice,_ctx.last_pitches[cable],fix_to_int(velocity),0);
    }
 }
 

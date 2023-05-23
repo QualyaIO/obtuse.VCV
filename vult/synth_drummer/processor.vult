@@ -1,4 +1,6 @@
 
+// Wrapper for drums. Here same note does *not* reuse voice -- samples played once, no concept of note off
+
 // from vult utils, convert input voltage normalized from -10..10v to -1..1 to pitch
 // output will be limited to 0..127, corresponding to -5v .. +5.583v
 fun cvToPitch(cv) : int {

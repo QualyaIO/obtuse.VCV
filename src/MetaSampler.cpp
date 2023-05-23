@@ -668,86 +668,171 @@ void MetaSampler::setLoopEnd(int param, bool force) {
    }
 }
 
-void MetaSampler::setNote(float gate, float voct, float vel, int c) {
+void MetaSampler::setPitchBend(float semitones) {
    switch(selectedSample) {
    case 1:
-      synthSamplerCello_Processor_setNote(processorCello, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerCello_Processor_setPitchBend(processorCello, float_to_fix(semitones));
       break;
    case 2:
-      synthSamplerClarinet_Processor_setNote(processorClarinet, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerClarinet_Processor_setPitchBend(processorClarinet, float_to_fix(semitones));
       break;
    case 3:
-      synthSamplerPiano_Processor_setNote(processorPiano, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerPiano_Processor_setPitchBend(processorPiano, float_to_fix(semitones));
       break;
    case 4:
-      synthSamplerAmbientLead_Processor_setNote(processorAmbientLead, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerAmbientLead_Processor_setPitchBend(processorAmbientLead, float_to_fix(semitones));
       break;
    case 5:
-      synthSamplerAuthenticStrings_Processor_setNote(processorAuthenticStrings, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerAuthenticStrings_Processor_setPitchBend(processorAuthenticStrings, float_to_fix(semitones));
       break;
    case 6:
-      synthSamplerBoesendorferGrandPiano_Processor_setNote(processorBoesendorferGrandPiano, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerBoesendorferGrandPiano_Processor_setPitchBend(processorBoesendorferGrandPiano, float_to_fix(semitones));
       break;
    case 7:
-      synthSamplerCelesta_Processor_setNote(processorCelesta, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerCelesta_Processor_setPitchBend(processorCelesta, float_to_fix(semitones));
       break;
    case 8:
-      synthSamplerClarinets_Processor_setNote(processorClarinets, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerClarinets_Processor_setPitchBend(processorClarinets, float_to_fix(semitones));
       break;
    case 9:
-      synthSamplerClassicSuitcaseMk1_Processor_setNote(processorClassicSuitcaseMk1, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerClassicSuitcaseMk1_Processor_setPitchBend(processorClassicSuitcaseMk1, float_to_fix(semitones));
       break;
    case 10:
-      synthSamplerCosmos_Processor_setNote(processorCosmos, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerCosmos_Processor_setPitchBend(processorCosmos, float_to_fix(semitones));
       break;
    case 11:
-      synthSamplerDreamVoice_Processor_setNote(processorDreamVoice, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerDreamVoice_Processor_setPitchBend(processorDreamVoice, float_to_fix(semitones));
       break;
    case 12:
-      synthSamplerDrivenSynthLead_Processor_setNote(processorDrivenSynthLead, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerDrivenSynthLead_Processor_setPitchBend(processorDrivenSynthLead, float_to_fix(semitones));
       break;
    case 13:
-      synthSamplerGlassMarimbaSoft_Processor_setNote(processorGlassMarimbaSoft, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerGlassMarimbaSoft_Processor_setPitchBend(processorGlassMarimbaSoft, float_to_fix(semitones));
       break;
    case 14:
-      synthSamplerIndianSitar_Processor_setNote(processorIndianSitar, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerIndianSitar_Processor_setPitchBend(processorIndianSitar, float_to_fix(semitones));
       break;
    case 15:
-      synthSamplerJapaneseShakuhachiFlute_Processor_setNote(processorJapaneseShakuhachiFlute, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerJapaneseShakuhachiFlute_Processor_setPitchBend(processorJapaneseShakuhachiFlute, float_to_fix(semitones));
       break;
    case 16:
-      synthSamplerKoto_Processor_setNote(processorKoto, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerKoto_Processor_setPitchBend(processorKoto, float_to_fix(semitones));
       break;
    case 17:
-      synthSamplerMagnificentDrone_Processor_setNote(processorMagnificentDrone, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerMagnificentDrone_Processor_setPitchBend(processorMagnificentDrone, float_to_fix(semitones));
       break;
    case 18:
-      synthSamplerMysticVibes_Processor_setNote(processorMysticVibes, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerMysticVibes_Processor_setPitchBend(processorMysticVibes, float_to_fix(semitones));
       break;
    case 19:
-      synthSamplerPowerFifths_Processor_setNote(processorPowerFifths, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerPowerFifths_Processor_setPitchBend(processorPowerFifths, float_to_fix(semitones));
       break;
    case 20:
-      synthSamplerPulsingPatterns_Processor_setNote(processorPulsingPatterns, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerPulsingPatterns_Processor_setPitchBend(processorPulsingPatterns, float_to_fix(semitones));
       break;
    case 21:
-      synthSamplerShootingStar_Processor_setNote(processorShootingStar, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerShootingStar_Processor_setPitchBend(processorShootingStar, float_to_fix(semitones));
       break;
    case 22:
-      synthSamplerTimeWarp_Processor_setNote(processorTimeWarp, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerTimeWarp_Processor_setPitchBend(processorTimeWarp, float_to_fix(semitones));
       break;
    case 23:
-      synthSamplerTranquility_Processor_setNote(processorTranquility, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerTranquility_Processor_setPitchBend(processorTranquility, float_to_fix(semitones));
       break;
    case 24:
-      synthSamplerVocalCluster_Processor_setNote(processorVocalCluster, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerVocalCluster_Processor_setPitchBend(processorVocalCluster, float_to_fix(semitones));
       break;
    case 25:
-      synthSamplerZenGarden_Processor_setNote(processorZenGarden, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSamplerZenGarden_Processor_setPitchBend(processorZenGarden, float_to_fix(semitones));
       break;
    case 0:
    default:
-      synthSampler_Processor_setNote(processorOcarina, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      synthSampler_Processor_setPitchBend(processorOcarina, float_to_fix(semitones));
+      break;
+   }
+}
+
+
+void MetaSampler::setNote(float gate, float voct, float vel, float ret, int c) {
+   switch(selectedSample) {
+   case 1:
+      synthSamplerCello_Processor_setNote(processorCello, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 2:
+      synthSamplerClarinet_Processor_setNote(processorClarinet, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 3:
+      synthSamplerPiano_Processor_setNote(processorPiano, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 4:
+      synthSamplerAmbientLead_Processor_setNote(processorAmbientLead, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 5:
+      synthSamplerAuthenticStrings_Processor_setNote(processorAuthenticStrings, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 6:
+      synthSamplerBoesendorferGrandPiano_Processor_setNote(processorBoesendorferGrandPiano, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 7:
+      synthSamplerCelesta_Processor_setNote(processorCelesta, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 8:
+      synthSamplerClarinets_Processor_setNote(processorClarinets, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 9:
+      synthSamplerClassicSuitcaseMk1_Processor_setNote(processorClassicSuitcaseMk1, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 10:
+      synthSamplerCosmos_Processor_setNote(processorCosmos, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 11:
+      synthSamplerDreamVoice_Processor_setNote(processorDreamVoice, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 12:
+      synthSamplerDrivenSynthLead_Processor_setNote(processorDrivenSynthLead, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 13:
+      synthSamplerGlassMarimbaSoft_Processor_setNote(processorGlassMarimbaSoft, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 14:
+      synthSamplerIndianSitar_Processor_setNote(processorIndianSitar, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 15:
+      synthSamplerJapaneseShakuhachiFlute_Processor_setNote(processorJapaneseShakuhachiFlute, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 16:
+      synthSamplerKoto_Processor_setNote(processorKoto, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 17:
+      synthSamplerMagnificentDrone_Processor_setNote(processorMagnificentDrone, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 18:
+      synthSamplerMysticVibes_Processor_setNote(processorMysticVibes, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 19:
+      synthSamplerPowerFifths_Processor_setNote(processorPowerFifths, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 20:
+      synthSamplerPulsingPatterns_Processor_setNote(processorPulsingPatterns, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 21:
+      synthSamplerShootingStar_Processor_setNote(processorShootingStar, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 22:
+      synthSamplerTimeWarp_Processor_setNote(processorTimeWarp, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 23:
+      synthSamplerTranquility_Processor_setNote(processorTranquility, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 24:
+      synthSamplerVocalCluster_Processor_setNote(processorVocalCluster, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 25:
+      synthSamplerZenGarden_Processor_setNote(processorZenGarden, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      break;
+   case 0:
+   default:
+      synthSampler_Processor_setNote(processorOcarina, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
       break;
    }
 }
