@@ -27,6 +27,7 @@ fun process() {
 // Note: only take into account voct upon new gate
 and setNote(gate:real, voct:real, vel: real, cable:int) {
    // keep track of note and gate per channel (max 16 as per VCV)
+   // note+1 in pitches
    mem last_pitches: array(int, 16);
    mem last_gates: array(bool, 16);
    // 0 velocity (e.g. cable not connected) will be set to max
@@ -37,16 +38,16 @@ and setNote(gate:real, voct:real, vel: real, cable:int) {
    // note on
    if (not(last_gates[cable]) && gate >= 0.1) {
       last_gates[cable] = true;
-      last_pitches[cable] = cvToPitch(voct);
-      _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
+      last_pitches[cable] = cvToPitch(voct) + 1;
+      _ = voice:Voice.noteOn(last_pitches[cable] - 1, int(velocity), 0);
    }
    // note off
    else if(last_gates[cable] && gate < 0.1) {
-      if (last_pitches[cable] >= 0) {
-         _ = voice:Voice.noteOff(last_pitches[cable], 0);
+      if (last_pitches[cable] > 0) {
+         _ = voice:Voice.noteOff(last_pitches[cable] - 1, 0);
       }
       last_gates[cable] = false;
-      last_pitches[cable] = -1;
+      last_pitches[cable] = 0;
    }
 }
 and setPitchBend(semitones: real) {
@@ -59,11 +60,11 @@ and nbCables(nbcables: int) {
       last_nbcables = nbcables;
       val c = nbcables;
       while (c < size(last_gates) && c < size(last_pitches)) {
-         if (last_gates[c] && last_pitches[c] >= 0) {
-            _ = voice:Voice.noteOff(last_pitches[c], 0);
+         if (last_gates[c] && last_pitches[c] > 0) {
+            _ = voice:Voice.noteOff(last_pitches[c]-1, 0);
          }
          last_gates[c] = false;
-         last_pitches[c] = -1;
+         last_pitches[c] = 0;
          c = c + 1;
       }
    }

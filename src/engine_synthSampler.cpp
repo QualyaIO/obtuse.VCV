@@ -772,24 +772,24 @@ void synthSampler_Processor_setNote(synthSampler_Processor__ctx_type_2 &_ctx, fi
    }
    if(bool_not(_ctx.last_gates[cable]) && (gate >= 0x1999 /* 0.100000 */)){
       _ctx.last_gates[cable] = true;
-      _ctx.last_pitches[cable] = synthSampler_Processor_cvToPitch(voct);
+      _ctx.last_pitches[cable] = (1 + synthSampler_Processor_cvToPitch(voct));
       _ctx.last_retrigger[cable] = true;
-      synthSampler_Voice_noteOn(_ctx.voice,_ctx.last_pitches[cable],fix_to_int(velocity),0);
+      synthSampler_Voice_noteOn(_ctx.voice,((-1) + _ctx.last_pitches[cable]),fix_to_int(velocity),0);
    }
    else
    {
       if(_ctx.last_gates[cable] && (gate < 0x1999 /* 0.100000 */)){
-         if(_ctx.last_pitches[cable] >= 0){
-            synthSampler_Voice_noteOff(_ctx.voice,_ctx.last_pitches[cable],0);
+         if(_ctx.last_pitches[cable] > 0){
+            synthSampler_Voice_noteOff(_ctx.voice,((-1) + _ctx.last_pitches[cable]),0);
          }
          _ctx.last_gates[cable] = false;
          _ctx.last_retrigger[cable] = false;
-         _ctx.last_pitches[cable] = (-1);
+         _ctx.last_pitches[cable] = 0;
       }
    }
-   if((gate >= 0x1999 /* 0.100000 */) && bool_not(_ctx.last_retrigger[cable]) && (retrigger >= 0x1999 /* 0.100000 */)){
+   if((_ctx.last_pitches[cable] > 0) && (gate >= 0x1999 /* 0.100000 */) && bool_not(_ctx.last_retrigger[cable]) && (retrigger >= 0x1999 /* 0.100000 */)){
       _ctx.last_retrigger[cable] = true;
-      synthSampler_Voice_noteOn(_ctx.voice,_ctx.last_pitches[cable],fix_to_int(velocity),0);
+      synthSampler_Voice_noteOn(_ctx.voice,((-1) + _ctx.last_pitches[cable]),fix_to_int(velocity),0);
    }
    else
    {
@@ -805,11 +805,12 @@ void synthSampler_Processor_nbCables(synthSampler_Processor__ctx_type_2 &_ctx, i
       int c;
       c = nbcables;
       while((c < 16) && (c < 16)){
-         if(_ctx.last_gates[c] && (_ctx.last_pitches[c] >= 0)){
-            synthSampler_Voice_noteOff(_ctx.voice,_ctx.last_pitches[c],0);
+         if(_ctx.last_gates[c] && (_ctx.last_pitches[c] > 0)){
+            synthSampler_Voice_noteOff(_ctx.voice,((-1) + _ctx.last_pitches[c]),0);
          }
          _ctx.last_gates[c] = false;
-         _ctx.last_pitches[c] = (-1);
+         _ctx.last_retrigger[c] = false;
+         _ctx.last_pitches[c] = 0;
          c = (1 + c);
       }
    }

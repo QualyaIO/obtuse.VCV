@@ -38,6 +38,7 @@ fun process() {
 // Note: only take into account voct upon new gate or retrigger
 and setNote(gate:real, voct:real, vel: real, retrigger: real, cable:int) {
    // keep track of note, gate and retrigger per channel (max 16 as per VCV)
+   // note+1 in pitches
    mem last_pitches: array(int, 16);
    mem last_gates: array(bool, 16);
    mem last_retrigger: array(bool, 16);
@@ -49,25 +50,25 @@ and setNote(gate:real, voct:real, vel: real, retrigger: real, cable:int) {
    // note on
    if (not(last_gates[cable]) && gate >= 0.1) {
       last_gates[cable] = true;
-      last_pitches[cable] = cvToPitch(voct);
+      last_pitches[cable] = cvToPitch(voct)+1;
       // considered triggered once
       last_retrigger[cable] = true;
-      _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
+      _ = voice:Voice.noteOn(last_pitches[cable]-1, int(velocity), 0);
    }
    // note off
    else if(last_gates[cable] && gate < 0.1) {
-      if (last_pitches[cable] >= 0) {
-         _ = voice:Voice.noteOff(last_pitches[cable], 0);
+      if (last_pitches[cable] > 0) {
+         _ = voice:Voice.noteOff(last_pitches[cable]-1, 0);
       }
       last_gates[cable] = false;
       last_retrigger[cable] = false;
-      last_pitches[cable] = -1;
+      last_pitches[cable] = 0;
    }
 
    // retrigger, keep same note (even if voct changed), update velocity
-   if(gate >= 0.1 && not(last_retrigger[cable]) && retrigger >= 0.1) {
+   if(last_pitches[cable] > 0 && gate >= 0.1 && not(last_retrigger[cable]) && retrigger >= 0.1) {
      last_retrigger[cable] = true;
-     _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
+     _ = voice:Voice.noteOn(last_pitches[cable]-1, int(velocity), 0);
    }
    else if (retrigger < 0.1) {
      last_retrigger[cable] = false;
@@ -83,11 +84,12 @@ and nbCables(nbcables: int) {
       last_nbcables = nbcables;
       val c = nbcables;
       while (c < size(last_gates) && c < size(last_pitches)) {
-         if (last_gates[c] && last_pitches[c] >= 0) {
-            _ = voice:Voice.noteOff(last_pitches[c], 0);
+         if (last_gates[c] && last_pitches[c] > 0) {
+            _ = voice:Voice.noteOff(last_pitches[c]-1, 0);
          }
          last_gates[c] = false;
-         last_pitches[c] = -1;
+	 last_retrigger[c] = false;
+         last_pitches[c] = 0;
          c = c + 1;
       }
    }
