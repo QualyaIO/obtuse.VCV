@@ -31,6 +31,8 @@ struct SynthFM : Module {
       VOCT,
       GATE,
       VEL,
+      RETRIGGER,
+      BEND,
 
       NUM_INPUTS
    };
@@ -136,6 +138,8 @@ void SynthFM::process(const ProcessArgs &args) {
       std::max(
                std::max(inputs[GATE].getChannels(), inputs[VOCT].getChannels()),
                inputs[VEL].getChannels());
+   // also retrigger
+   channels = std::max(channels, inputs[RETRIGGER].getChannels()); 
    synthFM_Processor_nbCables(processor, channels);
    // pass each note to the synth
    for (int c = 0; c < channels; c++) {
@@ -143,8 +147,12 @@ void SynthFM::process(const ProcessArgs &args) {
       float voct = inputs[VOCT].getPolyVoltage(c) / 10.0f;
       float gate = inputs[GATE].getPolyVoltage(c) / 10.0f;
       float vel = inputs[VEL].getPolyVoltage(c) / 10.0f;
-      synthFM_Processor_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), c);
+      float rettriger = inputs[RETRIGGER].getPolyVoltage(c) / 10.0f;
+      synthFM_Processor_setNote(processor, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(rettriger), c);
    }
+
+   // pitch bend, -5: -2 seminotes, +5: +2 semitones
+   synthFM_Processor_setPitchBend(processor, float_to_fix(inputs[BEND].getVoltage() / 2.5f));
 
    // from processor -1..1 to max audio voltage range
    outputs[OUT].setVoltage(fix_to_float(synthFM_Processor_process(processor) * 5.0f));
@@ -191,11 +199,13 @@ struct SynthFMWidget : ModuleWidget {
 
       // input: v/oct, gate, velocity
       float port_y = 128.5 - 14.625;
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(9.147, port_y)), module, SynthFM::VOCT));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.369, port_y)), module, SynthFM::GATE));
-      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(37.638, port_y)), module, SynthFM::VEL));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.444, port_y)), module, SynthFM::VOCT));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.459, port_y)), module, SynthFM::GATE));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(25.474, port_y)), module, SynthFM::RETRIGGER));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(35.487, port_y)), module, SynthFM::VEL));
+      addInput(createInputCentered<PJ301MPort>(mm2px(Vec(45.504, port_y)), module, SynthFM::BEND));
 
-      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(51.86, port_y)), module, SynthFM::OUT));
+      addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(55.519, port_y)), module, SynthFM::OUT));
    }
 };
 

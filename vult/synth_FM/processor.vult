@@ -1,4 +1,6 @@
 
+// Wrapper for FM. Re-use voices for same note.
+
 // Util.change for 4 values at once, to make sure we update inner states with ADSR setter
 fun change4(a:real, b:real, c:real, d:real):bool {
     mem pre_a, pre_b, pre_c, pre_d;
@@ -31,12 +33,14 @@ fun process() {
 // input 1: gate (should normalized -1..1 , gate if >= 0.1, i.e. 1v)
 // input 2: v/oct (should normalized -1..1 for -10..10v)
 // input 3: velocity (linear, should normalized -1..1 for -10..10v). If 0 velocity (<= 0v) will be set to 127.
+// input 4: rettriger, if the gate is on, will retrigger the note (re-use same voice)
 // cable which polyphonic cable is used
 // Note: only take into account voct upon new gate
-and setNote(gate:real, voct:real, vel: real, cable:int) {
-   // keep track of note and gate per channel (max 16 as per VCV)
+and setNote(gate:real, voct:real, vel: real, retrigger: real, cable:int) {
+   // keep track of note, gate and retrigger per channel (max 16 as per VCV)
    mem last_pitches: array(int, 16);
    mem last_gates: array(bool, 16);
+   mem last_retrigger: array(bool, 16);
    // 0 velocity (e.g. cable not connected) will be set to max
    val velocity = clip(vel, 0.0, 1.0) * 127.0;
    if (velocity == 0.0) {
@@ -46,6 +50,8 @@ and setNote(gate:real, voct:real, vel: real, cable:int) {
    if (not(last_gates[cable]) && gate >= 0.1) {
       last_gates[cable] = true;
       last_pitches[cable] = cvToPitch(voct);
+      // considered triggered once
+      last_retrigger[cable] = true;
       _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
    }
    // note off
@@ -54,8 +60,28 @@ and setNote(gate:real, voct:real, vel: real, cable:int) {
          _ = voice:Voice.noteOff(last_pitches[cable], 0);
       }
       last_gates[cable] = false;
+      last_retrigger[cable] = false;
       last_pitches[cable] = -1;
    }
+
+   // retrigger, keep same note (even if voct changed), update velocity
+   if(gate >= 0.1 && not(last_retrigger[cable]) && retrigger >= 0.1) {
+     last_retrigger[cable] = true;
+     _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
+   }
+   else if (gate < 0.1) {
+     last_retrigger[cable] = false;
+   }
+   
+   // note on
+   if (not(last_gates[cable]) && gate >= 0.1) {
+      last_gates[cable] = true;
+      last_pitches[cable] = cvToPitch(voct);
+      _ = voice:Voice.noteOn(last_pitches[cable], int(velocity), 0);
+   }
+}
+and setPitchBend(semitones: real) {
+   _ = voice:Voice.synthPitchBend(semitones);
 }
 // pass information about max number of connected cables. Will reset all extra notes upon change to avoid stuck notes
 and nbCables(nbcables: int) {
@@ -153,4 +179,6 @@ and setCarrierADSR(a:real , d: real, s: real, r: real, force: bool) {
 and default() @[init] {
    _ = voice:Voice.default();
    _ = setSamplerate(44.1);
+   // better to re-use voice in case of sustained notes, go for it
+   _ = voice:Voice.setReuse(true);
 }
