@@ -65,8 +65,9 @@ and setNote(gate:real, voct:real, vel: real, retrigger: real, cable:int) {
       last_pitches[cable] = 0;
    }
 
-   // retrigger, keep same note (even if voct changed), update velocity
-   if(last_pitches[cable] > 0 && gate >= 0.1 && not(last_retrigger[cable]) && retrigger >= 0.1) {
+   // retrigger, reading current voct update velocity
+   if(gate >= 0.1 && not(last_retrigger[cable]) && retrigger >= 0.1) {
+     last_pitches[cable] = cvToPitch(voct)+1;
      last_retrigger[cable] = true;
      _ = voice:Voice.noteOn(last_pitches[cable]-1, int(velocity), 0);
    }

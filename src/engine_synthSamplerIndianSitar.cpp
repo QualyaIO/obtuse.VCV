@@ -787,7 +787,8 @@ void synthSamplerIndianSitar_Processor_setNote(synthSamplerIndianSitar_Processor
          _ctx.last_pitches[cable] = 0;
       }
    }
-   if((_ctx.last_pitches[cable] > 0) && (gate >= 0x1999 /* 0.100000 */) && bool_not(_ctx.last_retrigger[cable]) && (retrigger >= 0x1999 /* 0.100000 */)){
+   if((gate >= 0x1999 /* 0.100000 */) && bool_not(_ctx.last_retrigger[cable]) && (retrigger >= 0x1999 /* 0.100000 */)){
+      _ctx.last_pitches[cable] = (1 + synthSamplerIndianSitar_Processor_cvToPitch(voct));
       _ctx.last_retrigger[cable] = true;
       synthSamplerIndianSitar_Voice_noteOn(_ctx.voice,((-1) + _ctx.last_pitches[cable]),fix_to_int(velocity),0);
    }

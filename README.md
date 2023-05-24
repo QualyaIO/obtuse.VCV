@@ -30,6 +30,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## 2.3.1 (2023-05-24)
+
+- FM, sampler: hotfix for retrigger
+
 ## 2.3.0 (2023-05-23)
 
 - bump DSP, some fixes, adding pitch bend and retrigger
