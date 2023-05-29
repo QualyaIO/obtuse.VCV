@@ -32,7 +32,9 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 ## current
 
-- FM: new band-limited + noise waveforms
+- bump DSP
+- FM: new band-limited waveforms
+- FM (breaking change): change phase of most wavetables, improve transition
 
 ## 2.3.1 (2023-05-24)
 
