@@ -30,6 +30,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## current
+
+- FM: new band-limited + noise waveforms
+
 ## 2.3.1 (2023-05-24)
 
 - FM, sampler: hotfix for retrigger
