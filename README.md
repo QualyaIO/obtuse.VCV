@@ -30,7 +30,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
-## current
+## 2.4.0 (2023-06-03)
 
 - bump DSP, new FM features, fixes for clock
 - FM: new band-limited waveforms
