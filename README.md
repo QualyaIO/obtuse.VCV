@@ -32,7 +32,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 ## current
 
-- bump DSP
+- bump DSP, new FM features, fixes for clock
 - FM: new band-limited waveforms
 - FM (breaking change): change phase of most wavetables, improve transition
 

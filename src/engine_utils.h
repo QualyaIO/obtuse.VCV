@@ -1220,7 +1220,7 @@ static_inline int Clock_getMinTicks(){
 };
 
 static_inline int Clock_getMaxTicks(){
-   return 4096;
+   return 32765;
 };
 
 int Clock_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract);
@@ -1585,7 +1585,7 @@ static_inline int Processor_clock_getMinTicks(){
 };
 
 static_inline int Processor_clock_getMaxTicks(){
-   return 4096;
+   return 32765;
 };
 
 static_inline int Processor_clock_getMinGroupSize(){

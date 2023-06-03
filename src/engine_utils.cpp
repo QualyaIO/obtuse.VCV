@@ -1635,17 +1635,17 @@ int Clock_getNbNewTicks(Clock__ctx_type_7 &_ctx){
    int newTicks;
    newTicks = (_ctx.pendingTicks + curTicks + (- _ctx.lastTicks));
    _ctx.pendingTicks = 0;
-   while(newTicks < 0){
-      newTicks = (_ctx.ticks + newTicks);
+   if(newTicks < 0){
+      newTicks = ((_ctx.ticks + (- ((- newTicks) % _ctx.ticks))) % _ctx.ticks);
    }
    _ctx.lastTicks = curTicks;
    return newTicks;
 }
 
 void Clock_setNbTicks(Clock__ctx_type_7 &_ctx, int newTicks){
-   newTicks = int_clip(newTicks,1,4096);
+   newTicks = int_clip(newTicks,1,32765);
    if(newTicks != _ctx.ticks){
-      _ctx.pendingTicks = (_ctx.pendingTicks + Clock_getNbNewTicks(_ctx));
+      _ctx.pendingTicks = Clock_getNbNewTicks(_ctx);
       _ctx.ticks = newTicks;
       _ctx.lastTicks = Clock_getTicks(_ctx);
    }
@@ -1654,7 +1654,7 @@ void Clock_setNbTicks(Clock__ctx_type_7 &_ctx, int newTicks){
 void Clock_setBPM(Clock__ctx_type_7 &_ctx, fix16_t newBPM){
    newBPM = fix_clip(newBPM,0x4189 /* 0.256000 */,0x75300000 /* 30000.000000 */);
    if(newBPM != _ctx.bpm){
-      _ctx.pendingTicks = (_ctx.pendingTicks + Clock_getNbNewTicks(_ctx));
+      _ctx.pendingTicks = Clock_getNbNewTicks(_ctx);
       _ctx.bpm = newBPM;
       Clock__recompute(_ctx);
       _ctx.lastTicks = Clock_getTicks(_ctx);

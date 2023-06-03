@@ -292,25 +292,31 @@ static_inline fix16_t extra_Util_noteToFrequency(int note){
    return fix_mul(0x217 /* 0.008176 */,fix_exp(fix_mul(0xec9 /* 0.057762 */,int_to_fix(note))));
 };
 
-typedef struct extra_Util__ctx_type_1 {
+static_inline fix16_t extra_Util_tonesToCoeff(fix16_t semitones){
+   fix16_t log_base;
+   log_base = 0xb172 /* 0.693147 */;
+   return fix_exp(fix_mul(fix_mul(0x1555 /* 0.083333 */,log_base),semitones));
+}
+
+typedef struct extra_Util__ctx_type_2 {
    uint8_t pre;
-} extra_Util__ctx_type_1;
+} extra_Util__ctx_type_2;
 
-typedef extra_Util__ctx_type_1 extra_Util_edge_type;
+typedef extra_Util__ctx_type_2 extra_Util_edge_type;
 
-static_inline void extra_Util__ctx_type_1_init(extra_Util__ctx_type_1 &_output_){
-   extra_Util__ctx_type_1 _ctx;
+static_inline void extra_Util__ctx_type_2_init(extra_Util__ctx_type_2 &_output_){
+   extra_Util__ctx_type_2 _ctx;
    _ctx.pre = false;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void extra_Util_edge_init(extra_Util__ctx_type_1 &_output_){
-   extra_Util__ctx_type_1_init(_output_);
+static_inline void extra_Util_edge_init(extra_Util__ctx_type_2 &_output_){
+   extra_Util__ctx_type_2_init(_output_);
    return ;
 }
 
-static_inline uint8_t extra_Util_edge(extra_Util__ctx_type_1 &_ctx, uint8_t x){
+static_inline uint8_t extra_Util_edge(extra_Util__ctx_type_2 &_ctx, uint8_t x){
    uint8_t ret;
    ret = (x && bool_not(_ctx.pre));
    _ctx.pre = x;
@@ -333,50 +339,50 @@ static_inline fix16_t extra_Util_cubic_clipper(fix16_t x){
    }
 };
 
-typedef struct extra_Util__ctx_type_3 {
+typedef struct extra_Util__ctx_type_4 {
    fix16_t pre_x;
-} extra_Util__ctx_type_3;
+} extra_Util__ctx_type_4;
 
-typedef extra_Util__ctx_type_3 extra_Util_change_type;
+typedef extra_Util__ctx_type_4 extra_Util_change_type;
 
-static_inline void extra_Util__ctx_type_3_init(extra_Util__ctx_type_3 &_output_){
-   extra_Util__ctx_type_3 _ctx;
+static_inline void extra_Util__ctx_type_4_init(extra_Util__ctx_type_4 &_output_){
+   extra_Util__ctx_type_4 _ctx;
    _ctx.pre_x = 0x0 /* 0.000000 */;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void extra_Util_change_init(extra_Util__ctx_type_3 &_output_){
-   extra_Util__ctx_type_3_init(_output_);
+static_inline void extra_Util_change_init(extra_Util__ctx_type_4 &_output_){
+   extra_Util__ctx_type_4_init(_output_);
    return ;
 }
 
-static_inline uint8_t extra_Util_change(extra_Util__ctx_type_3 &_ctx, fix16_t x){
+static_inline uint8_t extra_Util_change(extra_Util__ctx_type_4 &_ctx, fix16_t x){
    uint8_t v;
    v = (_ctx.pre_x != x);
    _ctx.pre_x = x;
    return v;
 }
 
-typedef struct extra_Util__ctx_type_4 {
+typedef struct extra_Util__ctx_type_5 {
    fix16_t x;
-} extra_Util__ctx_type_4;
+} extra_Util__ctx_type_5;
 
-typedef extra_Util__ctx_type_4 extra_Util_smooth_type;
+typedef extra_Util__ctx_type_5 extra_Util_smooth_type;
 
-static_inline void extra_Util__ctx_type_4_init(extra_Util__ctx_type_4 &_output_){
-   extra_Util__ctx_type_4 _ctx;
+static_inline void extra_Util__ctx_type_5_init(extra_Util__ctx_type_5 &_output_){
+   extra_Util__ctx_type_5 _ctx;
    _ctx.x = 0x0 /* 0.000000 */;
    _output_ = _ctx;
    return ;
 }
 
-static_inline void extra_Util_smooth_init(extra_Util__ctx_type_4 &_output_){
-   extra_Util__ctx_type_4_init(_output_);
+static_inline void extra_Util_smooth_init(extra_Util__ctx_type_5 &_output_){
+   extra_Util__ctx_type_5_init(_output_);
    return ;
 }
 
-static_inline fix16_t extra_Util_smooth(extra_Util__ctx_type_4 &_ctx, fix16_t input, fix16_t coeff){
+static_inline fix16_t extra_Util_smooth(extra_Util__ctx_type_5 &_ctx, fix16_t input, fix16_t coeff){
    _ctx.x = (_ctx.x + fix_mul(coeff,(input + (- _ctx.x))));
    return _ctx.x;
 }
@@ -390,8 +396,8 @@ typedef struct extra_Processor_combFB__ctx_type_0 {
    fix16_t fs;
    extra_CombFB__ctx_type_0 filter;
    fix16_t delayms;
-   extra_Util__ctx_type_3 _inst53b;
-   extra_Util__ctx_type_3 _inst23b;
+   extra_Util__ctx_type_4 _inst53b;
+   extra_Util__ctx_type_4 _inst23b;
 } extra_Processor_combFB__ctx_type_0;
 
 typedef extra_Processor_combFB__ctx_type_0 extra_Processor_combFB_process_type;
@@ -488,8 +494,8 @@ typedef struct extra_Processor_allpass__ctx_type_0 {
    fix16_t fs;
    extra_Allpass__ctx_type_0 filter;
    fix16_t delayms;
-   extra_Util__ctx_type_3 _inst53b;
-   extra_Util__ctx_type_3 _inst23b;
+   extra_Util__ctx_type_4 _inst53b;
+   extra_Util__ctx_type_4 _inst23b;
 } extra_Processor_allpass__ctx_type_0;
 
 typedef extra_Processor_allpass__ctx_type_0 extra_Processor_allpass_process_type;
@@ -726,8 +732,8 @@ typedef struct extra_Processor_combFF__ctx_type_0 {
    fix16_t fs;
    extra_CombFF__ctx_type_0 filter;
    fix16_t delayms;
-   extra_Util__ctx_type_3 _inst53b;
-   extra_Util__ctx_type_3 _inst23b;
+   extra_Util__ctx_type_4 _inst53b;
+   extra_Util__ctx_type_4 _inst23b;
 } extra_Processor_combFF__ctx_type_0;
 
 typedef extra_Processor_combFF__ctx_type_0 extra_Processor_combFF_process_type;

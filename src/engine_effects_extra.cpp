@@ -107,8 +107,8 @@ void extra_Processor_combFB__ctx_type_0_init(extra_Processor_combFB__ctx_type_0 
    _ctx.fs = 0x0 /* 0.000000 */;
    extra_CombFB__ctx_type_0_init(_ctx.filter);
    _ctx.delayms = 0x0 /* 0.000000 */;
-   extra_Util__ctx_type_3_init(_ctx._inst53b);
-   extra_Util__ctx_type_3_init(_ctx._inst23b);
+   extra_Util__ctx_type_4_init(_ctx._inst53b);
+   extra_Util__ctx_type_4_init(_ctx._inst23b);
    extra_Processor_combFB_default(_ctx);
    _output_ = _ctx;
    return ;
@@ -119,8 +119,8 @@ void extra_Processor_allpass__ctx_type_0_init(extra_Processor_allpass__ctx_type_
    _ctx.fs = 0x0 /* 0.000000 */;
    extra_Allpass__ctx_type_0_init(_ctx.filter);
    _ctx.delayms = 0x0 /* 0.000000 */;
-   extra_Util__ctx_type_3_init(_ctx._inst53b);
-   extra_Util__ctx_type_3_init(_ctx._inst23b);
+   extra_Util__ctx_type_4_init(_ctx._inst53b);
+   extra_Util__ctx_type_4_init(_ctx._inst23b);
    extra_Processor_allpass_default(_ctx);
    _output_ = _ctx;
    return ;
@@ -171,8 +171,8 @@ void extra_Processor_combFF__ctx_type_0_init(extra_Processor_combFF__ctx_type_0 
    _ctx.fs = 0x0 /* 0.000000 */;
    extra_CombFF__ctx_type_0_init(_ctx.filter);
    _ctx.delayms = 0x0 /* 0.000000 */;
-   extra_Util__ctx_type_3_init(_ctx._inst53b);
-   extra_Util__ctx_type_3_init(_ctx._inst23b);
+   extra_Util__ctx_type_4_init(_ctx._inst53b);
+   extra_Util__ctx_type_4_init(_ctx._inst23b);
    extra_Processor_combFF_default(_ctx);
    _output_ = _ctx;
    return ;
