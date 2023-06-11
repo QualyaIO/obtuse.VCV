@@ -1321,9 +1321,9 @@ typedef struct synthSamplerDreamVoice_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerDreamVoice_Util__ctx_type_4 _inst233b;
-   synthSamplerDreamVoice_Util__ctx_type_4 _inst203b;
-   synthSamplerDreamVoice_Util__ctx_type_4 _inst173b;
+   synthSamplerDreamVoice_Util__ctx_type_4 _inst243b;
+   synthSamplerDreamVoice_Util__ctx_type_4 _inst213b;
+   synthSamplerDreamVoice_Util__ctx_type_4 _inst183b;
 } synthSamplerDreamVoice_Processor__ctx_type_2;
 
 typedef synthSamplerDreamVoice_Processor__ctx_type_2 synthSamplerDreamVoice_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerDreamVoice_Processor_setLoop_init(synthSamplerDre
 }
 
 static_inline void synthSamplerDreamVoice_Processor_setLoop(synthSamplerDreamVoice_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerDreamVoice_Util_change(_ctx._inst173b,synthSamplerDreamVoice_Processor_bool2real(param)) || force){
+   if(synthSamplerDreamVoice_Util_change(_ctx._inst183b,synthSamplerDreamVoice_Processor_bool2real(param)) || force){
       synthSamplerDreamVoice_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerDreamVoice_Processor_setLoopStart_init(synthSampl
 }
 
 static_inline void synthSamplerDreamVoice_Processor_setLoopStart(synthSamplerDreamVoice_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerDreamVoice_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerDreamVoice_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerDreamVoice_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerDreamVoice_Processor_setLoopEnd_init(synthSampler
 }
 
 static_inline void synthSamplerDreamVoice_Processor_setLoopEnd(synthSamplerDreamVoice_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerDreamVoice_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerDreamVoice_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerDreamVoice_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

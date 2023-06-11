@@ -1321,9 +1321,9 @@ typedef struct synthSamplerTimeWarp_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerTimeWarp_Util__ctx_type_4 _inst233b;
-   synthSamplerTimeWarp_Util__ctx_type_4 _inst203b;
-   synthSamplerTimeWarp_Util__ctx_type_4 _inst173b;
+   synthSamplerTimeWarp_Util__ctx_type_4 _inst243b;
+   synthSamplerTimeWarp_Util__ctx_type_4 _inst213b;
+   synthSamplerTimeWarp_Util__ctx_type_4 _inst183b;
 } synthSamplerTimeWarp_Processor__ctx_type_2;
 
 typedef synthSamplerTimeWarp_Processor__ctx_type_2 synthSamplerTimeWarp_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerTimeWarp_Processor_setLoop_init(synthSamplerTimeW
 }
 
 static_inline void synthSamplerTimeWarp_Processor_setLoop(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerTimeWarp_Util_change(_ctx._inst173b,synthSamplerTimeWarp_Processor_bool2real(param)) || force){
+   if(synthSamplerTimeWarp_Util_change(_ctx._inst183b,synthSamplerTimeWarp_Processor_bool2real(param)) || force){
       synthSamplerTimeWarp_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerTimeWarp_Processor_setLoopStart_init(synthSampler
 }
 
 static_inline void synthSamplerTimeWarp_Processor_setLoopStart(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerTimeWarp_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerTimeWarp_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerTimeWarp_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerTimeWarp_Processor_setLoopEnd_init(synthSamplerTi
 }
 
 static_inline void synthSamplerTimeWarp_Processor_setLoopEnd(synthSamplerTimeWarp_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerTimeWarp_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerTimeWarp_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerTimeWarp_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

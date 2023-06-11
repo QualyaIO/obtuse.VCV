@@ -1321,9 +1321,9 @@ typedef struct synthSamplerMagnificentDrone_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerMagnificentDrone_Util__ctx_type_4 _inst233b;
-   synthSamplerMagnificentDrone_Util__ctx_type_4 _inst203b;
-   synthSamplerMagnificentDrone_Util__ctx_type_4 _inst173b;
+   synthSamplerMagnificentDrone_Util__ctx_type_4 _inst243b;
+   synthSamplerMagnificentDrone_Util__ctx_type_4 _inst213b;
+   synthSamplerMagnificentDrone_Util__ctx_type_4 _inst183b;
 } synthSamplerMagnificentDrone_Processor__ctx_type_2;
 
 typedef synthSamplerMagnificentDrone_Processor__ctx_type_2 synthSamplerMagnificentDrone_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerMagnificentDrone_Processor_setLoop_init(synthSamp
 }
 
 static_inline void synthSamplerMagnificentDrone_Processor_setLoop(synthSamplerMagnificentDrone_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerMagnificentDrone_Util_change(_ctx._inst173b,synthSamplerMagnificentDrone_Processor_bool2real(param)) || force){
+   if(synthSamplerMagnificentDrone_Util_change(_ctx._inst183b,synthSamplerMagnificentDrone_Processor_bool2real(param)) || force){
       synthSamplerMagnificentDrone_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerMagnificentDrone_Processor_setLoopStart_init(synt
 }
 
 static_inline void synthSamplerMagnificentDrone_Processor_setLoopStart(synthSamplerMagnificentDrone_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerMagnificentDrone_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerMagnificentDrone_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerMagnificentDrone_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerMagnificentDrone_Processor_setLoopEnd_init(synthS
 }
 
 static_inline void synthSamplerMagnificentDrone_Processor_setLoopEnd(synthSamplerMagnificentDrone_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerMagnificentDrone_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerMagnificentDrone_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerMagnificentDrone_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

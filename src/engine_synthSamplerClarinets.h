@@ -1321,9 +1321,9 @@ typedef struct synthSamplerClarinets_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerClarinets_Util__ctx_type_4 _inst233b;
-   synthSamplerClarinets_Util__ctx_type_4 _inst203b;
-   synthSamplerClarinets_Util__ctx_type_4 _inst173b;
+   synthSamplerClarinets_Util__ctx_type_4 _inst243b;
+   synthSamplerClarinets_Util__ctx_type_4 _inst213b;
+   synthSamplerClarinets_Util__ctx_type_4 _inst183b;
 } synthSamplerClarinets_Processor__ctx_type_2;
 
 typedef synthSamplerClarinets_Processor__ctx_type_2 synthSamplerClarinets_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerClarinets_Processor_setLoop_init(synthSamplerClar
 }
 
 static_inline void synthSamplerClarinets_Processor_setLoop(synthSamplerClarinets_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerClarinets_Util_change(_ctx._inst173b,synthSamplerClarinets_Processor_bool2real(param)) || force){
+   if(synthSamplerClarinets_Util_change(_ctx._inst183b,synthSamplerClarinets_Processor_bool2real(param)) || force){
       synthSamplerClarinets_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerClarinets_Processor_setLoopStart_init(synthSample
 }
 
 static_inline void synthSamplerClarinets_Processor_setLoopStart(synthSamplerClarinets_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerClarinets_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerClarinets_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerClarinets_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerClarinets_Processor_setLoopEnd_init(synthSamplerC
 }
 
 static_inline void synthSamplerClarinets_Processor_setLoopEnd(synthSamplerClarinets_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerClarinets_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerClarinets_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerClarinets_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

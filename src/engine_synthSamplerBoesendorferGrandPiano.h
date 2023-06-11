@@ -1321,9 +1321,9 @@ typedef struct synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerBoesendorferGrandPiano_Util__ctx_type_4 _inst233b;
-   synthSamplerBoesendorferGrandPiano_Util__ctx_type_4 _inst203b;
-   synthSamplerBoesendorferGrandPiano_Util__ctx_type_4 _inst173b;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_4 _inst243b;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_4 _inst213b;
+   synthSamplerBoesendorferGrandPiano_Util__ctx_type_4 _inst183b;
 } synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2;
 
 typedef synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 synthSamplerBoesendorferGrandPiano_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoop_init(syn
 }
 
 static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoop(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst173b,synthSamplerBoesendorferGrandPiano_Processor_bool2real(param)) || force){
+   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst183b,synthSamplerBoesendorferGrandPiano_Processor_bool2real(param)) || force){
       synthSamplerBoesendorferGrandPiano_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopStart_ini
 }
 
 static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopStart(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerBoesendorferGrandPiano_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopEnd_init(
 }
 
 static_inline void synthSamplerBoesendorferGrandPiano_Processor_setLoopEnd(synthSamplerBoesendorferGrandPiano_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerBoesendorferGrandPiano_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerBoesendorferGrandPiano_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

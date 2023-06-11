@@ -1321,9 +1321,9 @@ typedef struct synthSampler_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSampler_Util__ctx_type_4 _inst233b;
-   synthSampler_Util__ctx_type_4 _inst203b;
-   synthSampler_Util__ctx_type_4 _inst173b;
+   synthSampler_Util__ctx_type_4 _inst243b;
+   synthSampler_Util__ctx_type_4 _inst213b;
+   synthSampler_Util__ctx_type_4 _inst183b;
 } synthSampler_Processor__ctx_type_2;
 
 typedef synthSampler_Processor__ctx_type_2 synthSampler_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSampler_Processor_setLoop_init(synthSampler_Processor__c
 }
 
 static_inline void synthSampler_Processor_setLoop(synthSampler_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSampler_Util_change(_ctx._inst173b,synthSampler_Processor_bool2real(param)) || force){
+   if(synthSampler_Util_change(_ctx._inst183b,synthSampler_Processor_bool2real(param)) || force){
       synthSampler_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSampler_Processor_setLoopStart_init(synthSampler_Process
 }
 
 static_inline void synthSampler_Processor_setLoopStart(synthSampler_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSampler_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSampler_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSampler_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSampler_Processor_setLoopEnd_init(synthSampler_Processor
 }
 
 static_inline void synthSampler_Processor_setLoopEnd(synthSampler_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSampler_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSampler_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSampler_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

@@ -1321,9 +1321,9 @@ typedef struct synthSamplerAmbientLead_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerAmbientLead_Util__ctx_type_4 _inst233b;
-   synthSamplerAmbientLead_Util__ctx_type_4 _inst203b;
-   synthSamplerAmbientLead_Util__ctx_type_4 _inst173b;
+   synthSamplerAmbientLead_Util__ctx_type_4 _inst243b;
+   synthSamplerAmbientLead_Util__ctx_type_4 _inst213b;
+   synthSamplerAmbientLead_Util__ctx_type_4 _inst183b;
 } synthSamplerAmbientLead_Processor__ctx_type_2;
 
 typedef synthSamplerAmbientLead_Processor__ctx_type_2 synthSamplerAmbientLead_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerAmbientLead_Processor_setLoop_init(synthSamplerAm
 }
 
 static_inline void synthSamplerAmbientLead_Processor_setLoop(synthSamplerAmbientLead_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerAmbientLead_Util_change(_ctx._inst173b,synthSamplerAmbientLead_Processor_bool2real(param)) || force){
+   if(synthSamplerAmbientLead_Util_change(_ctx._inst183b,synthSamplerAmbientLead_Processor_bool2real(param)) || force){
       synthSamplerAmbientLead_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerAmbientLead_Processor_setLoopStart_init(synthSamp
 }
 
 static_inline void synthSamplerAmbientLead_Processor_setLoopStart(synthSamplerAmbientLead_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerAmbientLead_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerAmbientLead_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerAmbientLead_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerAmbientLead_Processor_setLoopEnd_init(synthSample
 }
 
 static_inline void synthSamplerAmbientLead_Processor_setLoopEnd(synthSamplerAmbientLead_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerAmbientLead_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerAmbientLead_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerAmbientLead_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

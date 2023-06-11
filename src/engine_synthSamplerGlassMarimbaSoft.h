@@ -1321,9 +1321,9 @@ typedef struct synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerGlassMarimbaSoft_Util__ctx_type_4 _inst233b;
-   synthSamplerGlassMarimbaSoft_Util__ctx_type_4 _inst203b;
-   synthSamplerGlassMarimbaSoft_Util__ctx_type_4 _inst173b;
+   synthSamplerGlassMarimbaSoft_Util__ctx_type_4 _inst243b;
+   synthSamplerGlassMarimbaSoft_Util__ctx_type_4 _inst213b;
+   synthSamplerGlassMarimbaSoft_Util__ctx_type_4 _inst183b;
 } synthSamplerGlassMarimbaSoft_Processor__ctx_type_2;
 
 typedef synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 synthSamplerGlassMarimbaSoft_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerGlassMarimbaSoft_Processor_setLoop_init(synthSamp
 }
 
 static_inline void synthSamplerGlassMarimbaSoft_Processor_setLoop(synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerGlassMarimbaSoft_Util_change(_ctx._inst173b,synthSamplerGlassMarimbaSoft_Processor_bool2real(param)) || force){
+   if(synthSamplerGlassMarimbaSoft_Util_change(_ctx._inst183b,synthSamplerGlassMarimbaSoft_Processor_bool2real(param)) || force){
       synthSamplerGlassMarimbaSoft_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerGlassMarimbaSoft_Processor_setLoopStart_init(synt
 }
 
 static_inline void synthSamplerGlassMarimbaSoft_Processor_setLoopStart(synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerGlassMarimbaSoft_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerGlassMarimbaSoft_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerGlassMarimbaSoft_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerGlassMarimbaSoft_Processor_setLoopEnd_init(synthS
 }
 
 static_inline void synthSamplerGlassMarimbaSoft_Processor_setLoopEnd(synthSamplerGlassMarimbaSoft_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerGlassMarimbaSoft_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerGlassMarimbaSoft_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerGlassMarimbaSoft_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

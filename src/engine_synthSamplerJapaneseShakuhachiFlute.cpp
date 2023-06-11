@@ -697,9 +697,9 @@ void synthSamplerJapaneseShakuhachiFlute_Processor__ctx_type_2_init(synthSampler
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
-   synthSamplerJapaneseShakuhachiFlute_Util__ctx_type_4_init(_ctx._inst233b);
-   synthSamplerJapaneseShakuhachiFlute_Util__ctx_type_4_init(_ctx._inst203b);
-   synthSamplerJapaneseShakuhachiFlute_Util__ctx_type_4_init(_ctx._inst173b);
+   synthSamplerJapaneseShakuhachiFlute_Util__ctx_type_4_init(_ctx._inst243b);
+   synthSamplerJapaneseShakuhachiFlute_Util__ctx_type_4_init(_ctx._inst213b);
+   synthSamplerJapaneseShakuhachiFlute_Util__ctx_type_4_init(_ctx._inst183b);
    synthSamplerJapaneseShakuhachiFlute_Processor_default(_ctx);
    _output_ = _ctx;
    return ;
@@ -729,7 +729,12 @@ void synthSamplerJapaneseShakuhachiFlute_Processor_setNote(synthSamplerJapaneseS
       }
    }
    if((gate >= 0x1999 /* 0.100000 */) && bool_not(_ctx.last_retrigger[cable]) && (retrigger >= 0x1999 /* 0.100000 */)){
-      _ctx.last_pitches[cable] = (1 + synthSamplerJapaneseShakuhachiFlute_Processor_cvToPitch(voct));
+      int new_pitch;
+      new_pitch = (1 + synthSamplerJapaneseShakuhachiFlute_Processor_cvToPitch(voct));
+      if(_ctx.last_gates[cable] && (new_pitch != _ctx.last_pitches[cable])){
+         synthSamplerJapaneseShakuhachiFlute_Voice_noteOff(_ctx.voice,((-1) + _ctx.last_pitches[cable]),0);
+      }
+      _ctx.last_pitches[cable] = new_pitch;
       _ctx.last_retrigger[cable] = true;
       synthSamplerJapaneseShakuhachiFlute_Voice_noteOn(_ctx.voice,((-1) + _ctx.last_pitches[cable]),fix_to_int(velocity),0);
    }

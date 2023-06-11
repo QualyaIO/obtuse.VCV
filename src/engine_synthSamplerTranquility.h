@@ -1321,9 +1321,9 @@ typedef struct synthSamplerTranquility_Processor__ctx_type_2 {
    int last_nbcables;
    uint8_t last_gates[16];
    fix16_t fs;
-   synthSamplerTranquility_Util__ctx_type_4 _inst233b;
-   synthSamplerTranquility_Util__ctx_type_4 _inst203b;
-   synthSamplerTranquility_Util__ctx_type_4 _inst173b;
+   synthSamplerTranquility_Util__ctx_type_4 _inst243b;
+   synthSamplerTranquility_Util__ctx_type_4 _inst213b;
+   synthSamplerTranquility_Util__ctx_type_4 _inst183b;
 } synthSamplerTranquility_Processor__ctx_type_2;
 
 typedef synthSamplerTranquility_Processor__ctx_type_2 synthSamplerTranquility_Processor_process_type;
@@ -1390,7 +1390,7 @@ static_inline void synthSamplerTranquility_Processor_setLoop_init(synthSamplerTr
 }
 
 static_inline void synthSamplerTranquility_Processor_setLoop(synthSamplerTranquility_Processor__ctx_type_2 &_ctx, uint8_t param, uint8_t force){
-   if(synthSamplerTranquility_Util_change(_ctx._inst173b,synthSamplerTranquility_Processor_bool2real(param)) || force){
+   if(synthSamplerTranquility_Util_change(_ctx._inst183b,synthSamplerTranquility_Processor_bool2real(param)) || force){
       synthSamplerTranquility_Voice_synthSetLoop(_ctx.voice,param);
    }
 };
@@ -1403,7 +1403,7 @@ static_inline void synthSamplerTranquility_Processor_setLoopStart_init(synthSamp
 }
 
 static_inline void synthSamplerTranquility_Processor_setLoopStart(synthSamplerTranquility_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerTranquility_Util_change(_ctx._inst203b,int_to_fix(param)) || force){
+   if(synthSamplerTranquility_Util_change(_ctx._inst213b,int_to_fix(param)) || force){
       synthSamplerTranquility_Voice_synthSetLoopStart(_ctx.voice,param);
    }
 };
@@ -1416,7 +1416,7 @@ static_inline void synthSamplerTranquility_Processor_setLoopEnd_init(synthSample
 }
 
 static_inline void synthSamplerTranquility_Processor_setLoopEnd(synthSamplerTranquility_Processor__ctx_type_2 &_ctx, int param, uint8_t force){
-   if(synthSamplerTranquility_Util_change(_ctx._inst233b,int_to_fix(param)) || force){
+   if(synthSamplerTranquility_Util_change(_ctx._inst243b,int_to_fix(param)) || force){
       synthSamplerTranquility_Voice_synthSetLoopEnd(_ctx.voice,param);
    }
 };

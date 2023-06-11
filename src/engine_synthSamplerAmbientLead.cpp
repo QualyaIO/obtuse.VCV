@@ -697,9 +697,9 @@ void synthSamplerAmbientLead_Processor__ctx_type_2_init(synthSamplerAmbientLead_
    _ctx.last_nbcables = 0;
    bool_init_array(16,false,_ctx.last_gates);
    _ctx.fs = 0x0 /* 0.000000 */;
-   synthSamplerAmbientLead_Util__ctx_type_4_init(_ctx._inst233b);
-   synthSamplerAmbientLead_Util__ctx_type_4_init(_ctx._inst203b);
-   synthSamplerAmbientLead_Util__ctx_type_4_init(_ctx._inst173b);
+   synthSamplerAmbientLead_Util__ctx_type_4_init(_ctx._inst243b);
+   synthSamplerAmbientLead_Util__ctx_type_4_init(_ctx._inst213b);
+   synthSamplerAmbientLead_Util__ctx_type_4_init(_ctx._inst183b);
    synthSamplerAmbientLead_Processor_default(_ctx);
    _output_ = _ctx;
    return ;
@@ -729,7 +729,12 @@ void synthSamplerAmbientLead_Processor_setNote(synthSamplerAmbientLead_Processor
       }
    }
    if((gate >= 0x1999 /* 0.100000 */) && bool_not(_ctx.last_retrigger[cable]) && (retrigger >= 0x1999 /* 0.100000 */)){
-      _ctx.last_pitches[cable] = (1 + synthSamplerAmbientLead_Processor_cvToPitch(voct));
+      int new_pitch;
+      new_pitch = (1 + synthSamplerAmbientLead_Processor_cvToPitch(voct));
+      if(_ctx.last_gates[cable] && (new_pitch != _ctx.last_pitches[cable])){
+         synthSamplerAmbientLead_Voice_noteOff(_ctx.voice,((-1) + _ctx.last_pitches[cable]),0);
+      }
+      _ctx.last_pitches[cable] = new_pitch;
       _ctx.last_retrigger[cable] = true;
       synthSamplerAmbientLead_Voice_noteOn(_ctx.voice,((-1) + _ctx.last_pitches[cable]),fix_to_int(velocity),0);
    }

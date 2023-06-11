@@ -31,7 +31,9 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 ## 2.4.1 (current)
 
+- bump DSP
 - FM (breaking change): faster ADSR
+- FM, sampler: avoid stuck notes with retrigger
 
 ## 2.4.0 (2023-06-03)
 
