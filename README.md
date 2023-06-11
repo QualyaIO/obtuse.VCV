@@ -34,6 +34,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - bump DSP
 - FM (breaking change): faster ADSR
 - FM, sampler: avoid stuck notes with retrigger
+- FM: setting min ADSR values
 
 ## 2.4.0 (2023-06-03)
 

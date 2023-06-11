@@ -65,16 +65,22 @@ SynthFM::SynthFM() {
    float maxD = fix_to_float(synthFM_ADSR_getMaxValues_ret_1(adsr)); 
    float maxS = fix_to_float(synthFM_ADSR_getMaxValues_ret_2(adsr)); 
    float maxR = fix_to_float(synthFM_ADSR_getMaxValues_ret_3(adsr)); 
+   synthFM_ADSR_getMinValues_type adsrmin;
+   synthFM_ADSR_getMinValues(adsrmin);
+   float minA = fix_to_float(synthFM_ADSR_getMinValues_ret_0(adsrmin)); 
+   float minD = fix_to_float(synthFM_ADSR_getMinValues_ret_1(adsrmin)); 
+   float minS = fix_to_float(synthFM_ADSR_getMinValues_ret_2(adsrmin)); 
+   float minR = fix_to_float(synthFM_ADSR_getMinValues_ret_3(adsrmin)); 
    // also max number of wavetable to know up to what we can morph
    float maxMorph = synthFM_Wavetable_getNbWavetables();
    // quite arbitrary, actually. Nyquist will limit in practice (?)
    float maxRatio = 30.0;
 
    // modulator adsr
-   configParam(SynthFM::MOD_A, 0.0, maxA, 0.0, "Modulator attack", " seconds");
-   configParam(SynthFM::MOD_D, 0.0, maxD, 0.0, "Modulator decay", " seconds");
-   configParam(SynthFM::MOD_S, 0.0, maxS, 0.5, "Modulator sustain", "");
-   configParam(SynthFM::MOD_R, 0.0, maxR, 0.0, "Modulator release", " seconds");
+   configParam(SynthFM::MOD_A, minA, maxA, 0.01, "Modulator attack", " seconds");
+   configParam(SynthFM::MOD_D, minD, maxD, 0.01, "Modulator decay", " seconds");
+   configParam(SynthFM::MOD_S, minS, maxS, 0.5, "Modulator sustain", "");
+   configParam(SynthFM::MOD_R, minR, maxR, 0.01, "Modulator release", " seconds");
    // modulator ratio and morph, plus level
    configParam(SynthFM::MOD_RATIO, -maxRatio, maxRatio, 2.0, "Modulator ratio", "");
    configParam(SynthFM::MOD_MORPH, 0.0, maxMorph, 0.0, "Modulator morph", "");
@@ -86,10 +92,10 @@ SynthFM::SynthFM() {
    configParam(SynthFM::MOD_FDB, 0.0, 1.0, 0.0, "Modulator feedback", " %", 0.0f, 100.0f);
 
    // carrier adsr
-   configParam(SynthFM::CAR_A, 0.0, maxA, 0.0, "Carrier attack", " seconds");
-   configParam(SynthFM::CAR_D, 0.0, maxD, 0.0, "Carrier decay", " seconds");
-   configParam(SynthFM::CAR_S, 0.0, maxS, 0.5, "Carrier sustain", "");
-   configParam(SynthFM::CAR_R, 0.0, maxR, 0.0, "Carrier release", " seconds");
+   configParam(SynthFM::CAR_A, minA, maxA, 0.01, "Carrier attack", " seconds");
+   configParam(SynthFM::CAR_D, minD, maxD, 0.01, "Carrier decay", " seconds");
+   configParam(SynthFM::CAR_S, minS, maxS, 0.5, "Carrier sustain", "");
+   configParam(SynthFM::CAR_R, minR, maxR, 0.01, "Carrier release", " seconds");
    // carrier ratio and morph
    configParam(SynthFM::CAR_RATIO, -maxRatio, maxRatio, 1.0, "Carrier ratio", "");
    configParam(SynthFM::CAR_MORPH, 0.0, maxMorph, 0.0, "Carrier morph", "");
