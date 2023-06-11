@@ -111,7 +111,7 @@ static_inline fix16_t Util_velocityToLevel(int velocity){
    return fix_mul(0x204 /* 0.007874 */,int_to_fix(velocity));
 }
 
-static_inline void Buffer_buffer(fix16_t (&oBuff)[256]){
+static_inline void Buffer_buffer(fix16_t (&oBuff)[128]){
 }
 
 void Buffer_buffer_large(fix16_t (&oBuff)[2048]);
@@ -223,7 +223,7 @@ static_inline void SVF_process_bufferTo_init(SVF__ctx_type_0 &_output_){
    return ;
 }
 
-void SVF_process_bufferTo(SVF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void SVF_process_bufferTo(SVF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef SVF__ctx_type_0 SVF_setSamplerate_type;
 
@@ -267,7 +267,7 @@ static_inline void SVF_dummy_init(SVF__ctx_type_1 &_output_){
 }
 
 static_inline void SVF_dummy(SVF__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    Buffer_buffer(buff);
    SVF_process_bufferTo(_ctx._inst1f,0,buff,buff);
 }
@@ -408,7 +408,7 @@ static_inline void CombFB_process_bufferTo_init(CombFB__ctx_type_0 &_output_){
    return ;
 }
 
-void CombFB_process_bufferTo(CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void CombFB_process_bufferTo(CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef CombFB__ctx_type_0 CombFB_setDecay_type;
 
@@ -516,7 +516,7 @@ static_inline void CombFB_dummy_init(CombFB__ctx_type_1 &_output_){
 }
 
 static_inline void CombFB_dummy(CombFB__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    Buffer_buffer(buff);
    CombFB_process_bufferTo(_ctx._inst13c,0,buff,buff);
 }
@@ -549,7 +549,7 @@ static_inline void Allpass_process_bufferTo_init(Allpass__ctx_type_0 &_output_){
    return ;
 }
 
-void Allpass_process_bufferTo(Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void Allpass_process_bufferTo(Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef Allpass__ctx_type_0 Allpass_setDecay_type;
 
@@ -652,7 +652,7 @@ static_inline void Allpass_dummy_init(Allpass__ctx_type_1 &_output_){
 }
 
 static_inline void Allpass_dummy(Allpass__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    Buffer_buffer(buff);
    Allpass_process_bufferTo(_ctx._inst156,0,buff,buff);
 }
@@ -668,12 +668,12 @@ typedef struct Reverb__ctx_type_0 {
    CombFB__ctx_type_0 comb1;
    int comb0delay;
    CombFB__ctx_type_0 comb0;
-   fix16_t buffer_c3[256];
-   fix16_t buffer_c2[256];
-   fix16_t buffer_c1[256];
-   fix16_t buffer_c0[256];
-   fix16_t buffer_a1[256];
-   fix16_t buffer_a0[256];
+   fix16_t buffer_c3[128];
+   fix16_t buffer_c2[128];
+   fix16_t buffer_c1[128];
+   fix16_t buffer_c0[128];
+   fix16_t buffer_a1[128];
+   fix16_t buffer_a0[128];
    Allpass__ctx_type_0 allpass1;
    Allpass__ctx_type_0 allpass0;
 } Reverb__ctx_type_0;
@@ -700,7 +700,7 @@ static_inline void Reverb_process_bufferTo_init(Reverb__ctx_type_0 &_output_){
    return ;
 }
 
-void Reverb_process_bufferTo(Reverb__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void Reverb_process_bufferTo(Reverb__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef Reverb__ctx_type_0 Reverb_setSamplerate_type;
 
@@ -757,7 +757,7 @@ static_inline void Reverb_dummy_init(Reverb__ctx_type_1 &_output_){
 }
 
 static_inline void Reverb_dummy(Reverb__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    Buffer_buffer(buff);
    Reverb_process_bufferTo(_ctx._inst1f2,0,buff,buff);
 }

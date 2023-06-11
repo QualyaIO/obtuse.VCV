@@ -7,7 +7,7 @@
 #include "vultin.h"
 #include "engine_effects_extra.tables.h"
 
-static_inline void extra_Buffer_buffer(fix16_t (&oBuff)[256]){
+static_inline void extra_Buffer_buffer(fix16_t (&oBuff)[128]){
 }
 
 void extra_Buffer_buffer_large(fix16_t (&oBuff)[16384]);
@@ -40,7 +40,7 @@ static_inline void extra_Allpass_process_bufferTo_init(extra_Allpass__ctx_type_0
    return ;
 }
 
-void extra_Allpass_process_bufferTo(extra_Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void extra_Allpass_process_bufferTo(extra_Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef extra_Allpass__ctx_type_0 extra_Allpass_setDecay_type;
 
@@ -143,7 +143,7 @@ static_inline void extra_Allpass_dummy_init(extra_Allpass__ctx_type_1 &_output_)
 }
 
 static_inline void extra_Allpass_dummy(extra_Allpass__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    extra_Buffer_buffer(buff);
    extra_Allpass_process_bufferTo(_ctx._inst156,0,buff,buff);
 }
@@ -175,7 +175,7 @@ static_inline void extra_CombFB_process_bufferTo_init(extra_CombFB__ctx_type_0 &
    return ;
 }
 
-void extra_CombFB_process_bufferTo(extra_CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void extra_CombFB_process_bufferTo(extra_CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef extra_CombFB__ctx_type_0 extra_CombFB_setDecay_type;
 
@@ -283,7 +283,7 @@ static_inline void extra_CombFB_dummy_init(extra_CombFB__ctx_type_1 &_output_){
 }
 
 static_inline void extra_CombFB_dummy(extra_CombFB__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    extra_Buffer_buffer(buff);
    extra_CombFB_process_bufferTo(_ctx._inst13c,0,buff,buff);
 }
@@ -615,7 +615,7 @@ static_inline void extra_CombFF_process_bufferTo_init(extra_CombFF__ctx_type_0 &
    return ;
 }
 
-void extra_CombFF_process_bufferTo(extra_CombFF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]);
+void extra_CombFF_process_bufferTo(extra_CombFF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
 typedef extra_CombFF__ctx_type_0 extra_CombFF_setDecay_type;
 
@@ -723,7 +723,7 @@ static_inline void extra_CombFF_dummy_init(extra_CombFF__ctx_type_1 &_output_){
 }
 
 static_inline void extra_CombFF_dummy(extra_CombFF__ctx_type_1 &_ctx){
-   fix16_t buff[256];
+   fix16_t buff[128];
    extra_Buffer_buffer(buff);
    extra_CombFF_process_bufferTo(_ctx._inst115,0,buff,buff);
 }

@@ -35,10 +35,10 @@ fix16_t extra_Allpass_process(extra_Allpass__ctx_type_0 &_ctx, fix16_t sample){
    return fix_mul(_ctx.scale,out);
 }
 
-void extra_Allpass_process_bufferTo(extra_Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
-   nb = int_clip(nb,0,256);
+void extra_Allpass_process_bufferTo(extra_Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
    if(nb == 0){
-      nb = 256;
+      nb = 128;
    }
    fix16_t out;
    int i;
@@ -84,10 +84,10 @@ fix16_t extra_CombFB_process(extra_CombFB__ctx_type_0 &_ctx, fix16_t sample){
    return fix_mul(_ctx.scale,out);
 }
 
-void extra_CombFB_process_bufferTo(extra_CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
-   nb = int_clip(nb,0,256);
+void extra_CombFB_process_bufferTo(extra_CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
    if(nb == 0){
-      nb = 256;
+      nb = 128;
    }
    fix16_t out;
    int i;
@@ -148,10 +148,10 @@ fix16_t extra_CombFF_process(extra_CombFF__ctx_type_0 &_ctx, fix16_t sample){
    return fix_mul(_ctx.scale,(decayed + sample));
 }
 
-void extra_CombFF_process_bufferTo(extra_CombFF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
-   nb = int_clip(nb,0,256);
+void extra_CombFF_process_bufferTo(extra_CombFF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
    if(nb == 0){
-      nb = 256;
+      nb = 128;
    }
    fix16_t decayed;
    int i;

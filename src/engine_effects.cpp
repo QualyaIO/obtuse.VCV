@@ -102,11 +102,11 @@ fix16_t SVF_process(SVF__ctx_type_0 &_ctx, fix16_t input){
    return output;
 }
 
-void SVF_process_bufferTo(SVF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
+void SVF_process_bufferTo(SVF__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
    int min_nb;
-   min_nb = 256;
-   if(256 < min_nb){
-      min_nb = 256;
+   min_nb = 128;
+   if(128 < min_nb){
+      min_nb = 128;
    }
    nb = int_clip(nb,0,min_nb);
    if(nb == 0){
@@ -203,10 +203,10 @@ fix16_t CombFB_process(CombFB__ctx_type_0 &_ctx, fix16_t sample){
    return fix_mul(_ctx.scale,out);
 }
 
-void CombFB_process_bufferTo(CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
-   nb = int_clip(nb,0,256);
+void CombFB_process_bufferTo(CombFB__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
    if(nb == 0){
-      nb = 256;
+      nb = 128;
    }
    fix16_t out;
    int i;
@@ -245,10 +245,10 @@ fix16_t Allpass_process(Allpass__ctx_type_0 &_ctx, fix16_t sample){
    return fix_mul(_ctx.scale,out);
 }
 
-void Allpass_process_bufferTo(Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
-   nb = int_clip(nb,0,256);
+void Allpass_process_bufferTo(Allpass__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
    if(nb == 0){
-      nb = 256;
+      nb = 128;
    }
    fix16_t out;
    int i;
@@ -284,12 +284,12 @@ void Reverb__ctx_type_0_init(Reverb__ctx_type_0 &_output_){
    CombFB__ctx_type_0_init(_ctx.comb1);
    _ctx.comb0delay = 0;
    CombFB__ctx_type_0_init(_ctx.comb0);
-   fix_init_array(256,0x0 /* 0.000000 */,_ctx.buffer_c3);
-   fix_init_array(256,0x0 /* 0.000000 */,_ctx.buffer_c2);
-   fix_init_array(256,0x0 /* 0.000000 */,_ctx.buffer_c1);
-   fix_init_array(256,0x0 /* 0.000000 */,_ctx.buffer_c0);
-   fix_init_array(256,0x0 /* 0.000000 */,_ctx.buffer_a1);
-   fix_init_array(256,0x0 /* 0.000000 */,_ctx.buffer_a0);
+   fix_init_array(128,0x0 /* 0.000000 */,_ctx.buffer_c3);
+   fix_init_array(128,0x0 /* 0.000000 */,_ctx.buffer_c2);
+   fix_init_array(128,0x0 /* 0.000000 */,_ctx.buffer_c1);
+   fix_init_array(128,0x0 /* 0.000000 */,_ctx.buffer_c0);
+   fix_init_array(128,0x0 /* 0.000000 */,_ctx.buffer_a1);
+   fix_init_array(128,0x0 /* 0.000000 */,_ctx.buffer_a0);
    Allpass__ctx_type_0_init(_ctx.allpass1);
    Allpass__ctx_type_0_init(_ctx.allpass0);
    Reverb_default(_ctx);
@@ -297,10 +297,10 @@ void Reverb__ctx_type_0_init(Reverb__ctx_type_0 &_output_){
    return ;
 }
 
-void Reverb_process_bufferTo(Reverb__ctx_type_0 &_ctx, int nb, fix16_t (&input)[256], fix16_t (&oBuffer)[256]){
-   nb = int_clip(nb,0,256);
+void Reverb_process_bufferTo(Reverb__ctx_type_0 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
    if(nb == 0){
-      nb = 256;
+      nb = 128;
    }
    CombFB_process_bufferTo(_ctx.comb0,nb,input,_ctx.buffer_c0);
    CombFB_process_bufferTo(_ctx.comb1,nb,input,_ctx.buffer_c1);

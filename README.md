@@ -29,6 +29,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## 2.4.1 (current)
+
+- FM (breaking change): faster ADSR
+
 ## 2.4.0 (2023-06-03)
 
 - bump DSP, new FM features, fixes for clock
