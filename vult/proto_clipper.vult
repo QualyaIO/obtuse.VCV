@@ -1,0 +1,133 @@
+
+// testing a tanh clipper with adjustable threshold and coeff. Output guaranteed -1..1
+
+/*
+
+ getKnob(n:int) : real // value of the nth knob range: 0.0-1.0
+ getSwitch(n:int) : bool // value of the nth switch: true/false
+
+ setLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0, i from 1 to 6
+ setSwitchLight(n:int, r:real, g:real, b:real) // r, g, b range: 0.0-1.0
+
+ samplerate() : real  // current sample rate
+ sampletime() : real  // current time step (1.0 / samplerate())
+
+ */
+
+// we must give some margin to let the polynomial interpolation work (i.e. too close to -1..1 in range will produce artifacts)
+fun tanh_table(x) @[table(min = -10.0, max = 10.0, size = 1024)] {
+  if (x < -10.0) {
+    return -1.0;
+  }
+    if (x > 10.0) {
+      return 1.0;
+    }
+                 
+  return tanh(x);
+}
+
+fun getMinCoeff() {
+  return -100.0;
+}
+
+fun getMaxCoeff() {
+  return 100.0;
+}
+
+// time: passing by, in seconds, should be positive
+// return 1 upon first beat, 2 new beat from first sub-group, 3 for second sub-group (groupped by IBI length afterward), 0 otherwise
+// will return trigger upon first call (start with beat)
+fun clipper(x: real): real {
+  // optional coefficient for ginal
+  mem coeff: real;
+  // when clipper is applied to signal
+  mem thresh: real;
+
+
+  // to save some computations
+  if (x == 0.0) {
+    return 0.0;
+  }
+  
+  if (coeff <> 1.0) {
+    x = x * coeff;
+  }
+
+  if (abs(x) <= thresh) {
+    return x;
+  }
+  else {
+    // treat differently positive numbers
+    if (x > 0.0) {
+      // hard clipping
+      if (thresh >= 1.0 - eps()) {
+        return 1.0;
+      }
+      // tanh to soften the blow
+      else if (thresh <= 0.0) {
+        return tanh_table(x);
+      }
+      // tanh only starting threshold
+      else {
+        return thresh + (1.0-thresh)*tanh_table((x-thresh)/(1.0-thresh));
+      }
+    }
+    else {
+      if (thresh >= 1.0) {
+        return -1.0;
+      }
+      else if (thresh <= 0.0) {
+        return tanh_table(x);
+      }
+      else {
+        return -(thresh + (1.0-thresh)*tanh_table((-x-thresh)/(1.0-thresh)));
+      }
+    }
+  }
+}
+
+// set threshold when the clipper kicks in. 0: tanh is applied immediately. 1: hard clip when outside [-1, 1]
+and setThreshold(t: real) {
+  thresh = clip(t, 0.0, 1.0);
+}
+
+// apply multiplicative to signal, can be use to avoid or increase deformation, e.g. coeff and threshold to 0.8 would ensure that any incoming signal in [-0.8..0.8] is not distored. Can also be used to invert signal, for some reason. Impose some arbitrary limits to help normalizing.
+and setCoeff(c: real) {
+  coeff = clip(c, getMinCoeff(), getMaxCoeff());
+}
+
+and default() @[init] {
+  _ = setCoeff(1.0);
+}
+
+// intput and output (up to 6) normalized from -10/10v to -1/1
+fun process(i1: real) {
+  return clippy:clipper(i1);
+}
+
+// called once every 32 loops
+// knob1: coeff (-10..10)
+// knob2: threshold (0..1)
+// knob3: group size
+// knob4: group ratio
+// knob5: group order (from all A and all B to  mix A B A B)
+and update() {
+
+  val coeff = getKnob(1) * (getMaxCoeff() - getMinCoeff()) - (getMaxCoeff() - getMinCoeff())/2.0;
+  _ = clippy:setCoeff(coeff);
+  _ = clippy:setThreshold(getKnob(2));
+
+  // hack to display several things alternatively
+  mem disstep;
+  disstep = disstep + 1;
+  val disfreq = 4000;
+
+  if (disstep % disfreq < disfreq / 2) {
+    _ = display("Clpper. knob 1 coeff, 2 threshold");
+  } else {
+    _ = display(string(coeff));
+  }
+
+  _ = display(string(tanh_table(coeff*100.0)));
+}
+
