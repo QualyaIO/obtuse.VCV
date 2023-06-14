@@ -64,7 +64,9 @@ fun clipper(x: real): real {
   mem coeff: real;
   // when clipper is applied to signal
   mem thresh: real;
-
+  // shortcuts to save few operations
+  mem threshopp: real; // 1.0 - thresh
+  mem threshinv: real; // 1/(1.0 - thresh)
 
   // to save some computations
   if (x == 0.0) {
@@ -91,7 +93,7 @@ fun clipper(x: real): real {
       }
       // tanh only starting threshold
       else {
-        return thresh + (1.0-thresh)*tanh_table((x-thresh)/(1.0-thresh));
+        return thresh + threshopp*tanh_table((x-thresh) * threshinv);
       }
     }
     else {
@@ -102,7 +104,7 @@ fun clipper(x: real): real {
         return tanh_table(x);
       }
       else {
-        return -(thresh + (1.0-thresh)*tanh_table((-x-thresh)/(1.0-thresh)));
+        return -(thresh + threshopp*tanh_table((-x-thresh) * threshinv));
       }
     }
   }
@@ -111,6 +113,10 @@ fun clipper(x: real): real {
 // set threshold when the clipper kicks in. 0: tanh is applied immediately. 1: hard clip when outside [-1, 1]
 and setThreshold(t: real) {
   thresh = clip(t, 0.0, 1.0);
+  threshopp = 1.0 - thresh;
+  if (thresh < 1.0) {
+    threshinv = 1.0 / (1.0- thresh);
+  }
 }
 
 // apply multiplicative to signal, can be use to avoid or increase deformation, e.g. coeff and threshold to 0.8 would ensure that any incoming signal in [-0.8..0.8] is not distored. Can also be used to invert signal, for some reason. Impose some arbitrary limits to help normalizing.
