@@ -14,24 +14,46 @@
 
  */
 
-// we must give some margin to let the polynomial interpolation work (i.e. too close to -1..1 in range will produce artifacts)
-fun tanh_table(x) @[table(min = -10.0, max = 10.0, size = 1024)] {
-  if (x < -10.0) {
+// note: update code if limits are changed
+fun tanh_table(x) @[table(min = -4.0, max = 4.0, size = 512)] {
+  // hack to counter artifacts around limits due to polynomial interpolation, we want to clip near the edges. linear function from tanh to clip at some point for smooth transition
+  // probably there is a simpler way to do that
+  val min = -4.0;
+  val max = 4.0;
+  val thresh = 95.0/100.0;
+  val clip = 99.0/100.0;
+  if (x < min * clip) {
     return -1.0;
   }
-    if (x > 10.0) {
-      return 1.0;
-    }
-                 
-  return tanh(x);
+  else if (x < min * thresh) {
+    x = clip(x, min * clip, min * thresh);
+    val x_range = (x - min * thresh) / (min * clip - min * thresh);
+    //return x;
+    val s = tanh(min * thresh);
+    val smin = tanh(min * clip);
+    return s + (smin - s) * x_range;
+  }
+  else if (x > max * clip) {
+    return 1.0;
+  }
+  else if (x > max * thresh) {
+    x = clip(x, max * thresh, max * clip);
+    val x_range = (x - max * thresh) / (max * clip - max * thresh);
+    val s = tanh(max * thresh);
+    val smax = tanh(max * clip);
+    return s + (smax - s) * x_range;
+  }
+  else {
+    return tanh(x);
+  }
 }
 
 fun getMinCoeff() {
-  return -100.0;
+  return -10.0;
 }
 
 fun getMaxCoeff() {
-  return 100.0;
+  return 10.0;
 }
 
 // time: passing by, in seconds, should be positive
@@ -127,7 +149,5 @@ and update() {
   } else {
     _ = display(string(coeff));
   }
-
-  _ = display(string(tanh_table(coeff*100.0)));
 }
 
