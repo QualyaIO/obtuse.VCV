@@ -382,8 +382,18 @@ void Reverb_default(Reverb__ctx_type_0 &_ctx){
    Allpass_setDelay(_ctx.allpass1,42);
 }
 
-void Saturator__ctx_type_6_init(Saturator__ctx_type_6 &_output_){
-   Saturator__ctx_type_6 _ctx;
+fix16_t Saturator_tanh_wrapper(fix16_t x){
+   if(x > 0x40000 /* 4.000000 */){
+      return 0x10000 /* 1.000000 */;
+   }
+   if(x < -0x40000 /* -4.000000 */){
+      return -0x10000 /* -1.000000 */;
+   }
+   return Saturator_tanh_table(x);
+}
+
+void Saturator__ctx_type_7_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7 _ctx;
    _ctx.threshopp = 0x0 /* 0.000000 */;
    _ctx.threshinv = 0x0 /* 0.000000 */;
    _ctx.thresh = 0x0 /* 0.000000 */;
@@ -393,7 +403,7 @@ void Saturator__ctx_type_6_init(Saturator__ctx_type_6 &_output_){
    return ;
 }
 
-fix16_t Saturator_process(Saturator__ctx_type_6 &_ctx, fix16_t x){
+fix16_t Saturator_process(Saturator__ctx_type_7 &_ctx, fix16_t x){
    if((x == 0x0 /* 0.000000 */) || (_ctx.coeff == 0x0 /* 0.000000 */)){
       return 0x0 /* 0.000000 */;
    }
@@ -412,11 +422,11 @@ fix16_t Saturator_process(Saturator__ctx_type_6 &_ctx, fix16_t x){
          else
          {
             if(_ctx.thresh <= 0x0 /* 0.000000 */){
-               return Saturator_tanh_table(x);
+               return Saturator_tanh_wrapper(x);
             }
             else
             {
-               return (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,(x + (- _ctx.thresh))))));
+               return (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_wrapper(fix_mul(_ctx.threshinv,(x + (- _ctx.thresh))))));
             }
          }
       }
@@ -432,14 +442,14 @@ fix16_t Saturator_process(Saturator__ctx_type_6 &_ctx, fix16_t x){
             }
             else
             {
-               return (- (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,((- _ctx.thresh) + (- x)))))));
+               return (- (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_wrapper(fix_mul(_ctx.threshinv,((- _ctx.thresh) + (- x)))))));
             }
          }
       }
    }
 }
 
-void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+void Saturator_process_bufferTo(Saturator__ctx_type_7 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
    nb = int_clip(nb,0,128);
    if(nb == 0){
       nb = 128;
@@ -496,7 +506,7 @@ void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&i
          if(_ctx.thresh <= 0x0 /* 0.000000 */){
             i = 0;
             while(i < nb){
-               oBuffer[i] = Saturator_tanh_table(oBuffer[i]);
+               oBuffer[i] = Saturator_tanh_wrapper(oBuffer[i]);
                i = (1 + i);
             }
          }
@@ -505,12 +515,12 @@ void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&i
             i = 0;
             while(i < nb){
                if(oBuffer[i] > _ctx.thresh){
-                  oBuffer[i] = (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,(oBuffer[i] + (- _ctx.thresh))))));
+                  oBuffer[i] = (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_wrapper(fix_mul(_ctx.threshinv,(oBuffer[i] + (- _ctx.thresh))))));
                }
                else
                {
                   if(oBuffer[i] < (- _ctx.thresh)){
-                     oBuffer[i] = (- (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,((- _ctx.thresh) + (- oBuffer[i])))))));
+                     oBuffer[i] = (- (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_wrapper(fix_mul(_ctx.threshinv,((- _ctx.thresh) + (- oBuffer[i])))))));
                   }
                }
                i = (1 + i);
@@ -522,7 +532,7 @@ void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&i
 
 void Processor_saturator__ctx_type_0_init(Processor_saturator__ctx_type_0 &_output_){
    Processor_saturator__ctx_type_0 _ctx;
-   Saturator__ctx_type_6_init(_ctx.clippy);
+   Saturator__ctx_type_7_init(_ctx.clippy);
    Util__ctx_type_4_init(_ctx._inst43b);
    Util__ctx_type_4_init(_ctx._inst13b);
    Processor_saturator_default(_ctx);

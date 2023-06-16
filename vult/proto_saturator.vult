@@ -70,7 +70,7 @@ fun saturator(x: real): real {
   mem threshinv: real; // 1/(1.0 - thresh)
 
   // to save some computations
-  if (x == 0.0) {
+  if (x == 0.0 || coeff == 0.0) {
     return 0.0;
   }
   

@@ -780,6 +780,8 @@ static_inline fix16_t Saturator_tanh_table(fix16_t x){
    return (fix_wrap_array(Saturator_tanh_table_c0)[index] + fix_mul(x,(fix_wrap_array(Saturator_tanh_table_c1)[index] + fix_mul(x,fix_wrap_array(Saturator_tanh_table_c2)[index]))));
 }
 
+fix16_t Saturator_tanh_wrapper(fix16_t x);
+
 static_inline fix16_t Saturator_getMinCoeff(){
    return -0x3e80000 /* -1000.000000 */;
 };
@@ -788,41 +790,41 @@ static_inline fix16_t Saturator_getMaxCoeff(){
    return 0x3e80000 /* 1000.000000 */;
 };
 
-typedef struct Saturator__ctx_type_6 {
+typedef struct Saturator__ctx_type_7 {
    fix16_t threshopp;
    fix16_t threshinv;
    fix16_t thresh;
    fix16_t coeff;
-} Saturator__ctx_type_6;
+} Saturator__ctx_type_7;
 
-typedef Saturator__ctx_type_6 Saturator_process_type;
+typedef Saturator__ctx_type_7 Saturator_process_type;
 
-void Saturator__ctx_type_6_init(Saturator__ctx_type_6 &_output_);
+void Saturator__ctx_type_7_init(Saturator__ctx_type_7 &_output_);
 
-static_inline void Saturator_process_init(Saturator__ctx_type_6 &_output_){
-   Saturator__ctx_type_6_init(_output_);
+static_inline void Saturator_process_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7_init(_output_);
    return ;
 }
 
-fix16_t Saturator_process(Saturator__ctx_type_6 &_ctx, fix16_t x);
+fix16_t Saturator_process(Saturator__ctx_type_7 &_ctx, fix16_t x);
 
-typedef Saturator__ctx_type_6 Saturator_process_bufferTo_type;
+typedef Saturator__ctx_type_7 Saturator_process_bufferTo_type;
 
-static_inline void Saturator_process_bufferTo_init(Saturator__ctx_type_6 &_output_){
-   Saturator__ctx_type_6_init(_output_);
+static_inline void Saturator_process_bufferTo_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7_init(_output_);
    return ;
 }
 
-void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
+void Saturator_process_bufferTo(Saturator__ctx_type_7 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
 
-typedef Saturator__ctx_type_6 Saturator_setThreshold_type;
+typedef Saturator__ctx_type_7 Saturator_setThreshold_type;
 
-static_inline void Saturator_setThreshold_init(Saturator__ctx_type_6 &_output_){
-   Saturator__ctx_type_6_init(_output_);
+static_inline void Saturator_setThreshold_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7_init(_output_);
    return ;
 }
 
-static_inline void Saturator_setThreshold(Saturator__ctx_type_6 &_ctx, fix16_t t){
+static_inline void Saturator_setThreshold(Saturator__ctx_type_7 &_ctx, fix16_t t){
    _ctx.thresh = fix_clip(t,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    _ctx.threshopp = (0x10000 /* 1.000000 */ + (- _ctx.thresh));
    if(_ctx.thresh < 0x10000 /* 1.000000 */){
@@ -830,55 +832,55 @@ static_inline void Saturator_setThreshold(Saturator__ctx_type_6 &_ctx, fix16_t t
    }
 }
 
-typedef Saturator__ctx_type_6 Saturator_setCoeff_type;
+typedef Saturator__ctx_type_7 Saturator_setCoeff_type;
 
-static_inline void Saturator_setCoeff_init(Saturator__ctx_type_6 &_output_){
-   Saturator__ctx_type_6_init(_output_);
-   return ;
-}
-
-static_inline void Saturator_setCoeff(Saturator__ctx_type_6 &_ctx, fix16_t c){
-   _ctx.coeff = fix_clip(c,-0x3e80000 /* -1000.000000 */,0x3e80000 /* 1000.000000 */);
-};
-
-typedef Saturator__ctx_type_6 Saturator_default_type;
-
-static_inline void Saturator_default_init(Saturator__ctx_type_6 &_output_){
-   Saturator__ctx_type_6_init(_output_);
-   return ;
-}
-
-static_inline void Saturator_default(Saturator__ctx_type_6 &_ctx){
-   Saturator_setCoeff(_ctx,0x10000 /* 1.000000 */);
-   Saturator_setThreshold(_ctx,0xcccc /* 0.800000 */);
-}
-
-typedef struct Saturator__ctx_type_7 {
-   Saturator__ctx_type_6 _inst15c;
-} Saturator__ctx_type_7;
-
-typedef Saturator__ctx_type_7 Saturator_dummy_type;
-
-static_inline void Saturator__ctx_type_7_init(Saturator__ctx_type_7 &_output_){
-   Saturator__ctx_type_7 _ctx;
-   Saturator__ctx_type_6_init(_ctx._inst15c);
-   _output_ = _ctx;
-   return ;
-}
-
-static_inline void Saturator_dummy_init(Saturator__ctx_type_7 &_output_){
+static_inline void Saturator_setCoeff_init(Saturator__ctx_type_7 &_output_){
    Saturator__ctx_type_7_init(_output_);
    return ;
 }
 
-static_inline void Saturator_dummy(Saturator__ctx_type_7 &_ctx){
+static_inline void Saturator_setCoeff(Saturator__ctx_type_7 &_ctx, fix16_t c){
+   _ctx.coeff = fix_clip(c,-0x3e80000 /* -1000.000000 */,0x3e80000 /* 1000.000000 */);
+};
+
+typedef Saturator__ctx_type_7 Saturator_default_type;
+
+static_inline void Saturator_default_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7_init(_output_);
+   return ;
+}
+
+static_inline void Saturator_default(Saturator__ctx_type_7 &_ctx){
+   Saturator_setCoeff(_ctx,0x10000 /* 1.000000 */);
+   Saturator_setThreshold(_ctx,0xcccc /* 0.800000 */);
+}
+
+typedef struct Saturator__ctx_type_8 {
+   Saturator__ctx_type_7 _inst15c;
+} Saturator__ctx_type_8;
+
+typedef Saturator__ctx_type_8 Saturator_dummy_type;
+
+static_inline void Saturator__ctx_type_8_init(Saturator__ctx_type_8 &_output_){
+   Saturator__ctx_type_8 _ctx;
+   Saturator__ctx_type_7_init(_ctx._inst15c);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Saturator_dummy_init(Saturator__ctx_type_8 &_output_){
+   Saturator__ctx_type_8_init(_output_);
+   return ;
+}
+
+static_inline void Saturator_dummy(Saturator__ctx_type_8 &_ctx){
    fix16_t buff[128];
    Buffer_buffer(buff);
    Saturator_process_bufferTo(_ctx._inst15c,0,buff,buff);
 }
 
 typedef struct Processor_saturator__ctx_type_0 {
-   Saturator__ctx_type_6 clippy;
+   Saturator__ctx_type_7 clippy;
    Util__ctx_type_4 _inst43b;
    Util__ctx_type_4 _inst13b;
 } Processor_saturator__ctx_type_0;
