@@ -1,5 +1,5 @@
 
-// testing a tanh clipper with adjustable threshold and coeff. Output guaranteed -1..1
+// testing a tanh saturator with adjustable threshold and coeff. Output guaranteed -1..1
 
 /*
 
@@ -48,18 +48,19 @@ fun tanh_table(x) @[table(min = -4.0, max = 4.0, size = 512)] {
   }
 }
 
+// arbitatry limit coeff range to reduce chance of overflow with fixed point (but would then create some other distortion)
 fun getMinCoeff() {
-  return -10.0;
+  return -1000.0;
 }
 
 fun getMaxCoeff() {
-  return 10.0;
+  return 1000.0;
 }
 
 // time: passing by, in seconds, should be positive
 // return 1 upon first beat, 2 new beat from first sub-group, 3 for second sub-group (groupped by IBI length afterward), 0 otherwise
 // will return trigger upon first call (start with beat)
-fun clipper(x: real): real {
+fun saturator(x: real): real {
   // optional coefficient for ginal
   mem coeff: real;
   // when clipper is applied to signal
@@ -130,7 +131,7 @@ and default() @[init] {
 
 // intput and output (up to 6) normalized from -10/10v to -1/1
 fun process(i1: real) {
-  return clippy:clipper(i1);
+  return clippy:saturator(i1);
 }
 
 // called once every 32 loops
