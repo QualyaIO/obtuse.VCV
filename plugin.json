@@ -1,7 +1,7 @@
 {
    "slug": "BotaniaVCV",
    "name": "BotaniaVCV",
-   "version": "2.4.0",
+   "version": "2.5.0",
    "license": "Custom",
    "brand": "Ullo",
    "author": "jfrey",
@@ -88,6 +88,12 @@
       "slug": "BotaniaGate",
       "name": "BotaniaGate",
       "description": "I gate things",
+      "tags": []
+    },
+    {
+      "slug": "BotaniaSaturator",
+      "name": "BotaniaSaturator",
+      "description": "I clip/saturate things",
       "tags": []
     }
   ]

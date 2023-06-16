@@ -382,6 +382,154 @@ void Reverb_default(Reverb__ctx_type_0 &_ctx){
    Allpass_setDelay(_ctx.allpass1,42);
 }
 
+void Saturator__ctx_type_6_init(Saturator__ctx_type_6 &_output_){
+   Saturator__ctx_type_6 _ctx;
+   _ctx.threshopp = 0x0 /* 0.000000 */;
+   _ctx.threshinv = 0x0 /* 0.000000 */;
+   _ctx.thresh = 0x0 /* 0.000000 */;
+   _ctx.coeff = 0x0 /* 0.000000 */;
+   Saturator_default(_ctx);
+   _output_ = _ctx;
+   return ;
+}
+
+fix16_t Saturator_process(Saturator__ctx_type_6 &_ctx, fix16_t x){
+   if((x == 0x0 /* 0.000000 */) || (_ctx.coeff == 0x0 /* 0.000000 */)){
+      return 0x0 /* 0.000000 */;
+   }
+   if(_ctx.coeff != 0x10000 /* 1.000000 */){
+      x = fix_mul(_ctx.coeff,x);
+   }
+   if(fix_abs(x) <= _ctx.thresh){
+      return x;
+   }
+   else
+   {
+      if(x > 0x0 /* 0.000000 */){
+         if(_ctx.thresh >= 0x10000 /* 1.000000 */){
+            return 0x10000 /* 1.000000 */;
+         }
+         else
+         {
+            if(_ctx.thresh <= 0x0 /* 0.000000 */){
+               return Saturator_tanh_table(x);
+            }
+            else
+            {
+               return (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,(x + (- _ctx.thresh))))));
+            }
+         }
+      }
+      else
+      {
+         if(_ctx.thresh >= 0x10000 /* 1.000000 */){
+            return -0x10000 /* -1.000000 */;
+         }
+         else
+         {
+            if(_ctx.thresh <= 0x0 /* 0.000000 */){
+               return Saturator_tanh_table(x);
+            }
+            else
+            {
+               return (- (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,((- _ctx.thresh) + (- x)))))));
+            }
+         }
+      }
+   }
+}
+
+void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]){
+   nb = int_clip(nb,0,128);
+   if(nb == 0){
+      nb = 128;
+   }
+   int i;
+   i = 0;
+   if(_ctx.coeff == 0x0 /* 0.000000 */){
+      i = 0;
+      while(i < nb){
+         oBuffer[i] = 0x0 /* 0.000000 */;
+         i = (1 + i);
+      }
+   }
+   else
+   {
+      if(_ctx.coeff != 0x10000 /* 1.000000 */){
+         i = 0;
+         while(i < nb){
+            if(input[i] == 0x0 /* 0.000000 */){
+               oBuffer[i] = 0x0 /* 0.000000 */;
+            }
+            else
+            {
+               oBuffer[i] = fix_mul(_ctx.coeff,input[i]);
+            }
+            i = (1 + i);
+         }
+      }
+      else
+      {
+         i = 0;
+         while(i < nb){
+            oBuffer[i] = input[i];
+            i = (1 + i);
+         }
+      }
+      if(_ctx.thresh >= 0x10000 /* 1.000000 */){
+         i = 0;
+         while(i < nb){
+            if(oBuffer[i] > 0x10000 /* 1.000000 */){
+               oBuffer[i] = 0x10000 /* 1.000000 */;
+            }
+            else
+            {
+               if(oBuffer[i] < -0x10000 /* -1.000000 */){
+                  oBuffer[i] = -0x10000 /* -1.000000 */;
+               }
+            }
+            i = (1 + i);
+         }
+      }
+      else
+      {
+         if(_ctx.thresh <= 0x0 /* 0.000000 */){
+            i = 0;
+            while(i < nb){
+               oBuffer[i] = Saturator_tanh_table(oBuffer[i]);
+               i = (1 + i);
+            }
+         }
+         else
+         {
+            i = 0;
+            while(i < nb){
+               if(oBuffer[i] > _ctx.thresh){
+                  oBuffer[i] = (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,(oBuffer[i] + (- _ctx.thresh))))));
+               }
+               else
+               {
+                  if(oBuffer[i] < (- _ctx.thresh)){
+                     oBuffer[i] = (- (_ctx.thresh + fix_mul(_ctx.threshopp,Saturator_tanh_table(fix_mul(_ctx.threshinv,((- _ctx.thresh) + (- oBuffer[i])))))));
+                  }
+               }
+               i = (1 + i);
+            }
+         }
+      }
+   }
+}
+
+void Processor_saturator__ctx_type_0_init(Processor_saturator__ctx_type_0 &_output_){
+   Processor_saturator__ctx_type_0 _ctx;
+   Saturator__ctx_type_6_init(_ctx.clippy);
+   Util__ctx_type_4_init(_ctx._inst43b);
+   Util__ctx_type_4_init(_ctx._inst13b);
+   Processor_saturator_default(_ctx);
+   _output_ = _ctx;
+   return ;
+}
+
 void Processor_reverb__ctx_type_0_init(Processor_reverb__ctx_type_0 &_output_){
    Processor_reverb__ctx_type_0 _ctx;
    _ctx.reverbTime = 0x0 /* 0.000000 */;

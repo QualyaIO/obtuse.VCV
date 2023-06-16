@@ -24,7 +24,7 @@ DISTRIBUTABLES += $(wildcard LICENSE*)
 include $(RACK_DIR)/arch.mk
 include vult.inc
 
-VULT_EFFECTS_SRC = vult/processor_reverb.vult vult/processor_svf.vult
+VULT_EFFECTS_SRC = vult/processor_reverb.vult vult/processor_svf.vult vult/processor_saturator.vult
 #VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 VULT_EFFECTS_ENGINE_OUT = src/engine_effects.h
 $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)

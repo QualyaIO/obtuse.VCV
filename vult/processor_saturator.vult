@@ -1,0 +1,31 @@
+
+
+fun process(in:real) {
+   return clippy:Saturator.process(in);
+}
+
+// 
+and setThreshold(value: real, force: bool) {
+  if (Util.change(value) || force) {
+    _ = clippy:Saturator.setThreshold(value);
+  }
+}
+
+// send current delay and modifier
+and setCoeff(value: real, force: bool) {
+  if (Util.change(value) || force) {
+    _ = clippy:Saturator.setCoeff(value);
+  }
+}
+
+and default() @[init] {
+   _ = clippy:Saturator.default();
+}
+
+fun getMinCoeff() {
+  return Saturator.getMinCoeff();
+}
+
+fun getMaxCoeff() {
+  return Saturator.getMaxCoeff();
+}

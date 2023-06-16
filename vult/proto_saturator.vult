@@ -63,7 +63,7 @@ fun getMaxCoeff() {
 fun saturator(x: real): real {
   // optional coefficient for ginal
   mem coeff: real;
-  // when clipper is applied to signal
+  // when saturator is applied to signal
   mem thresh: real;
   // shortcuts to save few operations
   mem threshopp: real; // 1.0 - thresh
@@ -85,7 +85,7 @@ fun saturator(x: real): real {
     // treat differently positive numbers
     if (x > 0.0) {
       // hard clipping
-      if (thresh >= 1.0 - eps()) {
+      if (thresh >= 1.0) {
         return 1.0;
       }
       // tanh to soften the blow
@@ -111,7 +111,7 @@ fun saturator(x: real): real {
   }
 }
 
-// set threshold when the clipper kicks in. 0: tanh is applied immediately. 1: hard clip when outside [-1, 1]
+// set threshold when the saturator kicks in. 0: tanh is applied immediately. 1: hard clip when outside [-1, 1]
 and setThreshold(t: real) {
   thresh = clip(t, 0.0, 1.0);
   threshopp = 1.0 - thresh;

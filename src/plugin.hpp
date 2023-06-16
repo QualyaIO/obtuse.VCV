@@ -12,6 +12,7 @@ extern Model *effectSVF;
 extern Model *effectCombFF;
 extern Model *effectCombFB;
 extern Model *effectAllpass;
+extern Model *effectSaturator;
 extern Model *synthFM;
 extern Model *synthSampler;
 extern Model *synthDrummer;

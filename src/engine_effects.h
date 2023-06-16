@@ -762,6 +762,185 @@ static_inline void Reverb_dummy(Reverb__ctx_type_1 &_ctx){
    Reverb_process_bufferTo(_ctx._inst1f2,0,buff,buff);
 }
 
+static_inline fix16_t Saturator_tanh_table_raw_c0(int index){
+   return Saturator_tanh_table_c0[index];
+};
+
+static_inline fix16_t Saturator_tanh_table_raw_c1(int index){
+   return Saturator_tanh_table_c1[index];
+};
+
+static_inline fix16_t Saturator_tanh_table_raw_c2(int index){
+   return Saturator_tanh_table_c2[index];
+};
+
+static_inline fix16_t Saturator_tanh_table(fix16_t x){
+   int index;
+   index = int_clip(fix_to_int(fix_mul(0x3fe000 /* 63.875000 */,(0x40000 /* 4.000000 */ + x))),0,511);
+   return (fix_wrap_array(Saturator_tanh_table_c0)[index] + fix_mul(x,(fix_wrap_array(Saturator_tanh_table_c1)[index] + fix_mul(x,fix_wrap_array(Saturator_tanh_table_c2)[index]))));
+}
+
+static_inline fix16_t Saturator_getMinCoeff(){
+   return -0x3e80000 /* -1000.000000 */;
+};
+
+static_inline fix16_t Saturator_getMaxCoeff(){
+   return 0x3e80000 /* 1000.000000 */;
+};
+
+typedef struct Saturator__ctx_type_6 {
+   fix16_t threshopp;
+   fix16_t threshinv;
+   fix16_t thresh;
+   fix16_t coeff;
+} Saturator__ctx_type_6;
+
+typedef Saturator__ctx_type_6 Saturator_process_type;
+
+void Saturator__ctx_type_6_init(Saturator__ctx_type_6 &_output_);
+
+static_inline void Saturator_process_init(Saturator__ctx_type_6 &_output_){
+   Saturator__ctx_type_6_init(_output_);
+   return ;
+}
+
+fix16_t Saturator_process(Saturator__ctx_type_6 &_ctx, fix16_t x);
+
+typedef Saturator__ctx_type_6 Saturator_process_bufferTo_type;
+
+static_inline void Saturator_process_bufferTo_init(Saturator__ctx_type_6 &_output_){
+   Saturator__ctx_type_6_init(_output_);
+   return ;
+}
+
+void Saturator_process_bufferTo(Saturator__ctx_type_6 &_ctx, int nb, fix16_t (&input)[128], fix16_t (&oBuffer)[128]);
+
+typedef Saturator__ctx_type_6 Saturator_setThreshold_type;
+
+static_inline void Saturator_setThreshold_init(Saturator__ctx_type_6 &_output_){
+   Saturator__ctx_type_6_init(_output_);
+   return ;
+}
+
+static_inline void Saturator_setThreshold(Saturator__ctx_type_6 &_ctx, fix16_t t){
+   _ctx.thresh = fix_clip(t,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+   _ctx.threshopp = (0x10000 /* 1.000000 */ + (- _ctx.thresh));
+   if(_ctx.thresh < 0x10000 /* 1.000000 */){
+      _ctx.threshinv = fix_div(0x10000 /* 1.000000 */,(0x10000 /* 1.000000 */ + (- _ctx.thresh)));
+   }
+}
+
+typedef Saturator__ctx_type_6 Saturator_setCoeff_type;
+
+static_inline void Saturator_setCoeff_init(Saturator__ctx_type_6 &_output_){
+   Saturator__ctx_type_6_init(_output_);
+   return ;
+}
+
+static_inline void Saturator_setCoeff(Saturator__ctx_type_6 &_ctx, fix16_t c){
+   _ctx.coeff = fix_clip(c,-0x3e80000 /* -1000.000000 */,0x3e80000 /* 1000.000000 */);
+};
+
+typedef Saturator__ctx_type_6 Saturator_default_type;
+
+static_inline void Saturator_default_init(Saturator__ctx_type_6 &_output_){
+   Saturator__ctx_type_6_init(_output_);
+   return ;
+}
+
+static_inline void Saturator_default(Saturator__ctx_type_6 &_ctx){
+   Saturator_setCoeff(_ctx,0x10000 /* 1.000000 */);
+   Saturator_setThreshold(_ctx,0xcccc /* 0.800000 */);
+}
+
+typedef struct Saturator__ctx_type_7 {
+   Saturator__ctx_type_6 _inst15c;
+} Saturator__ctx_type_7;
+
+typedef Saturator__ctx_type_7 Saturator_dummy_type;
+
+static_inline void Saturator__ctx_type_7_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7 _ctx;
+   Saturator__ctx_type_6_init(_ctx._inst15c);
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Saturator_dummy_init(Saturator__ctx_type_7 &_output_){
+   Saturator__ctx_type_7_init(_output_);
+   return ;
+}
+
+static_inline void Saturator_dummy(Saturator__ctx_type_7 &_ctx){
+   fix16_t buff[128];
+   Buffer_buffer(buff);
+   Saturator_process_bufferTo(_ctx._inst15c,0,buff,buff);
+}
+
+typedef struct Processor_saturator__ctx_type_0 {
+   Saturator__ctx_type_6 clippy;
+   Util__ctx_type_4 _inst43b;
+   Util__ctx_type_4 _inst13b;
+} Processor_saturator__ctx_type_0;
+
+typedef Processor_saturator__ctx_type_0 Processor_saturator_process_type;
+
+void Processor_saturator__ctx_type_0_init(Processor_saturator__ctx_type_0 &_output_);
+
+static_inline void Processor_saturator_process_init(Processor_saturator__ctx_type_0 &_output_){
+   Processor_saturator__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline fix16_t Processor_saturator_process(Processor_saturator__ctx_type_0 &_ctx, fix16_t in){
+   return Saturator_process(_ctx.clippy,in);
+};
+
+typedef Processor_saturator__ctx_type_0 Processor_saturator_setThreshold_type;
+
+static_inline void Processor_saturator_setThreshold_init(Processor_saturator__ctx_type_0 &_output_){
+   Processor_saturator__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_saturator_setThreshold(Processor_saturator__ctx_type_0 &_ctx, fix16_t value, uint8_t force){
+   if(Util_change(_ctx._inst13b,value) || force){
+      Saturator_setThreshold(_ctx.clippy,value);
+   }
+};
+
+typedef Processor_saturator__ctx_type_0 Processor_saturator_setCoeff_type;
+
+static_inline void Processor_saturator_setCoeff_init(Processor_saturator__ctx_type_0 &_output_){
+   Processor_saturator__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_saturator_setCoeff(Processor_saturator__ctx_type_0 &_ctx, fix16_t value, uint8_t force){
+   if(Util_change(_ctx._inst43b,value) || force){
+      Saturator_setCoeff(_ctx.clippy,value);
+   }
+};
+
+typedef Processor_saturator__ctx_type_0 Processor_saturator_default_type;
+
+static_inline void Processor_saturator_default_init(Processor_saturator__ctx_type_0 &_output_){
+   Processor_saturator__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_saturator_default(Processor_saturator__ctx_type_0 &_ctx){
+   Saturator_default(_ctx.clippy);
+};
+
+static_inline fix16_t Processor_saturator_getMinCoeff(){
+   return -0x3e80000 /* -1000.000000 */;
+};
+
+static_inline fix16_t Processor_saturator_getMaxCoeff(){
+   return 0x3e80000 /* 1000.000000 */;
+};
+
 typedef struct Processor_reverb__ctx_type_0 {
    fix16_t reverbTime;
    Reverb__ctx_type_0 reverb;
