@@ -1,4 +1,4 @@
-
+ 
 // testing a tanh saturator with adjustable threshold and coeff. Output guaranteed -1..1
 
 /*

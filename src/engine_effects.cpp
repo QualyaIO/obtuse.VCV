@@ -438,7 +438,7 @@ fix16_t Saturator_process(Saturator__ctx_type_7 &_ctx, fix16_t x){
          else
          {
             if(_ctx.thresh <= 0x0 /* 0.000000 */){
-               return Saturator_tanh_table(x);
+               return Saturator_tanh_wrapper(x);
             }
             else
             {
