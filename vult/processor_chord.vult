@@ -91,6 +91,7 @@ and getScale(scale: array(real, 12)): int {
   val root = ton:Tonnetz.getRoot();
   val i = 0;
   val s = 0;
+  // FIXME: might go beyond 127 for highest root (our should deal with than when going back from CV to MIDI, but might cause issue elsewhere or outside?)
   while(i < size(rawScale)) {
     if (rawScale[i]) {
       scale[s] = pitchToCv(real(root + i));
