@@ -139,15 +139,15 @@ static_inline int synthSamplerCello_SampleWrapper_getSampleNote(){
 };
 
 static_inline uint8_t synthSamplerCello_SampleWrapper_isSampleLoop(){
-   return false;
+   return true;
 };
 
 static_inline int synthSamplerCello_SampleWrapper_getSampleLoopStart(){
-   return (-1);
+   return 36744;
 };
 
 static_inline int synthSamplerCello_SampleWrapper_getSampleLoopEnd(){
-   return (-1);
+   return 37317;
 };
 
 typedef struct synthSamplerCello_Notes__ctx_type_0 {
@@ -886,6 +886,16 @@ static_inline void synthSamplerCello_Poly_synthSetCarrierADSR_init(synthSamplerC
 static_inline void synthSamplerCello_Poly_synthSetCarrierADSR(synthSamplerCello_Poly__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
 }
 
+typedef synthSamplerCello_Poly__ctx_type_0 synthSamplerCello_Poly_synthSetEnvDecimationFactor_type;
+
+static_inline void synthSamplerCello_Poly_synthSetEnvDecimationFactor_init(synthSamplerCello_Poly__ctx_type_0 &_output_){
+   synthSamplerCello_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerCello_Poly_synthSetEnvDecimationFactor(synthSamplerCello_Poly__ctx_type_0 &_ctx, int newFactor){
+}
+
 typedef synthSamplerCello_Poly__ctx_type_0 synthSamplerCello_Poly_shouldLeftOvers_type;
 
 static_inline void synthSamplerCello_Poly_shouldLeftOvers_init(synthSamplerCello_Poly__ctx_type_0 &_output_){
@@ -1267,6 +1277,17 @@ static_inline void synthSamplerCello_Voice_synthSetCarrierADSR_init(synthSampler
 
 static_inline void synthSamplerCello_Voice_synthSetCarrierADSR(synthSamplerCello_Voice__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
    synthSamplerCello_Poly_synthSetCarrierADSR(_ctx.poly,a,d,s,r);
+};
+
+typedef synthSamplerCello_Voice__ctx_type_0 synthSamplerCello_Voice_synthSetEnvDecimationFactor_type;
+
+static_inline void synthSamplerCello_Voice_synthSetEnvDecimationFactor_init(synthSamplerCello_Voice__ctx_type_0 &_output_){
+   synthSamplerCello_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerCello_Voice_synthSetEnvDecimationFactor(synthSamplerCello_Voice__ctx_type_0 &_ctx, int newFactor){
+   synthSamplerCello_Poly_synthSetEnvDecimationFactor(_ctx.poly,newFactor);
 };
 
 typedef synthSamplerCello_Voice__ctx_type_0 synthSamplerCello_Voice_default_type;

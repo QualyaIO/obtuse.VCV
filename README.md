@@ -29,6 +29,10 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 # Changelog
 
+## 2.6.0 (current)
+
+- [BREAKING] bump DSP to pending 0.1.1, changing behavior for some drumkits and samples (plus reduce artifacts on delay and reverb upon delay change)
+
 ## 2.5.0 (2023-07-21)
 
 - bump DSP

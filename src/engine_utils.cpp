@@ -436,6 +436,7 @@ int Processor_trigg_process(Processor_trigg__ctx_type_0 &_ctx, fix16_t clock, fi
 
 void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_){
    Arp__ctx_type_0 _ctx;
+   _ctx.stepPersist = false;
    _ctx.step = 0;
    _ctx.sequenceSize = 0;
    int_init_array(32,0,_ctx.sequence);
@@ -450,7 +451,7 @@ void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_){
    return ;
 }
 
-void Arp_reset(Arp__ctx_type_0 &_ctx){
+void Arp_randomize(Arp__ctx_type_0 &_ctx){
    if(_ctx.dirty || ((_ctx.pRandomize > 0x0 /* 0.000000 */) && (_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.pRandomize))){
       int i;
       i = 0;
@@ -465,17 +466,20 @@ void Arp_reset(Arp__ctx_type_0 &_ctx){
          i = (1 + i);
       }
    }
-   _ctx.step = 0;
    _ctx.dirty = false;
 }
 
 int Arp_process(Arp__ctx_type_0 &_ctx){
-   int newNote;
-   newNote = _ctx.notes[_ctx.playSequence[_ctx.step]];
-   _ctx.step = (1 + _ctx.step);
-   if(_ctx.step >= _ctx.sequenceSize){
-      Arp_reset(_ctx);
+   if(_ctx.sequenceSize <= 0){
+      return (-1);
    }
+   _ctx.step = (1 + _ctx.step);
+   if(_ctx.step >= (1 + _ctx.sequenceSize)){
+      Arp_reset(_ctx);
+      _ctx.step = 1;
+   }
+   int newNote;
+   newNote = _ctx.notes[_ctx.playSequence[((-1) + _ctx.step)]];
    return newNote;
 }
 
@@ -546,7 +550,13 @@ void Arp__updateSequence(Arp__ctx_type_0 &_ctx){
       i = (1 + i);
    }
    _ctx.dirty = true;
-   Arp_reset(_ctx);
+   if(_ctx.stepPersist){
+      Arp_randomize(_ctx);
+   }
+   else
+   {
+      Arp_reset(_ctx);
+   }
 }
 
 void Arp_setNotes(Arp__ctx_type_0 &_ctx, int (&newNotes)[16]){
@@ -555,7 +565,7 @@ void Arp_setNotes(Arp__ctx_type_0 &_ctx, int (&newNotes)[16]){
    int j;
    j = 0;
    while(i < 16){
-      if(newNotes[i] > 0){
+      if(newNotes[i] >= 0){
          _ctx.notes[j] = int_clip(newNotes[i],0,127);
          j = (1 + j);
       }

@@ -680,6 +680,7 @@ static_inline void Processor_trigg_setSamplerate(Processor_trigg__ctx_type_0 &_c
 };
 
 typedef struct Arp__ctx_type_0 {
+   uint8_t stepPersist;
    int step;
    int sequenceSize;
    int sequence[32];
@@ -692,16 +693,28 @@ typedef struct Arp__ctx_type_0 {
    uint8_t dirty;
 } Arp__ctx_type_0;
 
-typedef Arp__ctx_type_0 Arp_reset_type;
+typedef Arp__ctx_type_0 Arp_randomize_type;
 
 void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_);
+
+static_inline void Arp_randomize_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+void Arp_randomize(Arp__ctx_type_0 &_ctx);
+
+typedef Arp__ctx_type_0 Arp_reset_type;
 
 static_inline void Arp_reset_init(Arp__ctx_type_0 &_output_){
    Arp__ctx_type_0_init(_output_);
    return ;
 }
 
-void Arp_reset(Arp__ctx_type_0 &_ctx);
+static_inline void Arp_reset(Arp__ctx_type_0 &_ctx){
+   Arp_randomize(_ctx);
+   _ctx.step = 0;
+}
 
 typedef Arp__ctx_type_0 Arp_process_type;
 
@@ -757,6 +770,17 @@ static_inline void Arp_setPRandomize_init(Arp__ctx_type_0 &_output_){
 
 static_inline void Arp_setPRandomize(Arp__ctx_type_0 &_ctx, fix16_t p){
    _ctx.pRandomize = fix_clip(p,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+};
+
+typedef Arp__ctx_type_0 Arp_setStepPersist_type;
+
+static_inline void Arp_setStepPersist_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Arp_setStepPersist(Arp__ctx_type_0 &_ctx, uint8_t flag){
+   _ctx.stepPersist = flag;
 };
 
 typedef Arp__ctx_type_0 Arp_getNbModes_type;

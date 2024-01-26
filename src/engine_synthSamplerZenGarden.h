@@ -139,15 +139,15 @@ static_inline int synthSamplerZenGarden_SampleWrapper_getSampleNote(){
 };
 
 static_inline uint8_t synthSamplerZenGarden_SampleWrapper_isSampleLoop(){
-   return false;
+   return true;
 };
 
 static_inline int synthSamplerZenGarden_SampleWrapper_getSampleLoopStart(){
-   return (-1);
+   return 7507;
 };
 
 static_inline int synthSamplerZenGarden_SampleWrapper_getSampleLoopEnd(){
-   return (-1);
+   return 20620;
 };
 
 typedef struct synthSamplerZenGarden_Notes__ctx_type_0 {
@@ -886,6 +886,16 @@ static_inline void synthSamplerZenGarden_Poly_synthSetCarrierADSR_init(synthSamp
 static_inline void synthSamplerZenGarden_Poly_synthSetCarrierADSR(synthSamplerZenGarden_Poly__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
 }
 
+typedef synthSamplerZenGarden_Poly__ctx_type_0 synthSamplerZenGarden_Poly_synthSetEnvDecimationFactor_type;
+
+static_inline void synthSamplerZenGarden_Poly_synthSetEnvDecimationFactor_init(synthSamplerZenGarden_Poly__ctx_type_0 &_output_){
+   synthSamplerZenGarden_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerZenGarden_Poly_synthSetEnvDecimationFactor(synthSamplerZenGarden_Poly__ctx_type_0 &_ctx, int newFactor){
+}
+
 typedef synthSamplerZenGarden_Poly__ctx_type_0 synthSamplerZenGarden_Poly_shouldLeftOvers_type;
 
 static_inline void synthSamplerZenGarden_Poly_shouldLeftOvers_init(synthSamplerZenGarden_Poly__ctx_type_0 &_output_){
@@ -1267,6 +1277,17 @@ static_inline void synthSamplerZenGarden_Voice_synthSetCarrierADSR_init(synthSam
 
 static_inline void synthSamplerZenGarden_Voice_synthSetCarrierADSR(synthSamplerZenGarden_Voice__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
    synthSamplerZenGarden_Poly_synthSetCarrierADSR(_ctx.poly,a,d,s,r);
+};
+
+typedef synthSamplerZenGarden_Voice__ctx_type_0 synthSamplerZenGarden_Voice_synthSetEnvDecimationFactor_type;
+
+static_inline void synthSamplerZenGarden_Voice_synthSetEnvDecimationFactor_init(synthSamplerZenGarden_Voice__ctx_type_0 &_output_){
+   synthSamplerZenGarden_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void synthSamplerZenGarden_Voice_synthSetEnvDecimationFactor(synthSamplerZenGarden_Voice__ctx_type_0 &_ctx, int newFactor){
+   synthSamplerZenGarden_Poly_synthSetEnvDecimationFactor(_ctx.poly,newFactor);
 };
 
 typedef synthSamplerZenGarden_Voice__ctx_type_0 synthSamplerZenGarden_Voice_default_type;

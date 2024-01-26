@@ -88,7 +88,7 @@ static_inline void extra_Allpass_setDelay_init(extra_Allpass__ctx_type_0 &_outpu
 
 static_inline void extra_Allpass_setDelay(extra_Allpass__ctx_type_0 &_ctx, int newDelay){
    _ctx.delay = int_clip(newDelay,1,extra_Allpass_getMaxDelay(_ctx));
-   _ctx.pos = 0;
+   _ctx.pos = (_ctx.pos % _ctx.delay);
 }
 
 typedef extra_Allpass__ctx_type_0 extra_Allpass_setDelayms_type;
@@ -223,7 +223,7 @@ static_inline void extra_CombFB_setDelay_init(extra_CombFB__ctx_type_0 &_output_
 
 static_inline void extra_CombFB_setDelay(extra_CombFB__ctx_type_0 &_ctx, int newDelay){
    _ctx.delay = int_clip(newDelay,1,extra_CombFB_getMaxDelay(_ctx));
-   _ctx.pos = 0;
+   _ctx.pos = (_ctx.pos % _ctx.delay);
 }
 
 typedef extra_CombFB__ctx_type_0 extra_CombFB_setDelayms_type;
@@ -663,7 +663,7 @@ static_inline void extra_CombFF_setDelay_init(extra_CombFF__ctx_type_0 &_output_
 
 static_inline void extra_CombFF_setDelay(extra_CombFF__ctx_type_0 &_ctx, int newDelay){
    _ctx.delay = int_clip(newDelay,1,extra_CombFF_getMaxDelay(_ctx));
-   _ctx.pos = 0;
+   _ctx.pos = (_ctx.pos % _ctx.delay);
 }
 
 typedef extra_CombFF__ctx_type_0 extra_CombFF_setDelayms_type;

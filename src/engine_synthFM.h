@@ -91,6 +91,13 @@ static_inline fix16_t synthFM_Wavetable_square_wave_bl(int channel, int index){
    return 0x0 /* 0.000000 */;
 }
 
+static_inline void synthFM_Wavetable_bufferWavetable(fix16_t (&oBuff)[4096]){
+}
+
+static_inline int synthFM_Wavetable_bufferSize(){
+   return 4096;
+};
+
 fix16_t synthFM_Wavetable_getSample(int wavetableIdx, int index);
 
 fix16_t synthFM_Wavetable_getSampleFrom(fix16_t (&wavetable)[4096], fix16_t index);
@@ -100,13 +107,6 @@ static_inline int synthFM_Wavetable_getNbWavetables(){
 };
 
 void synthFM_Wavetable_morphTo(fix16_t wavetableIdx, fix16_t phase, fix16_t (&buffer)[4096]);
-
-static_inline void synthFM_Wavetable_bufferWavetable(fix16_t (&oBuff)[4096]){
-}
-
-static_inline int synthFM_Wavetable_bufferSize(){
-   return 4096;
-};
 
 void synthFM_Wavetable_getRandomMorph(fix16_t (&oBuff)[4096]);
 
@@ -1599,6 +1599,20 @@ static_inline void synthFM_Poly_synthSetCarrierADSR(synthFM_Poly__ctx_type_0 &_c
    synthFM_FM_setCarrierADSR(_ctx.voice3,a,d,s,r);
 }
 
+typedef synthFM_Poly__ctx_type_0 synthFM_Poly_synthSetEnvDecimationFactor_type;
+
+static_inline void synthFM_Poly_synthSetEnvDecimationFactor_init(synthFM_Poly__ctx_type_0 &_output_){
+   synthFM_Poly__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void synthFM_Poly_synthSetEnvDecimationFactor(synthFM_Poly__ctx_type_0 &_ctx, int newFactor){
+   synthFM_FM_setEnvDecimationFactor(_ctx.voice0,newFactor);
+   synthFM_FM_setEnvDecimationFactor(_ctx.voice1,newFactor);
+   synthFM_FM_setEnvDecimationFactor(_ctx.voice2,newFactor);
+   synthFM_FM_setEnvDecimationFactor(_ctx.voice3,newFactor);
+}
+
 typedef synthFM_Poly__ctx_type_0 synthFM_Poly_shouldLeftOvers_type;
 
 static_inline void synthFM_Poly_shouldLeftOvers_init(synthFM_Poly__ctx_type_0 &_output_){
@@ -1980,6 +1994,17 @@ static_inline void synthFM_Voice_synthSetCarrierADSR_init(synthFM_Voice__ctx_typ
 
 static_inline void synthFM_Voice_synthSetCarrierADSR(synthFM_Voice__ctx_type_0 &_ctx, fix16_t a, fix16_t d, fix16_t s, fix16_t r){
    synthFM_Poly_synthSetCarrierADSR(_ctx.poly,a,d,s,r);
+};
+
+typedef synthFM_Voice__ctx_type_0 synthFM_Voice_synthSetEnvDecimationFactor_type;
+
+static_inline void synthFM_Voice_synthSetEnvDecimationFactor_init(synthFM_Voice__ctx_type_0 &_output_){
+   synthFM_Voice__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void synthFM_Voice_synthSetEnvDecimationFactor(synthFM_Voice__ctx_type_0 &_ctx, int newFactor){
+   synthFM_Poly_synthSetEnvDecimationFactor(_ctx.poly,newFactor);
 };
 
 typedef synthFM_Voice__ctx_type_0 synthFM_Voice_default_type;
