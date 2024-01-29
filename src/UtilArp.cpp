@@ -1,6 +1,28 @@
 #include "plugin.hpp"
 #include "engine_utils.h"
 
+// naming the modes -- to sync with DSP
+struct ModeQuantity : ParamQuantity {
+   std::string getDisplayValueString() override {
+      switch (int(getValue())) {
+      case 0:
+         return std::to_string(int(getValue())) + " - up";
+      case 1:
+         return std::to_string(int(getValue())) + " - down";
+      case 2:
+         return std::to_string(int(getValue())) + " - up-down no repeat";
+      case 3:
+         return std::to_string(int(getValue())) + " - up-down repeat";
+      case 4:
+         return std::to_string(int(getValue())) + " - down-up no repeat";
+      case 5:
+         return std::to_string(int(getValue())) + " - down-up repeat";
+      default:
+         return "mode " + std::to_string(int(getValue()));
+      }
+   }
+};
+
 struct UtilArp : Module {
 
    enum ParamIds {
@@ -41,7 +63,8 @@ UtilArp::UtilArp() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
    // default to all
-   configParam(UtilArp::MODE, 0, Processor_arp_getNbModes(processor) - 1, 0, "Mode", "");
+   configParam<ModeQuantity>(UtilArp::MODE, 0, Processor_arp_getNbModes(processor) - 1, 0, "Mode", "");
+   paramQuantities[MODE]->snapEnabled = true;
    configParam(UtilArp::RANDNOTES, 0.0, 1.0, 0.0, "Amount of random notes.", "");
    configParam(UtilArp::RANDOMIZE, 0.0, 1.0, 0.0, "Probblity to randomize upon next sequence.", "");
 

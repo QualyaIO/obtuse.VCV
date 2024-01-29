@@ -60,10 +60,15 @@ UtilTrigg::UtilTrigg() {
 
    // arbitrary max divider
    configParam(UtilTrigg::DIVIDER, 1, 1024, 2, "Clock divider", "");
+   paramQuantities[DIVIDER]->snapEnabled = true;
    configParam(UtilTrigg::SHIFT, 0, 1023, 0, "Clock shift", "");
+   paramQuantities[SHIFT]->snapEnabled = true;
    // correspond to implemeted max -- TODO: read that. 0 will be autolength.
    configParam(UtilTrigg::LENGTH, 0, 128, 16, "Loop length", " steps");
+   paramQuantities[LENGTH]->snapEnabled = true;
    configParam(UtilTrigg::POSITION, 0, 127, 0, "Loop starting position", "");
+   paramQuantities[POSITION]->snapEnabled = true;
+
    configParam(UtilTrigg::DENSITY, 0.0, 1.0, 0.5, "Density", " %", 0.0f, 100.f);
    configParam(UtilTrigg::BALANCE, 0.0, 1.0, 0.5, "Balance", " %", 0.0f, 100.f);
    configParam(UtilTrigg::EVOLVE, 0.0, 1.0, 0.5, "Evolve", " %", 0.0f, 100.f);

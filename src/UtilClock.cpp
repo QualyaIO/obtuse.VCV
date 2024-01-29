@@ -59,10 +59,13 @@ UtilClock::UtilClock() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
    configParam(UtilClock::BPM, fix_to_float(Processor_clock_getMinBPM()), fix_to_float(Processor_clock_getMaxBPM()), 120.0, "BPM", " BPM");
-   configParam(UtilClock::TICKS, Processor_clock_getMinTicks(), Processor_clock_getMaxTicks(), 24.0, "Ticks", " PPQN");
+   configParam(UtilClock::TICKS, Processor_clock_getMinTicks(), Processor_clock_getMaxTicks(), 24, "Ticks", " PPQN");
+   paramQuantities[TICKS]->snapEnabled = true;
+
    configParam(UtilClock::SWING, 0.0, 1.0, 0.5, "Swing", "");
 
    configParam(UtilClock::SIZE, Processor_clock_getMinGroupSize(), Processor_clock_getMaxGroupSize(), 4, "Group size", " beats");
+   paramQuantities[SIZE]->snapEnabled = true;
    configParam(UtilClock::RATIO, 0.0, 1.0, 0.5, "Group Ratio", "");
 
    // changing group order

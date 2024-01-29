@@ -1,6 +1,77 @@
 #include "plugin.hpp"
 #include "engine_utils.h"
 
+// naming the scales -- to sync with DSP
+struct ScaleQuantity : ParamQuantity {
+   std::string getDisplayValueString() override {
+      switch (int(getValue())) {
+      case 0:
+         return std::to_string(int(getValue())) + " - all notes";
+      case 1:
+         return std::to_string(int(getValue())) + " - diatonic ionian (major)";
+      case 2:
+         return std::to_string(int(getValue())) + " - diatonic dorian";
+      case 3:
+         return std::to_string(int(getValue())) + " - diatonic phrygian";
+      case 4:
+         return std::to_string(int(getValue())) + " - diatonic lydian";
+      case 5:
+         return std::to_string(int(getValue())) + " - diatonic mixolydian";
+      case 6:
+         return std::to_string(int(getValue())) + " - diatonic aeolian (minor)";
+      case 7:
+         return std::to_string(int(getValue())) + " - diatonic locrian";
+      case 8:
+         return std::to_string(int(getValue())) + " - pentatonic major";
+      case 9:
+         return std::to_string(int(getValue())) + " - pentatonic minor";
+      case 10:
+         return std::to_string(int(getValue())) + " - melodic major";
+      case 11:
+         return std::to_string(int(getValue())) + " - melodic minor";
+      case 12:
+         return std::to_string(int(getValue())) + " - harmonic major";
+      case 13:
+         return std::to_string(int(getValue())) + " - harmonic minor";
+      case 14:
+         return std::to_string(int(getValue())) + " - hungarian major";
+      case 15:
+         return std::to_string(int(getValue())) + " - hungarian minor";
+      case 16:
+         return std::to_string(int(getValue())) + " - spanish heptatonic";
+      case 17:
+         return std::to_string(int(getValue())) + " - flamenco";
+      case 18:
+         return std::to_string(int(getValue())) + " - blues";
+      case 19:
+         return std::to_string(int(getValue())) + " - enigmatic";
+      default:
+         return "scale " + std::to_string(int(getValue()));
+      }
+   }
+};
+
+struct ChordQuantity : ParamQuantity {
+   std::string getDisplayValueString() override {
+      switch (int(getValue())) {
+      case 0:
+         return std::to_string(int(getValue())) + " - augmented";
+      case 1:
+         return std::to_string(int(getValue())) + " - major";
+      case 2:
+         return std::to_string(int(getValue())) + " - suspended 4";
+      case 3:
+         return std::to_string(int(getValue())) + " - suspended 2";
+      case 4:
+         return std::to_string(int(getValue())) + " - minor";
+      case 5:
+         return std::to_string(int(getValue())) + " - diminished";
+      default:
+         return "chord " + std::to_string(int(getValue()));
+      }
+   }
+};
+
 struct UtilChord : Module {
 
    enum ParamIds {
@@ -50,9 +121,11 @@ UtilChord::UtilChord() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
    // default to all
-   configParam(UtilChord::SCALE, 0, Processor_chord_getNbScales(processor) - 1, 0, "Scale", "");
+   configParam<ScaleQuantity>(UtilChord::SCALE, 0, Processor_chord_getNbScales(processor) - 1, 0, "Scale", "");
+   paramQuantities[SCALE]->snapEnabled = true;
    // default to augmented
-   configParam(UtilChord::CHORD, 0, Processor_chord_getNbChords(processor) - 1, 0, "Main chord", "");
+   configParam<ChordQuantity>(UtilChord::CHORD, 0, Processor_chord_getNbChords(processor) - 1, 0, "Main chord", "");
+   paramQuantities[CHORD]->snapEnabled = true;
    configParam(UtilChord::CHORD_SPREAD, 0.0, 1.0, 0.5, "Chord spread", "");
    configParam(UtilChord::INV_SPREAD, 0.0, 1.0, 0.5, "Inversion spread", "");
    configParam(UtilChord::JUMP, 0.0, 1.0, 0.5, "Probability to jump to another note", "");
