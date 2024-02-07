@@ -636,7 +636,7 @@ fix16_t Processor_arp_process(Processor_arp__ctx_type_3 &_ctx, fix16_t trig, fix
    }
 }
 
-void Tonnetz_getScale(int id, uint8_t (&_output_)[12]){
+void Chord_getScale(int id, uint8_t (&_output_)[12]){
    uint8_t scale[12];
    {
       scale[0] = false;
@@ -979,7 +979,7 @@ void Tonnetz_getScale(int id, uint8_t (&_output_)[12]){
    return ;
 }
 
-void Tonnetz_getChord(int chord, int (&_output_)[3]){
+void Chord_getChord(int chord, int (&_output_)[3]){
    if(chord > 0){
       chord = (chord % 6);
    }
@@ -1070,10 +1070,10 @@ void Tonnetz_getChord(int chord, int (&_output_)[3]){
    }
 }
 
-void Tonnetz_getChordInversion(int chord, int inversion, int (&_output_)[3]){
+void Chord_getChordInversion(int chord, int inversion, int (&_output_)[3]){
    inversion = int_clip(inversion,0,2);
    int notes[3];
-   Tonnetz_getChord(chord,notes);
+   Chord_getChord(chord,notes);
    int notesInv[3];
    {
       notesInv[0] = notes[0];
@@ -1101,8 +1101,8 @@ void Tonnetz_getChordInversion(int chord, int inversion, int (&_output_)[3]){
    return ;
 }
 
-void Tonnetz__ctx_type_8_init(Tonnetz__ctx_type_8 &_output_){
-   Tonnetz__ctx_type_8 _ctx;
+void Chord__ctx_type_8_init(Chord__ctx_type_8 &_output_){
+   Chord__ctx_type_8 _ctx;
    int_init_array(11,0,_ctx.shifts);
    _ctx.shift = 0;
    _ctx.scaleId = 0;
@@ -1117,21 +1117,21 @@ void Tonnetz__ctx_type_8_init(Tonnetz__ctx_type_8 &_output_){
    fix_init_array(6,0x0 /* 0.000000 */,_ctx.chords);
    _ctx.chordSpread = 0x0 /* 0.000000 */;
    _ctx.chord = 0;
-   Tonnetz_default(_ctx);
+   Chord_default(_ctx);
    _output_ = _ctx;
    return ;
 }
 
-uint8_t Tonnetz_isChordInShift(Tonnetz__ctx_type_8 &_ctx, int checkChord, int checkShift){
+uint8_t Chord_isChordInShift(Chord__ctx_type_8 &_ctx, int checkChord, int checkShift){
    if(checkChord < 0){
       return false;
    }
    int notes[3];
-   Tonnetz_getChord(checkChord,notes);
+   Chord_getChord(checkChord,notes);
    return (_ctx.scale[((checkShift + notes[0]) % 12)] && _ctx.scale[((checkShift + notes[1]) % 12)] && _ctx.scale[((checkShift + notes[2]) % 12)]);
 }
 
-int Tonnetz_drawChord(Tonnetz__ctx_type_8 &_ctx, uint8_t lookAround){
+int Chord_drawChord(Chord__ctx_type_8 &_ctx, uint8_t lookAround){
    fix16_t tChords[6];
    int i;
    i = 0;
@@ -1141,9 +1141,9 @@ int Tonnetz_drawChord(Tonnetz__ctx_type_8 &_ctx, uint8_t lookAround){
    curcumTP = 0x0 /* 0.000000 */;
    while(i < 6){
       uint8_t cond;
-      cond = Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),_ctx.shift);
+      cond = Chord_isChordInShift(_ctx,(_ctx.chord + i),_ctx.shift);
       if(lookAround){
-         cond = (cond || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(3 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(4 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(5 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(7 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(8 + _ctx.shift)) || Tonnetz_isChordInShift(_ctx,(_ctx.chord + i),(9 + _ctx.shift)));
+         cond = (cond || Chord_isChordInShift(_ctx,(_ctx.chord + i),(3 + _ctx.shift)) || Chord_isChordInShift(_ctx,(_ctx.chord + i),(4 + _ctx.shift)) || Chord_isChordInShift(_ctx,(_ctx.chord + i),(5 + _ctx.shift)) || Chord_isChordInShift(_ctx,(_ctx.chord + i),(7 + _ctx.shift)) || Chord_isChordInShift(_ctx,(_ctx.chord + i),(8 + _ctx.shift)) || Chord_isChordInShift(_ctx,(_ctx.chord + i),(9 + _ctx.shift)));
       }
       if(cond){
          tChords[i] = (curcumTP + _ctx.chords[i] + (- curcumP));
@@ -1170,7 +1170,7 @@ int Tonnetz_drawChord(Tonnetz__ctx_type_8 &_ctx, uint8_t lookAround){
    return (-1);
 }
 
-int Tonnetz_drawInversion(Tonnetz__ctx_type_8 &_ctx){
+int Chord_drawInversion(Chord__ctx_type_8 &_ctx){
    fix16_t pInversion;
    pInversion = fix_random();
    int i;
@@ -1184,11 +1184,11 @@ int Tonnetz_drawInversion(Tonnetz__ctx_type_8 &_ctx){
    return i;
 }
 
-void Tonnetz_process(Tonnetz__ctx_type_8 &_ctx){
+void Chord_process(Chord__ctx_type_8 &_ctx){
    int selectedChord;
    int notes[3];
    if(fix_random() < _ctx.pJump){
-      selectedChord = Tonnetz_drawChord(_ctx,true);
+      selectedChord = Chord_drawChord(_ctx,true);
       int lookShifts[7];
       {
          lookShifts[0] = 0;
@@ -1215,7 +1215,7 @@ void Tonnetz_process(Tonnetz__ctx_type_8 &_ctx){
          int i;
          i = 0;
          while(i < 7){
-            if(Tonnetz_isChordInShift(_ctx,selectedChord,(_ctx.shift + lookShifts[i]))){
+            if(Chord_isChordInShift(_ctx,selectedChord,(_ctx.shift + lookShifts[i]))){
                selectedShifts[nbShifts] = lookShifts[i];
                nbShifts = (1 + nbShifts);
             }
@@ -1274,10 +1274,10 @@ void Tonnetz_process(Tonnetz__ctx_type_8 &_ctx){
          _ctx.shifts[0] = 0;
          _ctx.shift = 0;
       }
-      selectedChord = Tonnetz_drawChord(_ctx,false);
+      selectedChord = Chord_drawChord(_ctx,false);
    }
    if(selectedChord < 0){
-      Tonnetz_getChord(selectedChord,notes);
+      Chord_getChord(selectedChord,notes);
       int baseNote;
       baseNote = (_ctx.root + _ctx.shift);
       if(baseNote < 12){
@@ -1295,7 +1295,7 @@ void Tonnetz_process(Tonnetz__ctx_type_8 &_ctx){
    }
    else
    {
-      Tonnetz_getChordInversion(selectedChord,Tonnetz_drawInversion(_ctx),notes);
+      Chord_getChordInversion(selectedChord,Chord_drawInversion(_ctx),notes);
       int i;
       i = 0;
       while(i < 3){
@@ -1312,7 +1312,7 @@ void Tonnetz_process(Tonnetz__ctx_type_8 &_ctx){
    return ;
 }
 
-void Tonnetz_reset(Tonnetz__ctx_type_8 &_ctx){
+void Chord_reset(Chord__ctx_type_8 &_ctx){
    _ctx.shift = 0;
    int i;
    i = 0;
@@ -1322,16 +1322,16 @@ void Tonnetz_reset(Tonnetz__ctx_type_8 &_ctx){
    }
 }
 
-void Tonnetz_setScale(Tonnetz__ctx_type_8 &_ctx, int id){
+void Chord_setScale(Chord__ctx_type_8 &_ctx, int id){
    id = int_clip(id,0,19);
    if(_ctx.scaleId != id){
       _ctx.scaleId = id;
-      Tonnetz_getScale(id,_ctx.scale);
-      Tonnetz_reset(_ctx);
+      Chord_getScale(id,_ctx.scale);
+      Chord_reset(_ctx);
    }
 }
 
-void Tonnetz__updateChords(Tonnetz__ctx_type_8 &_ctx, fix16_t bParam){
+void Chord__updateChords(Chord__ctx_type_8 &_ctx, fix16_t bParam){
    bParam = fix_clip(bParam,0x0 /* 0.000000 */,bParam);
    if(6 == 1){
       _ctx.chords[0] = 0x10000 /* 1.000000 */;
@@ -1344,7 +1344,7 @@ void Tonnetz__updateChords(Tonnetz__ctx_type_8 &_ctx, fix16_t bParam){
       i = 0;
       fix16_t x;
       x = 0x2aaa /* 0.166667 */;
-      _ctx.chords[i] = Tonnetz_beta(x,bParam);
+      _ctx.chords[i] = Chord_beta(x,bParam);
       fix16_t chordP;
       chordP = _ctx.chords[i];
       fix16_t scaleP;
@@ -1353,19 +1353,19 @@ void Tonnetz__updateChords(Tonnetz__ctx_type_8 &_ctx, fix16_t bParam){
       i = (1 + i);
       while(i <= fix_to_int(maxi)){
          x = fix_div(int_to_fix(i),maxi);
-         _ctx.chords[i] = (chordP + fix_mul(scaleP,Tonnetz_beta(x,bParam)));
+         _ctx.chords[i] = (chordP + fix_mul(scaleP,Chord_beta(x,bParam)));
          i = (1 + i);
       }
       while(i < 5){
          x = fix_div((int_to_fix(i) + (- maxi)),maxi);
-         _ctx.chords[i] = (0x10000 /* 1.000000 */ + (- fix_mul(scaleP,Tonnetz_beta((0x10000 /* 1.000000 */ + (- x)),bParam))));
+         _ctx.chords[i] = (0x10000 /* 1.000000 */ + (- fix_mul(scaleP,Chord_beta((0x10000 /* 1.000000 */ + (- x)),bParam))));
          i = (1 + i);
       }
       _ctx.chords[5] = 0x10000 /* 1.000000 */;
    }
 }
 
-void Tonnetz__updateInversions(Tonnetz__ctx_type_8 &_ctx, fix16_t bParam){
+void Chord__updateInversions(Chord__ctx_type_8 &_ctx, fix16_t bParam){
    bParam = fix_clip(bParam,0x0 /* 0.000000 */,bParam);
    if(3 == 1){
       _ctx.inversions[0] = 0x10000 /* 1.000000 */;
@@ -1378,7 +1378,7 @@ void Tonnetz__updateInversions(Tonnetz__ctx_type_8 &_ctx, fix16_t bParam){
       i = 0;
       fix16_t x;
       x = 0x5555 /* 0.333333 */;
-      _ctx.inversions[i] = Tonnetz_beta(x,bParam);
+      _ctx.inversions[i] = Chord_beta(x,bParam);
       fix16_t inversionP;
       inversionP = _ctx.inversions[i];
       fix16_t scaleP;
@@ -1387,19 +1387,19 @@ void Tonnetz__updateInversions(Tonnetz__ctx_type_8 &_ctx, fix16_t bParam){
       i = (1 + i);
       while(i <= maxi){
          x = fix_div(int_to_fix(i),int_to_fix(maxi));
-         _ctx.inversions[i] = (inversionP + fix_mul(scaleP,Tonnetz_beta(x,bParam)));
+         _ctx.inversions[i] = (inversionP + fix_mul(scaleP,Chord_beta(x,bParam)));
          i = (1 + i);
       }
       while(i < 2){
          x = fix_div(int_to_fix((i + (- maxi))),int_to_fix(maxi));
-         _ctx.inversions[i] = (0x10000 /* 1.000000 */ + (- fix_mul(scaleP,Tonnetz_beta((0x10000 /* 1.000000 */ + (- x)),bParam))));
+         _ctx.inversions[i] = (0x10000 /* 1.000000 */ + (- fix_mul(scaleP,Chord_beta((0x10000 /* 1.000000 */ + (- x)),bParam))));
          i = (1 + i);
       }
       _ctx.inversions[2] = 0x10000 /* 1.000000 */;
    }
 }
 
-void Tonnetz_setChordSpread(Tonnetz__ctx_type_8 &_ctx, fix16_t newSpread){
+void Chord_setChordSpread(Chord__ctx_type_8 &_ctx, fix16_t newSpread){
    newSpread = fix_clip(newSpread,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newSpread != _ctx.chordSpread){
       _ctx.chordSpread = newSpread;
@@ -1415,12 +1415,12 @@ void Tonnetz_setChordSpread(Tonnetz__ctx_type_8 &_ctx, fix16_t newSpread){
       {
          fix16_t bParam;
          bParam = fix_exp(((0x10000 /* 1.000000 */ + (- newSpread)) << 2));
-         Tonnetz__updateChords(_ctx,bParam);
+         Chord__updateChords(_ctx,bParam);
       }
    }
 }
 
-void Tonnetz_setInversionSpread(Tonnetz__ctx_type_8 &_ctx, fix16_t newSpread){
+void Chord_setInversionSpread(Chord__ctx_type_8 &_ctx, fix16_t newSpread){
    newSpread = fix_clip(newSpread,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
    if(newSpread != _ctx.inversionSpread){
       _ctx.inversionSpread = newSpread;
@@ -1436,12 +1436,12 @@ void Tonnetz_setInversionSpread(Tonnetz__ctx_type_8 &_ctx, fix16_t newSpread){
       {
          fix16_t bParam;
          bParam = fix_exp(((0x10000 /* 1.000000 */ + (- newSpread)) << 2));
-         Tonnetz__updateInversions(_ctx,bParam);
+         Chord__updateInversions(_ctx,bParam);
       }
    }
 }
 
-fix16_t Tonnetz_getChordP(Tonnetz__ctx_type_8 &_ctx, int chordId){
+fix16_t Chord_getChordP(Chord__ctx_type_8 &_ctx, int chordId){
    chordId = int_clip(chordId,0,6);
    int idx;
    idx = ((chordId + (- _ctx.chord)) % 6);
@@ -1454,16 +1454,16 @@ fix16_t Tonnetz_getChordP(Tonnetz__ctx_type_8 &_ctx, int chordId){
    }
 }
 
-void Tonnetz_default(Tonnetz__ctx_type_8 &_ctx){
+void Chord_default(Chord__ctx_type_8 &_ctx){
    _ctx.scaleId = (-1);
-   Tonnetz_setScale(_ctx,1);
-   Tonnetz_setRoot(_ctx,60);
-   Tonnetz_setChord(_ctx,1);
+   Chord_setScale(_ctx,1);
+   Chord_setRoot(_ctx,60);
+   Chord_setChord(_ctx,1);
    _ctx.chordSpread = 0x20000 /* 2.000000 */;
-   Tonnetz_setChordSpread(_ctx,0x8000 /* 0.500000 */);
+   Chord_setChordSpread(_ctx,0x8000 /* 0.500000 */);
    _ctx.inversionSpread = 0x20000 /* 2.000000 */;
-   Tonnetz_setInversionSpread(_ctx,0x8000 /* 0.500000 */);
-   Tonnetz_setJump(_ctx,0x8000 /* 0.500000 */);
+   Chord_setInversionSpread(_ctx,0x8000 /* 0.500000 */);
+   Chord_setJump(_ctx,0x8000 /* 0.500000 */);
 }
 
 int Clock_compareTimeFract(int time1S, fix16_t time1Fract, int time2S, fix16_t time2Fract){
@@ -1872,7 +1872,7 @@ int Processor_chord_cvToPitch(fix16_t cv){
 
 void Processor_chord__ctx_type_2_init(Processor_chord__ctx_type_2 &_output_){
    Processor_chord__ctx_type_2 _ctx;
-   Tonnetz__ctx_type_8_init(_ctx.ton);
+   Chord__ctx_type_8_init(_ctx.ton);
    _ctx.process_ret_2 = 0x0 /* 0.000000 */;
    _ctx.process_ret_1 = 0x0 /* 0.000000 */;
    _ctx.process_ret_0 = 0x0 /* 0.000000 */;
@@ -1893,13 +1893,13 @@ void Processor_chord__ctx_type_2_init(Processor_chord__ctx_type_2 &_output_){
 
 void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig, fix16_t reset){
    if(Util_edge(_ctx._inst151,(reset >= 0x1999 /* 0.100000 */))){
-      Tonnetz_reset(_ctx.ton);
+      Chord_reset(_ctx.ton);
    }
    if(Util_edge(_ctx._inst351,(trig >= 0x1999 /* 0.100000 */))){
-      Tonnetz_process(_ctx.ton);
-      _ctx.n1 = Tonnetz_process_ret_0(_ctx.ton);
-      _ctx.n2 = Tonnetz_process_ret_1(_ctx.ton);
-      _ctx.n3 = Tonnetz_process_ret_2(_ctx.ton);
+      Chord_process(_ctx.ton);
+      _ctx.n1 = Chord_process_ret_0(_ctx.ton);
+      _ctx.n2 = Chord_process_ret_1(_ctx.ton);
+      _ctx.n3 = Chord_process_ret_2(_ctx.ton);
    }
    _ctx.process_ret_0 = Processor_chord_pitchToCv(int_to_fix(_ctx.n1));
    _ctx.process_ret_1 = Processor_chord_pitchToCv(int_to_fix(_ctx.n2));
@@ -1909,12 +1909,12 @@ void Processor_chord_process(Processor_chord__ctx_type_2 &_ctx, fix16_t trig, fi
 
 int Processor_chord_getScale(Processor_chord__ctx_type_2 &_ctx, fix16_t (&scale)[12]){
    uint8_t rawScale[12];
-   Tonnetz_getScale(Tonnetz_getScaleId(_ctx.ton),rawScale);
+   Chord_getScale(Chord_getScaleId(_ctx.ton),rawScale);
    if(12 != 12){
       return 0;
    }
    int root;
-   root = Tonnetz_getRoot(_ctx.ton);
+   root = Chord_getRoot(_ctx.ton);
    int i;
    i = 0;
    int s;

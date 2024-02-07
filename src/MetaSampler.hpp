@@ -11,7 +11,7 @@
 #include "engine_synthSamplerAuthenticStrings.h"
 #include "engine_synthSamplerBoesendorferGrandPiano.h"
 #include "engine_synthSamplerCelesta.h"
-#include "engine_synthSamplerClarinets.h"
+#include "engine_synthSamplerSoftClarinet.h"
 #include "engine_synthSamplerClassicSuitcaseMk1.h"
 #include "engine_synthSamplerCosmos.h"
 #include "engine_synthSamplerDreamVoice.h"
@@ -54,7 +54,7 @@ struct MetaSampler {
       case 7:
          return "Celesta";
       case 8:
-         return "Clarinets";
+         return "SoftClarinet";
       case 9:
          return "ClassicSuitcaseMk1";
       case 10:
@@ -121,7 +121,7 @@ private:
    synthSamplerAuthenticStrings_Processor_process_type processorAuthenticStrings;
    synthSamplerBoesendorferGrandPiano_Processor_process_type processorBoesendorferGrandPiano;
    synthSamplerCelesta_Processor_process_type processorCelesta;
-   synthSamplerClarinets_Processor_process_type processorClarinets;
+   synthSamplerSoftClarinet_Processor_process_type processorSoftClarinet;
    synthSamplerClassicSuitcaseMk1_Processor_process_type processorClassicSuitcaseMk1;
    synthSamplerCosmos_Processor_process_type processorCosmos;
    synthSamplerDreamVoice_Processor_process_type processorDreamVoice;

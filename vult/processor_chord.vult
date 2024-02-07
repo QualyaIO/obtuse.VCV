@@ -25,70 +25,70 @@ fun process(trig: real, reset: real) {
 
   
   if (Util.edge(reset >= 0.1)) {
-    _ = ton:Tonnetz.reset();
+    _ = ton:Chord.reset();
   }
 
   // detecting new trigger
   if (Util.edge(trig >= 0.1)) {
-    n1, n2, n3 = ton:Tonnetz.process();
+    n1, n2, n3 = ton:Chord.process();
   }
   return pitchToCv(real(n1)), pitchToCv(real(n2)), pitchToCv(real(n3));
 }
 
 and setScale(param: int, force: bool) {
   if (Util.change(real(param)) || force) {
-    _ = ton:Tonnetz.setScale(param);
+    _ = ton:Chord.setScale(param);
   }
 }
 
 // takes cv in input, v/oct (should normalized -1..1 for -10..10v)
 and setRoot(param: real, force: bool) {
   if (Util.change(param) || force) {
-    _ = ton:Tonnetz.setRoot(cvToPitch(param));
+    _ = ton:Chord.setRoot(cvToPitch(param));
   }
 }
 
 and setChord(param: int, force: bool) {
   if (Util.change(real(param)) || force) {
-    _ = ton:Tonnetz.setChord(param);
+    _ = ton:Chord.setChord(param);
   }
 }
 
 and setChordSpread(param: real, force: bool) {
   if (Util.change(param) || force) {
-    _ = ton:Tonnetz.setChordSpread(param);
+    _ = ton:Chord.setChordSpread(param);
   }
 }
 
 and setInversionSpread(param: real, force: bool) {
   if (Util.change(param) || force) {
-    _ = ton:Tonnetz.setInversionSpread(param);
+    _ = ton:Chord.setInversionSpread(param);
   }
 }
 
 and setJump(param: real, force: bool) {
   if (Util.change(param) || force) {
-    _ = ton:Tonnetz.setJump(param);
+    _ = ton:Chord.setJump(param);
   }
 }
 
 // getter for some information
 and getNbChords(): int {
-  return ton:Tonnetz.getNbChords();
+  return ton:Chord.getNbChords();
 }
 and getNbScales(): int {
-  return ton:Tonnetz.getNbScales();
+  return ton:Chord.getNbScales();
 }
 
 // get current scale in cv/oct. Fill array passed in parameters, return the number of values to take into account.
 and getScale(scale: array(real, 12)): int {
-  val rawScale = Tonnetz.getScale(ton:Tonnetz.getScaleId());
+  val rawScale = Chord.getScale(ton:Chord.getScaleId());
   // easiest way to turn down unwanted disparities at this time
   if (size(rawScale) <> size(scale)) {
     return 0;
   }
   // compute scale from root
-  val root = ton:Tonnetz.getRoot();
+  val root = ton:Chord.getRoot();
   val i = 0;
   val s = 0;
   // FIXME: might go beyond 127 for highest root (our should deal with than when going back from CV to MIDI, but might cause issue elsewhere or outside?)
@@ -101,4 +101,3 @@ and getScale(scale: array(real, 12)): int {
   }
   return s;
 }
-

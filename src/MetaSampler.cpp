@@ -40,7 +40,7 @@ void MetaSampler::setSamplerate(float sr) {
       synthSamplerCelesta_Processor_setSamplerate(processorCelesta, float_to_fix(sr));
       break;
    case 8:
-      synthSamplerClarinets_Processor_setSamplerate(processorClarinets, float_to_fix(sr));
+      synthSamplerSoftClarinet_Processor_setSamplerate(processorSoftClarinet, float_to_fix(sr));
       break;
    case 9:
       synthSamplerClassicSuitcaseMk1_Processor_setSamplerate(processorClassicSuitcaseMk1, float_to_fix(sr));
@@ -124,7 +124,7 @@ void MetaSampler::nbCables(int cables) {
       synthSamplerCelesta_Processor_nbCables(processorCelesta, cables);
       break;
    case 8:
-      synthSamplerClarinets_Processor_nbCables(processorClarinets, cables);
+      synthSamplerSoftClarinet_Processor_nbCables(processorSoftClarinet, cables);
       break;
    case 9:
       synthSamplerClassicSuitcaseMk1_Processor_nbCables(processorClassicSuitcaseMk1, cables);
@@ -201,7 +201,7 @@ int MetaSampler::getSize() {
    case 7:
      return synthSamplerCelesta_Processor_getSize(processorCelesta);
    case 8:
-     return synthSamplerClarinets_Processor_getSize(processorClarinets);
+     return synthSamplerSoftClarinet_Processor_getSize(processorSoftClarinet);
    case 9:
      return synthSamplerClassicSuitcaseMk1_Processor_getSize(processorClassicSuitcaseMk1);
    case 10:
@@ -259,7 +259,7 @@ bool MetaSampler::getLoop() {
    case 7:
      return synthSamplerCelesta_Processor_getLoop(processorCelesta);
    case 8:
-     return synthSamplerClarinets_Processor_getLoop(processorClarinets);
+     return synthSamplerSoftClarinet_Processor_getLoop(processorSoftClarinet);
    case 9:
      return synthSamplerClassicSuitcaseMk1_Processor_getLoop(processorClassicSuitcaseMk1);
    case 10:
@@ -317,7 +317,7 @@ int MetaSampler::getLoopStart() {
    case 7:
      return synthSamplerCelesta_Processor_getLoopStart(processorCelesta);
    case 8:
-     return synthSamplerClarinets_Processor_getLoopStart(processorClarinets);
+     return synthSamplerSoftClarinet_Processor_getLoopStart(processorSoftClarinet);
    case 9:
      return synthSamplerClassicSuitcaseMk1_Processor_getLoopStart(processorClassicSuitcaseMk1);
    case 10:
@@ -375,7 +375,7 @@ int MetaSampler::getLoopEnd() {
    case 7:
      return synthSamplerCelesta_Processor_getLoopEnd(processorCelesta);
    case 8:
-     return synthSamplerClarinets_Processor_getLoopEnd(processorClarinets);
+     return synthSamplerSoftClarinet_Processor_getLoopEnd(processorSoftClarinet);
    case 9:
      return synthSamplerClassicSuitcaseMk1_Processor_getLoopEnd(processorClassicSuitcaseMk1);
    case 10:
@@ -440,7 +440,7 @@ void MetaSampler::setLoop(bool param, bool force) {
      synthSamplerCelesta_Processor_setLoop(processorCelesta, param, force);
       break;
    case 8:
-     synthSamplerClarinets_Processor_setLoop(processorClarinets, param, force);
+     synthSamplerSoftClarinet_Processor_setLoop(processorSoftClarinet, param, force);
       break;
    case 9:
      synthSamplerClassicSuitcaseMk1_Processor_setLoop(processorClassicSuitcaseMk1, param, force);
@@ -524,7 +524,7 @@ void MetaSampler::setLoopStart(int param, bool force) {
      synthSamplerCelesta_Processor_setLoopStart(processorCelesta, param, force);
       break;
    case 8:
-     synthSamplerClarinets_Processor_setLoopStart(processorClarinets, param, force);
+     synthSamplerSoftClarinet_Processor_setLoopStart(processorSoftClarinet, param, force);
       break;
    case 9:
      synthSamplerClassicSuitcaseMk1_Processor_setLoopStart(processorClassicSuitcaseMk1, param, force);
@@ -608,7 +608,7 @@ void MetaSampler::setLoopEnd(int param, bool force) {
      synthSamplerCelesta_Processor_setLoopEnd(processorCelesta, param, force);
       break;
    case 8:
-     synthSamplerClarinets_Processor_setLoopEnd(processorClarinets, param, force);
+     synthSamplerSoftClarinet_Processor_setLoopEnd(processorSoftClarinet, param, force);
       break;
    case 9:
      synthSamplerClassicSuitcaseMk1_Processor_setLoopEnd(processorClassicSuitcaseMk1, param, force);
@@ -692,7 +692,7 @@ void MetaSampler::setPitchBend(float semitones) {
       synthSamplerCelesta_Processor_setPitchBend(processorCelesta, float_to_fix(semitones));
       break;
    case 8:
-      synthSamplerClarinets_Processor_setPitchBend(processorClarinets, float_to_fix(semitones));
+      synthSamplerSoftClarinet_Processor_setPitchBend(processorSoftClarinet, float_to_fix(semitones));
       break;
    case 9:
       synthSamplerClassicSuitcaseMk1_Processor_setPitchBend(processorClassicSuitcaseMk1, float_to_fix(semitones));
@@ -777,7 +777,7 @@ void MetaSampler::setNote(float gate, float voct, float vel, float ret, int c) {
       synthSamplerCelesta_Processor_setNote(processorCelesta, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
       break;
    case 8:
-      synthSamplerClarinets_Processor_setNote(processorClarinets, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
+      synthSamplerSoftClarinet_Processor_setNote(processorSoftClarinet, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
       break;
    case 9:
       synthSamplerClassicSuitcaseMk1_Processor_setNote(processorClassicSuitcaseMk1, float_to_fix(gate), float_to_fix(voct), float_to_fix(vel), float_to_fix(ret), c);
@@ -854,7 +854,7 @@ float MetaSampler::process() {
    case 7:
       return fix_to_float(synthSamplerCelesta_Processor_process(processorCelesta));
    case 8:
-      return fix_to_float(synthSamplerClarinets_Processor_process(processorClarinets));
+      return fix_to_float(synthSamplerSoftClarinet_Processor_process(processorSoftClarinet));
    case 9:
       return fix_to_float(synthSamplerClassicSuitcaseMk1_Processor_process(processorClassicSuitcaseMk1));
    case 10:
@@ -919,7 +919,7 @@ void MetaSampler::initProc() {
       synthSamplerCelesta_Processor_process_init(processorCelesta);
       break;
    case 8:
-      synthSamplerClarinets_Processor_process_init(processorClarinets);
+      synthSamplerSoftClarinet_Processor_process_init(processorSoftClarinet);
       break;
    case 9:
       synthSamplerClassicSuitcaseMk1_Processor_process_init(processorClassicSuitcaseMk1);
