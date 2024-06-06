@@ -22,15 +22,26 @@ extern Model *utilChord;
 extern Model *utilArp;
 extern Model *utilGate;
 
-// ullo pink
-static const NVGcolor SCHEME_PINK = nvgRGB(255, 10, 33);
+// obtuse rblue
+static const NVGcolor SCHEME_OBLUE = nvgRGB(0, 217, 217);
+static const NVGcolor SCHEME_ORED = nvgRGB(244, 0, 78);
 
 template <typename TBase = GrayModuleLightWidget>
-struct TPinkLight : TBase {
-    TPinkLight() {
-        this->addBaseColor(SCHEME_PINK);
+struct TOblueLight : TBase {
+    TOblueLight() {
+        this->addBaseColor(SCHEME_OBLUE);
     }
 };
-using PinkLight = TPinkLight<>;
+using OblueLight = TOblueLight<>;
 
-struct LEDSliderPink : VCVLightSlider<PinkLight> {};
+template <typename TBase = GrayModuleLightWidget>
+struct TOredLight : TBase {
+    TOredLight() {
+        this->addBaseColor(SCHEME_ORED);
+    }
+};
+using OredLight = TRedLight<>;
+
+
+struct LEDSliderOblue : VCVLightSlider<OblueLight> {};
+struct LEDSliderOred : VCVLightSlider<OredLight> {};

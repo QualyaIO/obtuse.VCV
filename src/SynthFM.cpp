@@ -173,10 +173,10 @@ struct SynthFMWidget : ModuleWidget {
       // modulator ADSR sliders
       // here and after: use heihgt of canvas since my inskscape has Y origin flow lower left
       float mod_adsr_y = 128.5-99.2;
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.411, mod_adsr_y)), module, SynthFM::MOD_D));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(27.739, mod_adsr_y)), module, SynthFM::MOD_S));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(35.930, mod_adsr_y)), module, SynthFM::MOD_R));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(10.934, mod_adsr_y)), module, SynthFM::MOD_A));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(19.411, mod_adsr_y)), module, SynthFM::MOD_D));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(27.739, mod_adsr_y)), module, SynthFM::MOD_S));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(35.930, mod_adsr_y)), module, SynthFM::MOD_R));
       // modulator ratio and morph knobs, plus level and mode
       float ratio_x = 49.564;
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_x, 128.5-109.853)), module, SynthFM::MOD_RATIO));
@@ -193,10 +193,10 @@ struct SynthFMWidget : ModuleWidget {
 
       // carrier ADSR sliders
       float car_adsr_y = 128.5-43.637;
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(19.411, car_adsr_y)), module, SynthFM::CAR_D));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(27.739, car_adsr_y)), module, SynthFM::CAR_S));
-      addParam(createParamCentered<LEDSliderPink>(mm2px(Vec(35.930, car_adsr_y)), module, SynthFM::CAR_R));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(10.934, car_adsr_y)), module, SynthFM::CAR_A));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(19.411, car_adsr_y)), module, SynthFM::CAR_D));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(27.739, car_adsr_y)), module, SynthFM::CAR_S));
+      addParam(createParamCentered<LEDSliderOred>(mm2px(Vec(35.930, car_adsr_y)), module, SynthFM::CAR_R));
       // carrier ratio and morph knobs
       addParam(createParamCentered<Rogan3PRed>(mm2px(Vec(ratio_x, 128.5-54.126)), module, SynthFM::CAR_RATIO));
       float car_morph_y = 128.5-37.330;

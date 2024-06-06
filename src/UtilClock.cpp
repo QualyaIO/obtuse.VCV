@@ -188,7 +188,7 @@ struct UtilClockWidget : ModuleWidget {
       float order_y = 128.5-90.665;
       addParam(createLightParamCentered<VCVLightBezel<>>(mm2px(Vec(26.377, order_y)), module, UtilClock::SWITCH, UtilClock::SWITCH_LIGHT));
       // light to indicate current order
-      addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(32.305, order_y)), module, UtilClock::ORDER_LIGHT));
+      addChild(createLightCentered<MediumLight<OblueLight>>(mm2px(Vec(32.305, order_y)), module, UtilClock::ORDER_LIGHT));
 
       // knob for ticks
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(26.377, 128.5 - 53.704)), module,  UtilClock::TICKS));

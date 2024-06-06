@@ -141,8 +141,8 @@ struct SynthSamplerWidget : ModuleWidget {
       float buttons_y = 128.5-74.287;
 
       // this time we got a a latch light button
-      addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<GreenLight>>>(mm2px(Vec(port_1_x, buttons_y)), module, SynthSampler::LOOP_TOGGLE, SynthSampler::LOOP_LIGHT));
-      addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<PinkLight>>>(mm2px(Vec(port_2_x, buttons_y)), module, SynthSampler::OVERRIDE_TOGGLE, SynthSampler::OVERRIDE_LIGHT));
+      addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<OblueLight>>>(mm2px(Vec(port_1_x, buttons_y)), module, SynthSampler::LOOP_TOGGLE, SynthSampler::LOOP_LIGHT));
+      addParam(createLightParamCentered<VCVLightLatch<LargeSimpleLight<OredLight>>>(mm2px(Vec(port_2_x, buttons_y)), module, SynthSampler::OVERRIDE_TOGGLE, SynthSampler::OVERRIDE_LIGHT));
 
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(port_1_x, knobs_y)), module, SynthSampler::LOOP_START));
       addParam(createParamCentered<RoundSmallBlackKnob>(mm2px(Vec(port_2_x, knobs_y)), module, SynthSampler::LOOP_END));

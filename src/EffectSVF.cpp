@@ -158,10 +158,10 @@ struct EffectSVFWidget : ModuleWidget {
       float switch_x = 5.725;
       addParam(createLightParamCentered<VCVLightBezel<>>(mm2px(Vec(switch_x, 128.5-88.622)), module, EffectSVF::SWITCH, EffectSVF::SWITCH_LIGHT));
       // light to set current filter
-      addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(switch_x, 128.5-94.774)), module, EffectSVF::LOW_LIGHT));
-      addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(switch_x, 128.5-98.854)), module, EffectSVF::HIGH_LIGHT));
-      addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(switch_x, 128.5-103.012)), module, EffectSVF::BAND_LIGHT));
-      addChild(createLightCentered<MediumLight<PinkLight>>(mm2px(Vec(switch_x, 128.5-106.812)), module, EffectSVF::NOTCH_LIGHT));
+      addChild(createLightCentered<MediumLight<OblueLight>>(mm2px(Vec(switch_x, 128.5-94.774)), module, EffectSVF::LOW_LIGHT));
+      addChild(createLightCentered<MediumLight<OblueLight>>(mm2px(Vec(switch_x, 128.5-98.854)), module, EffectSVF::HIGH_LIGHT));
+      addChild(createLightCentered<MediumLight<OblueLight>>(mm2px(Vec(switch_x, 128.5-103.012)), module, EffectSVF::BAND_LIGHT));
+      addChild(createLightCentered<MediumLight<OblueLight>>(mm2px(Vec(switch_x, 128.5-106.812)), module, EffectSVF::NOTCH_LIGHT));
 
    }
 };
