@@ -1090,7 +1090,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
      inkscape:cx="71.428571"
-     inkscape:cy="420.17857"
+     inkscape:cy="37.678571"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -6364,16 +6364,18 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;line-height:100%;font-family:Dingbats;-inkscape-font-specification:'Dingbats, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#f4004e;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="19.847116"
+       x="19.989288"
        y="174.25856"
        id="text1"><tspan
          sodipodi:role="line"
          id="tspan1"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611px;font-family:Ysabeau;-inkscape-font-specification:Ysabeau;fill:#f4004e;fill-opacity:1;stroke-width:0.264583px"
-         x="19.847116"
+         x="19.989288"
          y="174.25856"><tspan
            style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:Ysabeau;-inkscape-font-specification:'Ysabeau Ultra-Bold';fill:#f4004e;fill-opacity:1"
-           id="tspan3">ObtuseFM</tspan></tspan></text>
+           id="tspan3"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Ysabeau;-inkscape-font-specification:'Ysabeau Bold'"
+   id="tspan2">Obtuse</tspan>FM</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:100%;font-family:'Baloo Bhaina 2';-inkscape-font-specification:'Baloo Bhaina 2, ';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0a85;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
