@@ -665,8 +665,8 @@
        id="linearGradient25"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1,0,0,0.84824903,-5.7290039e-6,35.320048)"
-       x1="9.7977467"
-       y1="297.04568"
+       x1="10.16"
+       y1="297.07031"
        x2="10.16"
        y2="168.49725" />
     <linearGradient
@@ -687,8 +687,8 @@
        id="linearGradient2651"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1,0,0,0.07782101,-1e-6,155.38716)"
-       x1="9.7977467"
-       y1="297.04568"
+       x1="10.16"
+       y1="297"
        x2="10.16"
        y2="168.49725" />
     <linearGradient
@@ -709,8 +709,8 @@
        id="linearGradient2647"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1,0,0,0.07782101,-8e-6,273.88714)"
-       x1="9.7977467"
-       y1="297.04568"
+       x1="10.16"
+       y1="297.00024"
        x2="10.16"
        y2="168.49725" />
     <linearGradient
@@ -733,9 +733,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="-41.92133"
-     inkscape:cy="377.54451"
+     inkscape:zoom="5.6"
+     inkscape:cx="-20.892857"
+     inkscape:cy="51.428571"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1839,26 +1839,26 @@
          y="273.06366"
          style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:3.52778px;font-family:Ysabeau;-inkscape-font-specification:'Ysabeau Semi-Bold';fill:#fff3e0;fill-opacity:1;stroke-width:0.264583px">OUT</tspan></text>
     <g
-       transform="matrix(1.2501514,0,0,1.2501514,0.285279,77.527906)"
+       transform="matrix(1.2501514,0,0,1.2501514,0.285279,78.349415)"
        id="g2646">
       <circle
          id="circle2636"
          r="1.7197917"
          cy="172.77954"
          cx="3.8353124"
-         style="fill:url(#linearGradient2648);stroke-width:0.26458332" />
+         style="fill:url(#linearGradient2648);stroke-width:0.264583" />
       <circle
          id="circle2638"
          r="1.5377425"
          cy="172.7794"
          cx="3.8353124"
-         style="fill:url(#linearGradient2650);stroke-width:0.26458332" />
+         style="fill:url(#linearGradient2650);stroke-width:0.264583" />
       <circle
          id="circle2640"
          r="1.4194552"
          cy="172.7794"
          cx="3.8353124"
-         style="fill:url(#linearGradient2652);stroke-width:0.26458332" />
+         style="fill:url(#linearGradient2652);stroke-width:0.264583" />
       <g
          id="g2644"
          transform="matrix(0.26458333,0,0,0.26458333,1.8509373,170.79533)">
@@ -1871,21 +1871,21 @@
     </g>
     <g
        id="g2996"
-       transform="matrix(1.2501514,0,0,1.2501514,0.285279,-43.651267)">
+       transform="matrix(1.2501514,0,0,1.2501514,0.285279,-44.850585)">
       <circle
-         style="fill:url(#linearGradient2998);stroke-width:0.26458332"
+         style="fill:url(#linearGradient2998);stroke-width:0.264583"
          cx="3.8353124"
          cy="172.77954"
          r="1.7197917"
          id="circle2986" />
       <circle
-         style="fill:url(#linearGradient3000);stroke-width:0.26458332"
+         style="fill:url(#linearGradient3000);stroke-width:0.264583"
          cx="3.8353124"
          cy="172.7794"
          r="1.5377425"
          id="circle2988" />
       <circle
-         style="fill:url(#linearGradient3002);stroke-width:0.26458332"
+         style="fill:url(#linearGradient3002);stroke-width:0.264583"
          cx="3.8353124"
          cy="172.7794"
          r="1.4194552"
