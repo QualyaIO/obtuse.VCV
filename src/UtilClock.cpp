@@ -70,6 +70,7 @@ UtilClock::UtilClock() {
 
    // changing group order
    configParam(UtilClock::ORDER, 0.0, 1.0, 0.0, "Order", "");
+   configSwitch(UtilClock::SWITCH, 0.0, 1.0, 0.0, "Switch order");
 
    // init engine and apply default parameter
    Processor_clock_process_init(processor);
