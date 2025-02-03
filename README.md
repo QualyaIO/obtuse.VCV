@@ -1,7 +1,7 @@
 
-Based on Vult Playground for VCV Rack -- testing Botania DSP within VCV.
+Modules enabling the use of [Obtuse DSP](https://github.com/QualyaIO/obtuse.DSP) within VCV.
 
-Note that we are using fixed float computations here to mimic as close as possible what happens on the RP2040.
+Note that we are using fixed float computations here to mimic as close as possible what happens on default DSP installations, e.g. on MCU such as RP2040.
 
 # How-to
 
@@ -11,17 +11,17 @@ To install, place or link the folder in VCV plugins folder, e.g. on Linux `~/.Ra
 
 # Dev
 
-Using git submodule to get source from botania dsp (itself using git LFS). Don't forget to clone recursive or init submodule afterwards.
+Using git submodule to get source from obtuse DSP (itself using git LFS). Don't forget to clone recursive or init submodule afterwards.
 
-Here we use more vult code to wrap botania for VCV, through `processor_*.vult`.
+Here we use more vult code to wrap obtuse for VCV, through `processor_*.vult`.
 
-Check original template for more details about programming https://github.com/vult-dsp/RackPlayground
+Check original template for more details about programming: https://github.com/vult-dsp/RackPlayground
 
 There are prototype (and often buggy) versions of some modules (see `proto_*.vult`), to be used with [VCV Prototype](https://github.com/VCVRack/VCV-Prototype).
 
 # TODO
 
-- switch back to monophonic synth when polyphony cable is 1? (would need some change in botania DSP)
+- switch back to monophonic synth when polyphony cable is 1? (would need some change in the DSP)
 - setting highest delay on effect, depending on the sample rate, will fail due to overflow with fixed float. Clamp beforehand.
 - chord: select a fix shift
 - chord: knob for root note
@@ -31,7 +31,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 
 ## 2.6.0 (current)
 
-- [BREAKING] bump DSP to pending 0.1.1, changing behavior for some drumkits and samples (plus reduce artifacts on delay and reverb upon delay change)
+- [BREAKING] bump DSP to pending 0.2.0, changing behavior for some drumkits and samples (plus reduce artifacts on delay and reverb upon delay change)
 - FM: switch to alt version to reduce (by a lot) CPU while tuning wavetables
 - Arp, Chord, Clock, Trigg: fix UI (names and discrete values where applicable)
 
