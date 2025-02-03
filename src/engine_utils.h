@@ -343,10 +343,64 @@ static_inline fix16_t Util_velocityToLevel(int velocity){
    return fix_mul(0x204 /* 0.007874 */,int_to_fix(velocity));
 }
 
+typedef struct Random__ctx_type_0 {
+   int next;
+} Random__ctx_type_0;
+
+typedef Random__ctx_type_0 Random_setSeed_type;
+
+static_inline void Random__ctx_type_0_init(Random__ctx_type_0 &_output_){
+   Random__ctx_type_0 _ctx;
+   _ctx.next = 0;
+   _output_ = _ctx;
+   return ;
+}
+
+static_inline void Random_setSeed_init(Random__ctx_type_0 &_output_){
+   Random__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Random_setSeed(Random__ctx_type_0 &_ctx, int seed){
+   _ctx.next = seed;
+};
+
+typedef Random__ctx_type_0 Random_irandom_type;
+
+static_inline void Random_irandom_init(Random__ctx_type_0 &_output_){
+   Random__ctx_type_0_init(_output_);
+   return ;
+}
+
+int Random_irandom(Random__ctx_type_0 &_ctx);
+
+typedef Random__ctx_type_0 Random_random_type;
+
+static_inline void Random_random_init(Random__ctx_type_0 &_output_){
+   Random__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline fix16_t Random_random(Random__ctx_type_0 &_ctx){
+   return fix_mul(0x2 /* 0.000031 */,int_to_fix(Random_irandom(_ctx)));
+};
+
+typedef Random__ctx_type_0 Random_getRandMax_type;
+
+static_inline void Random_getRandMax_init(Random__ctx_type_0 &_output_){
+   Random__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline int Random_getRandMax(Random__ctx_type_0 &_ctx){
+   return 32767;
+};
+
 typedef struct Trigg__ctx_type_0 {
    uint8_t triggers[128];
    int ticks;
    int shift;
+   Random__ctx_type_0 rando;
    fix16_t ptriggers[128];
    int position;
    int n;
@@ -524,6 +578,17 @@ static_inline void Trigg_setPosition(Trigg__ctx_type_0 &_ctx, int newPosition){
    _ctx.position = int_clip(newPosition,0,128);
 };
 
+typedef Trigg__ctx_type_0 Trigg_setSeed_type;
+
+static_inline void Trigg_setSeed_init(Trigg__ctx_type_0 &_output_){
+   Trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Trigg_setSeed(Trigg__ctx_type_0 &_ctx, int seed){
+   Random_setSeed(_ctx.rando,seed);
+};
+
 typedef Trigg__ctx_type_0 Trigg_default_type;
 
 static_inline void Trigg_default_init(Trigg__ctx_type_0 &_output_){
@@ -684,6 +749,7 @@ typedef struct Arp__ctx_type_0 {
    int step;
    int sequenceSize;
    int sequence[32];
+   Random__ctx_type_0 rando;
    int playSequence[32];
    fix16_t pRandomize;
    fix16_t pRandomNotes;
@@ -825,6 +891,17 @@ static_inline void Arp_getSequenceSize_init(Arp__ctx_type_0 &_output_){
 
 static_inline int Arp_getSequenceSize(Arp__ctx_type_0 &_ctx){
    return _ctx.sequenceSize;
+};
+
+typedef Arp__ctx_type_0 Arp_setSeed_type;
+
+static_inline void Arp_setSeed_init(Arp__ctx_type_0 &_output_){
+   Arp__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Arp_setSeed(Arp__ctx_type_0 &_ctx, int seed){
+   Random_setSeed(_ctx.rando,seed);
 };
 
 static_inline fix16_t Processor_arp_pitchToCv(fix16_t pitch){
@@ -989,6 +1066,7 @@ typedef struct Chord__ctx_type_8 {
    int scaleId;
    uint8_t scale[12];
    int root;
+   Random__ctx_type_0 rando;
    int process_ret_2;
    int process_ret_1;
    int process_ret_0;
@@ -1212,6 +1290,17 @@ static_inline void Chord_setJump_init(Chord__ctx_type_8 &_output_){
 
 static_inline void Chord_setJump(Chord__ctx_type_8 &_ctx, fix16_t p){
    _ctx.pJump = fix_clip(p,0x0 /* 0.000000 */,0x10000 /* 1.000000 */);
+};
+
+typedef Chord__ctx_type_8 Chord_setSeed_type;
+
+static_inline void Chord_setSeed_init(Chord__ctx_type_8 &_output_){
+   Chord__ctx_type_8_init(_output_);
+   return ;
+}
+
+static_inline void Chord_setSeed(Chord__ctx_type_8 &_ctx, int seed){
+   Random_setSeed(_ctx.rando,seed);
 };
 
 typedef Chord__ctx_type_8 Chord_default_type;

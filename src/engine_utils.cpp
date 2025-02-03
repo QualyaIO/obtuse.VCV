@@ -165,11 +165,22 @@ uint8_t Gate_noteOn(Gate__ctx_type_2 &_ctx, int note, int velocity, int channel)
    return newNote;
 }
 
+int Random_irandom(Random__ctx_type_0 &_ctx){
+   _ctx.next = (12345 + (1103515245 * _ctx.next));
+   int tmp;
+   tmp = (_ctx.next / 65536);
+   if(tmp < 0){
+      tmp = (- tmp);
+   }
+   return (tmp % 32768);
+}
+
 void Trigg__ctx_type_0_init(Trigg__ctx_type_0 &_output_){
    Trigg__ctx_type_0 _ctx;
    bool_init_array(128,false,_ctx.triggers);
    _ctx.ticks = 0;
    _ctx.shift = 0;
+   Random__ctx_type_0_init(_ctx.rando);
    fix_init_array(128,0x0 /* 0.000000 */,_ctx.ptriggers);
    _ctx.position = 0;
    _ctx.n = 0;
@@ -187,12 +198,12 @@ void Trigg__ctx_type_0_init(Trigg__ctx_type_0 &_output_){
 }
 
 void Trigg__refresh(Trigg__ctx_type_0 &_ctx){
-   if(_ctx.dirty || ((_ctx.evolve > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.evolve))){
+   if(_ctx.dirty || ((_ctx.evolve > 0x0 /* 0.000000 */) && (Random_random(_ctx.rando) <= _ctx.evolve))){
       int i;
       i = 0;
       while((i < 128) && (i < _ctx.length)){
-         if(_ctx.dirty || ((_ctx.magnitude > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.magnitude))){
-            _ctx.triggers[i] = ((_ctx.ptriggers[i] > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.ptriggers[i]));
+         if(_ctx.dirty || ((_ctx.magnitude > 0x0 /* 0.000000 */) && (Random_random(_ctx.rando) <= _ctx.magnitude))){
+            _ctx.triggers[i] = ((_ctx.ptriggers[i] > 0x0 /* 0.000000 */) && (Random_random(_ctx.rando) <= _ctx.ptriggers[i]));
          }
          i = (1 + i);
       }
@@ -440,6 +451,7 @@ void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_){
    _ctx.step = 0;
    _ctx.sequenceSize = 0;
    int_init_array(32,0,_ctx.sequence);
+   Random__ctx_type_0_init(_ctx.rando);
    int_init_array(32,0,_ctx.playSequence);
    _ctx.pRandomize = 0x0 /* 0.000000 */;
    _ctx.pRandomNotes = 0x0 /* 0.000000 */;
@@ -452,12 +464,12 @@ void Arp__ctx_type_0_init(Arp__ctx_type_0 &_output_){
 }
 
 void Arp_randomize(Arp__ctx_type_0 &_ctx){
-   if(_ctx.dirty || ((_ctx.pRandomize > 0x0 /* 0.000000 */) && (_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.pRandomize))){
+   if(_ctx.dirty || ((_ctx.pRandomize > 0x0 /* 0.000000 */) && (_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (Random_random(_ctx.rando) <= _ctx.pRandomize))){
       int i;
       i = 0;
       while(i < _ctx.sequenceSize){
-         if((_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (fix_random() <= _ctx.pRandomNotes)){
-            _ctx.playSequence[i] = (irandom() % _ctx.nbNotes);
+         if((_ctx.pRandomNotes > 0x0 /* 0.000000 */) && (Random_random(_ctx.rando) <= _ctx.pRandomNotes)){
+            _ctx.playSequence[i] = (Random_irandom(_ctx.rando) % _ctx.nbNotes);
          }
          else
          {
@@ -1108,6 +1120,7 @@ void Chord__ctx_type_8_init(Chord__ctx_type_8 &_output_){
    _ctx.scaleId = 0;
    bool_init_array(12,false,_ctx.scale);
    _ctx.root = 0;
+   Random__ctx_type_0_init(_ctx.rando);
    _ctx.process_ret_2 = 0;
    _ctx.process_ret_1 = 0;
    _ctx.process_ret_0 = 0;
@@ -1158,7 +1171,7 @@ int Chord_drawChord(Chord__ctx_type_8 &_ctx, uint8_t lookAround){
    }
    if(curcumTP > 0x0 /* 0.000000 */){
       fix16_t pChord;
-      pChord = fix_mul(tChords[5],fix_random());
+      pChord = fix_mul(tChords[5],Random_random(_ctx.rando));
       i = 0;
       while((i < 6) && (pChord > tChords[i])){
          i = (1 + i);
@@ -1172,7 +1185,7 @@ int Chord_drawChord(Chord__ctx_type_8 &_ctx, uint8_t lookAround){
 
 int Chord_drawInversion(Chord__ctx_type_8 &_ctx){
    fix16_t pInversion;
-   pInversion = fix_random();
+   pInversion = Random_random(_ctx.rando);
    int i;
    i = 0;
    while((i < 3) && (pInversion > _ctx.inversions[i])){
@@ -1187,7 +1200,7 @@ int Chord_drawInversion(Chord__ctx_type_8 &_ctx){
 void Chord_process(Chord__ctx_type_8 &_ctx){
    int selectedChord;
    int notes[3];
-   if(fix_random() < _ctx.pJump){
+   if(Random_random(_ctx.rando) < _ctx.pJump){
       selectedChord = Chord_drawChord(_ctx,true);
       int lookShifts[7];
       {
@@ -1231,7 +1244,7 @@ void Chord_process(Chord__ctx_type_8 &_ctx){
          int_copy_array(7,selectedShifts,lookShifts);
          nbShifts = 7;
       }
-      _ctx.shift = ((_ctx.shift + selectedShifts[(irandom() % nbShifts)]) % 12);
+      _ctx.shift = ((_ctx.shift + selectedShifts[(Random_irandom(_ctx.rando) % nbShifts)]) % 12);
       if(_ctx.shift == 0){
          int i;
          i = 0;
