@@ -28,21 +28,21 @@ VULT_EFFECTS_SRC = vult/processor_reverb.vult vult/processor_svf.vult vult/proce
 #VULT_EFFECTS_ENGINE_OUT = $(wildcard src/engine_effects.*)
 VULT_EFFECTS_ENGINE_OUT = src/engine_effects.h
 $(VULT_EFFECTS_ENGINE_OUT): $(VULT_EFFECTS_SRC)
-	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i botania/vult -i botania/vult/buffer_medium -o src/engine_effects -real fixed
+	$(VULT_CMD) -ccode $(VULT_EFFECTS_SRC) -i obtuse/vult -i obtuse/vult/buffer_medium -o src/engine_effects -real fixed
 
 # variants with extra buffer
 VULT_EFFECTS_EXTRA_SRC =  vult/processor_combFF.vult vult/processor_combFB.vult vult/processor_allpass.vult 
 #VULT_EFFECTS_EXTRA_ENGINE_OUT = $(wildcard src/engine_effects_extra.*)
 VULT_EFFECTS_EXTRA_ENGINE_OUT = src/engine_effects_extra.h
 $(VULT_EFFECTS_EXTRA_ENGINE_OUT): $(VULT_EFFECTS_EXTRA_SRC)
-	$(VULT_CMD) -ccode $(VULT_EFFECTS_EXTRA_SRC) -i botania/vult -i botania/vult/buffer_extra_large -o src/engine_effects_extra -output-prefix extra_ -real fixed
+	$(VULT_CMD) -ccode $(VULT_EFFECTS_EXTRA_SRC) -i obtuse/vult -i obtuse/vult/buffer_extra_large -o src/engine_effects_extra -output-prefix extra_ -real fixed
 
 # here as well using some sort of template between synths
 VULT_SYNTH_FM_SRC = vult/synth_FM/processor.vult 
 #VULT_SYNTH_FM_ENGINE_OUT = $(wildcard src/engine_synthFM.*)
 VULT_SYNTH_FM_ENGINE_OUT = src/engine_synthFM.h
 $(VULT_SYNTH_FM_ENGINE_OUT): $(VULT_SYNTH_FM_SRC)
-	$(VULT_CMD) -ccode $(VULT_SYNTH_FM_SRC) -i botania/vult -i botania/vult/synth_FMalt -i botania/vult/buffer_medium -o src/engine_synthFM -output-prefix synthFM_ -real fixed
+	$(VULT_CMD) -ccode $(VULT_SYNTH_FM_SRC) -i obtuse/vult -i obtuse/vult/synth_FMalt -i obtuse/vult/buffer_medium -o src/engine_synthFM -output-prefix synthFM_ -real fixed
 
 VULT_SYNTH_SAMPLER_SRC = vult/synth_sampler/processor.vult 
 #VULT_SYNTH_SAMPLER_ENGINE_OUT = $(wildcard src/engine_synthSampler*)
@@ -60,7 +60,7 @@ VULT_UTILS_SRC = vult/processor_trigg.vult vult/processor_clock.vult vult/proces
 #VULT_UTILS_ENGINE_OUT = $(wildcard src/engine_utils.*)
 VULT_UTILS_ENGINE_OUT = src/engine_utils.h
 $(VULT_UTILS_ENGINE_OUT): $(VULT_UTILS_SRC)
-	$(VULT_CMD) -ccode $(VULT_UTILS_SRC) -i botania/vult -o src/engine_utils -real fixed 
+	$(VULT_CMD) -ccode $(VULT_UTILS_SRC) -i obtuse/vult -o src/engine_utils -real fixed 
 
 
 vult: $(VULT_EFFECTS_ENGINE_OUT) $(VULT_EFFECTS_EXTRA_ENGINE_OUT) $(VULT_SYNTH_FM_ENGINE_OUT) $(VULT_SYNTH_DRUMMER_ENGINE_OUT) $(VULT_SYNTH_SAMPLER_ENGINE_OUT) $(VULT_UTILS_ENGINE_OUT)

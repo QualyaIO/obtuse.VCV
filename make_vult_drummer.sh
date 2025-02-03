@@ -5,7 +5,7 @@
 # 2nd parameter: path to the processor wrapper
 
 # loop all instruments in the sampler, retrieve id
-for i in `ls -d botania/vult/synth_drummer/*/ | cut -f4 -d'/'`; do
+for i in `ls -d obtuse/vult/synth_drummer/*/ | cut -f4 -d'/'`; do
     echo "Generate Drummer synth $i"
     # uppercase first letter of id 
     # WARNING: only works with bash >= 4
@@ -14,6 +14,4 @@ for i in `ls -d botania/vult/synth_drummer/*/ | cut -f4 -d'/'`; do
     if [ $i == "808" ] ; then
 	PREFIX="synthDrummer"
     fi
-    $1 -ccode $2 -i botania/vult -i botania/vult/synth_drummer -i botania/vult/buffer_medium -i botania/vult/synth_drummer/$i -o src/engine_${PREFIX} -output-prefix ${PREFIX}_ -real fixed 
-done
-
+    $1 -ccode $2 -i obtuse/vult -i obtuse/vult/synth_drummer -i obtuse/vult/buffer_medium -i obtuse/vult/synth_drummer/$i -o src/engine_${PREFIX} -output-prefix ${PREFIX}_ -real fixed done
