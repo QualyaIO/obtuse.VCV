@@ -14,4 +14,6 @@ for i in `ls -d obtuse/vult/synth_drummer/*/ | cut -f4 -d'/'`; do
     if [ $i == "808" ] ; then
 	PREFIX="synthDrummer"
     fi
-    $1 -ccode $2 -i obtuse/vult -i obtuse/vult/synth_drummer -i obtuse/vult/buffer_medium -i obtuse/vult/synth_drummer/$i -o src/engine_${PREFIX} -output-prefix ${PREFIX}_ -real fixed done
+    $1 -ccode $2 -i obtuse/vult -i obtuse/vult/synth_drummer -i obtuse/vult/buffer_medium -i obtuse/vult/synth_drummer/$i -o src/engine_${PREFIX} -output-prefix ${PREFIX}_ -real fixed 
+done
+
