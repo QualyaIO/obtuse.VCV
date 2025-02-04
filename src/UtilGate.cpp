@@ -148,4 +148,4 @@ struct UtilGateWidget : ModuleWidget {
    }
 };
 
-Model *utilGate = createModel<UtilGate, UtilGateWidget>("BotaniaGate");
+Model *utilGate = createModel<UtilGate, UtilGateWidget>("ObtuseGate");

@@ -276,4 +276,4 @@ struct SynthDrummerWidget : ModuleWidget {
    }
 };
 
-Model *synthDrummer = createModel<SynthDrummer, SynthDrummerWidget>("BotaniaSynthDrummer");
+Model *synthDrummer = createModel<SynthDrummer, SynthDrummerWidget>("ObtuseSynthDrummer");

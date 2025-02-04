@@ -115,4 +115,4 @@ struct EffectCombFBWidget : ModuleWidget {
    }
 };
 
-Model *effectCombFB = createModel<EffectCombFB, EffectCombFBWidget>("BotaniaCombFB");
+Model *effectCombFB = createModel<EffectCombFB, EffectCombFBWidget>("ObtuseCombFB");

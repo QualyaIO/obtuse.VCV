@@ -233,4 +233,4 @@ struct UtilChordWidget : ModuleWidget {
    }
 };
 
-Model *utilChord = createModel<UtilChord, UtilChordWidget>("BotaniaChord");
+Model *utilChord = createModel<UtilChord, UtilChordWidget>("ObtuseChord");

@@ -175,4 +175,4 @@ struct UtilTriggWidget : ModuleWidget {
    }
 };
 
-Model *utilTrigg = createModel<UtilTrigg, UtilTriggWidget>("BotaniaTrigg");
+Model *utilTrigg = createModel<UtilTrigg, UtilTriggWidget>("ObtuseTrigg");

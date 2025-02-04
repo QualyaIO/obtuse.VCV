@@ -115,4 +115,4 @@ struct EffectReverbWidget : ModuleWidget {
    }
 };
 
-Model *effectReverb = createModel<EffectReverb, EffectReverbWidget>("BotaniaReverb");
+Model *effectReverb = createModel<EffectReverb, EffectReverbWidget>("ObtuseReverb");

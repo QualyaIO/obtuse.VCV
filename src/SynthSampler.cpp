@@ -161,4 +161,4 @@ struct SynthSamplerWidget : ModuleWidget {
    }
 };
 
-Model *synthSampler = createModel<SynthSampler, SynthSamplerWidget>("BotaniaSynthSampler");
+Model *synthSampler = createModel<SynthSampler, SynthSamplerWidget>("ObtuseSynthSampler");

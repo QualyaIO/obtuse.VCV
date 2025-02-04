@@ -167,4 +167,4 @@ struct EffectSVFWidget : ModuleWidget {
    }
 };
 
-Model *effectSVF = createModel<EffectSVF, EffectSVFWidget>("BotaniaSVF");
+Model *effectSVF = createModel<EffectSVF, EffectSVFWidget>("ObtuseSVF");

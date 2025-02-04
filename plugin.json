@@ -1,98 +1,98 @@
 {
-   "slug": "BotaniaVCV",
-   "name": "BotaniaVCV",
-   "version": "2.5.0",
-   "license": "Custom",
-   "brand": "Ullo",
+   "slug": "ObtuseVCV",
+   "name": "ObtuseVCV",
+   "version": "2.6.0",
+   "license": "AGPL3",
+   "brand": "Qualya",
    "author": "jfrey",
-   "authorEmail": "jfrey@ullo.fr",
-   "authorUrl": "https://labs.ullo.fr",
+   "authorEmail": "jfrey@qualya.io",
+   "authorUrl": "https://qualya.io",
    "pluginUrl": "",
    "manualUrl": "",
    "sourceUrl": "",
    "donateUrl": "",
   "modules": [
     {
-      "slug": "BotaniaReverb",
-      "name": "BotaniaReverb",
+      "slug": "ObtuseReverb",
+      "name": "ObtuseReverb",
       "description": "I reverb things",
       "tags": []
     },
     {
-      "slug": "BotaniaSVF",
-      "name": "BotaniaSVF",
+      "slug": "ObtuseSVF",
+      "name": "ObtuseSVF",
       "description": "I filter things",
       "tags": []
     },
     {
-      "slug": "BotaniaCombFF",
-      "name": "BotaniaCombFF",
+      "slug": "ObtuseCombFF",
+      "name": "ObtuseCombFF",
       "description": "I comb forward filter things",
       "tags": []
     },
     {
-      "slug": "BotaniaCombFB",
-      "name": "BotaniaCombFB",
+      "slug": "ObtuseCombFB",
+      "name": "ObtuseCombFB",
       "description": "I comb backward filter things",
       "tags": []
     },
     {
-      "slug": "BotaniaAllpass",
-      "name": "BotaniaAllpass",
+      "slug": "ObtuseAllpass",
+      "name": "ObtuseAllpass",
       "description": "I allpass filter things",
       "tags": []
     },
     {
-      "slug": "BotaniaSynthFM",
-      "name": "BotaniaSynthFM",
+      "slug": "ObtuseSynthFM",
+      "name": "ObtuseSynthFM",
       "description": "I do FM things",
       "tags": []
     },
     {
-      "slug": "BotaniaSynthSampler",
-      "name": "BotaniaSynthSampler",
+      "slug": "ObtuseSynthSampler",
+      "name": "ObtuseSynthSampler",
       "description": "I do samples things",
       "tags": []
     },
     {
-      "slug": "BotaniaSynthDrummer",
-      "name": "BotaniaSynthDrummer",
+      "slug": "ObtuseSynthDrummer",
+      "name": "ObtuseSynthDrummer",
       "description": "I doum doum things",
       "tags": []
     },
     {
-      "slug": "BotaniaTrigg",
-      "name": "BotaniaTrigg",
+      "slug": "ObtuseTrigg",
+      "name": "ObtuseTrigg",
       "description": "I trigger things",
       "tags": []
     },
     {
-      "slug": "BotaniaClock",
-      "name": "BotaniaClock",
+      "slug": "ObtuseClock",
+      "name": "ObtuseClock",
       "description": "I clock things",
       "tags": []
     },
     {
-      "slug": "BotaniaChord",
-      "name": "BotaniaChord",
+      "slug": "ObtuseChord",
+      "name": "ObtuseChord",
       "description": "I generate chords things",
       "tags": []
     },
     {
-      "slug": "BotaniaArp",
-      "name": "BotaniaArp",
+      "slug": "ObtuseArp",
+      "name": "ObtuseArp",
       "description": "I arp things",
       "tags": []
     },
     {
-      "slug": "BotaniaGate",
-      "name": "BotaniaGate",
+      "slug": "ObtuseGate",
+      "name": "ObtuseGate",
       "description": "I gate things",
       "tags": []
     },
     {
-      "slug": "BotaniaSaturator",
-      "name": "BotaniaSaturator",
+      "slug": "ObtuseSaturator",
+      "name": "ObtuseSaturator",
       "description": "I clip/saturate things",
       "tags": []
     }

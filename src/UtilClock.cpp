@@ -198,4 +198,4 @@ struct UtilClockWidget : ModuleWidget {
    }
 };
 
-Model *utilClock = createModel<UtilClock, UtilClockWidget>("BotaniaClock");
+Model *utilClock = createModel<UtilClock, UtilClockWidget>("ObtuseClock");

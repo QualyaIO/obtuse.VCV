@@ -108,4 +108,4 @@ struct EffectSaturatorWidget : ModuleWidget {
    }
 };
 
-Model *effectSaturator = createModel<EffectSaturator, EffectSaturatorWidget>("BotaniaSaturator");
+Model *effectSaturator = createModel<EffectSaturator, EffectSaturatorWidget>("ObtuseSaturator");

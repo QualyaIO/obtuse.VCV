@@ -157,4 +157,4 @@ struct UtilArpWidget : ModuleWidget {
    }
 };
 
-Model *utilArp = createModel<UtilArp, UtilArpWidget>("BotaniaArp");
+Model *utilArp = createModel<UtilArp, UtilArpWidget>("ObtuseArp");

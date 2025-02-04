@@ -54,7 +54,7 @@ struct SynthFM : Module {
 SynthFM::SynthFM() {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-   // will config all parameters, setting as default the same as with botania DSP default (at least at the time of writing)
+   // will config all parameters, setting as default the same as with Obtuse DSP default (at least at the time of writing)
    // TODO: ensure safety check in DSP
    
    // retrieve upper level for ADSR
@@ -215,4 +215,4 @@ struct SynthFMWidget : ModuleWidget {
    }
 };
 
-Model *synthFM = createModel<SynthFM, SynthFMWidget>("BotaniaSynthFM");
+Model *synthFM = createModel<SynthFM, SynthFMWidget>("ObtuseSynthFM");

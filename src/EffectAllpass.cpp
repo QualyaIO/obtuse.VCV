@@ -115,4 +115,4 @@ struct EffectAllpassWidget : ModuleWidget {
    }
 };
 
-Model *effectAllpass = createModel<EffectAllpass, EffectAllpassWidget>("BotaniaAllpass");
+Model *effectAllpass = createModel<EffectAllpass, EffectAllpassWidget>("ObtuseAllpass");
