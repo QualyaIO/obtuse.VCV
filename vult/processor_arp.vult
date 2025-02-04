@@ -78,3 +78,8 @@ and getNbModes(): int {
 and getMaxNbNotes(): int {
   return arpe:Arp.getMaxNbNotes();
 }
+
+// passing seed to DSP
+and setSeed(seed: int) {
+  _ = arpe:Arp.setSeed(seed);
+}

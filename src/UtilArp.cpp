@@ -70,6 +70,9 @@ UtilArp::UtilArp() {
 
    // init engine and apply default parameter
    Processor_arp_process_init(processor);
+   // different seed for each instance of the module
+   Processor_arp_setSeed(processor, random::u32());
+
    sendParams(true);
 }
 

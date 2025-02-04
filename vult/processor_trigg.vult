@@ -76,6 +76,10 @@ and setDensity(param: real, force: bool) {
     _ = trigg:Trigg.setDensity(param);
   }
 }
+// passing seed to DSP
+and setSeed(seed: int) {
+  _ = trigg:Trigg.setSeed(seed);
+}
 
 // adapt tail to match 1ms upon new sample rate
 and setSamplerate(newFs:real) {

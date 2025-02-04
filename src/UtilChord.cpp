@@ -132,6 +132,9 @@ UtilChord::UtilChord() {
 
    // init engine and apply default parameter
    Processor_chord_process_init(processor);
+   // different seed for each instance of the module
+   Processor_chord_setSeed(processor, random::u32());
+
    sendParams(true);
 }
 

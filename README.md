@@ -34,6 +34,7 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - [BREAKING] bump DSP to pending 0.2.0, changing behavior for some drumkits and samples (plus reduce artifacts on delay and reverb upon delay change)
 - FM: switch to alt version to reduce (by a lot) CPU while tuning wavetables
 - Arp, Chord, Clock, Trigg: fix UI (names and discrete values where applicable)
+- [BREAKING] Arp, Chord, Trigg: random seed for each instance of the modules
 
 ## 2.5.0 (2023-07-21)
 

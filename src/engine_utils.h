@@ -730,6 +730,17 @@ static_inline void Processor_trigg_setDensity(Processor_trigg__ctx_type_0 &_ctx,
    }
 };
 
+typedef Processor_trigg__ctx_type_0 Processor_trigg_setSeed_type;
+
+static_inline void Processor_trigg_setSeed_init(Processor_trigg__ctx_type_0 &_output_){
+   Processor_trigg__ctx_type_0_init(_output_);
+   return ;
+}
+
+static_inline void Processor_trigg_setSeed(Processor_trigg__ctx_type_0 &_ctx, int seed){
+   Trigg_setSeed(_ctx.trigg,seed);
+};
+
 typedef Processor_trigg__ctx_type_0 Processor_trigg_setSamplerate_type;
 
 static_inline void Processor_trigg_setSamplerate_init(Processor_trigg__ctx_type_0 &_output_){
@@ -1026,6 +1037,17 @@ static_inline void Processor_arp_getMaxNbNotes_init(Processor_arp__ctx_type_3 &_
 
 static_inline int Processor_arp_getMaxNbNotes(Processor_arp__ctx_type_3 &_ctx){
    return Arp_getMaxNbNotes(_ctx.arpe);
+};
+
+typedef Processor_arp__ctx_type_3 Processor_arp_setSeed_type;
+
+static_inline void Processor_arp_setSeed_init(Processor_arp__ctx_type_3 &_output_){
+   Processor_arp__ctx_type_3_init(_output_);
+   return ;
+}
+
+static_inline void Processor_arp_setSeed(Processor_arp__ctx_type_3 &_ctx, int seed){
+   Arp_setSeed(_ctx.arpe,seed);
 };
 
 static_inline fix16_t Chord_logBase_raw_c0(int index){
@@ -1959,6 +1981,17 @@ static_inline void Processor_chord_getScale_init(Processor_chord__ctx_type_2 &_o
 }
 
 int Processor_chord_getScale(Processor_chord__ctx_type_2 &_ctx, fix16_t (&scale)[12]);
+
+typedef Processor_chord__ctx_type_2 Processor_chord_setSeed_type;
+
+static_inline void Processor_chord_setSeed_init(Processor_chord__ctx_type_2 &_output_){
+   Processor_chord__ctx_type_2_init(_output_);
+   return ;
+}
+
+static_inline void Processor_chord_setSeed(Processor_chord__ctx_type_2 &_ctx, int seed){
+   Chord_setSeed(_ctx.ton,seed);
+};
 
 
 

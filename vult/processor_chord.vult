@@ -101,3 +101,8 @@ and getScale(scale: array(real, 12)): int {
   }
   return s;
 }
+
+// passing seed to DSP
+and setSeed(seed: int) {
+  _ = ton:Chord.setSeed(seed);
+}
