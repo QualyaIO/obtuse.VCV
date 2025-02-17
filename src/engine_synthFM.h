@@ -306,6 +306,14 @@ static_inline void synthFM_Buffer_buffer(fix16_t (&oBuff)[128]){
 
 void synthFM_Buffer_buffer_large(fix16_t (&oBuff)[2048]);
 
+static_inline int synthFM_Buffer_bufferSize(){
+   return 128;
+};
+
+static_inline int synthFM_Buffer_bufferLargeSize(){
+   return 2048;
+};
+
 fix16_t synthFM_OSCalt_getSampleMorph(int wavetable1, int wavetable2, fix16_t wavetable_ratio, int phase_shift, fix16_t index);
 
 typedef struct synthFM_OSCalt__ctx_type_1 {

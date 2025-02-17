@@ -12,6 +12,14 @@ static_inline void extra_Buffer_buffer(fix16_t (&oBuff)[128]){
 
 void extra_Buffer_buffer_large(fix16_t (&oBuff)[16384]);
 
+static_inline int extra_Buffer_bufferSize(){
+   return 128;
+};
+
+static_inline int extra_Buffer_bufferLargeSize(){
+   return 16384;
+};
+
 typedef struct extra_Allpass__ctx_type_0 {
    fix16_t scale;
    int pos;

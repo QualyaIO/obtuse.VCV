@@ -116,6 +116,14 @@ static_inline void Buffer_buffer(fix16_t (&oBuff)[128]){
 
 void Buffer_buffer_large(fix16_t (&oBuff)[2048]);
 
+static_inline int Buffer_bufferSize(){
+   return 128;
+};
+
+static_inline int Buffer_bufferLargeSize(){
+   return 2048;
+};
+
 typedef struct SVF__ctx_type_0 {
    fix16_t z2;
    fix16_t z1;

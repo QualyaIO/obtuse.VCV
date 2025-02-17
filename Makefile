@@ -42,7 +42,7 @@ VULT_SYNTH_FM_SRC = vult/synth_FM/processor.vult
 #VULT_SYNTH_FM_ENGINE_OUT = $(wildcard src/engine_synthFM.*)
 VULT_SYNTH_FM_ENGINE_OUT = src/engine_synthFM.h
 $(VULT_SYNTH_FM_ENGINE_OUT): $(VULT_SYNTH_FM_SRC)
-	$(VULT_CMD) -ccode $(VULT_SYNTH_FM_SRC) -i obtuse/vult -i obtuse/vult/synth_FMalt -i obtuse/vult/buffer_medium -o src/engine_synthFM -output-prefix synthFM_ -real fixed
+	$(VULT_CMD) -ccode $(VULT_SYNTH_FM_SRC) -i obtuse/vult -i obtuse/vult/wavetable_medium -i obtuse/vult/synth_FMalt -i obtuse/vult/buffer_medium -o src/engine_synthFM -output-prefix synthFM_ -real fixed
 
 VULT_SYNTH_SAMPLER_SRC = vult/synth_sampler/processor.vult 
 #VULT_SYNTH_SAMPLER_ENGINE_OUT = $(wildcard src/engine_synthSampler*)
