@@ -26,12 +26,14 @@ There are prototype (and often buggy) versions of some modules (see `proto_*.vul
 - chord: select a fix shift
 - chord: knob for root note
 - sampler: better way to enforce loop size
+- option to set or save seed where applicable?
 
 # Changelog
 
-## 2.6.0 (current)
+## 2.6.0 (2025-02-17)
 
-- [BREAKING] bump DSP to pending 0.2.0, changing behavior for some drumkits and samples (plus reduce artifacts on delay and reverb upon delay change)
+- [BREAKING] switch name to obtuse
+- [BREAKING] bump DSP to v0.2.0, changing behavior for some drumkits and samples (plus reduce artifacts on delay and reverb upon delay change)
 - FM: switch to alt version to reduce (by a lot) CPU while tuning wavetables
 - Arp, Chord, Clock, Trigg: fix UI (names and discrete values where applicable)
 - [BREAKING] Arp, Chord, Trigg: random seed for each instance of the modules
